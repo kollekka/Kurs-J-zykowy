@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Enrollment extends Model
+{
+    public function instructor()
+    {
+        return $this->belongsTo(Instructor::class);
+    }
+
+public function enrollments()
+    {
+        return $this->hasMany(Enrollment::class);
+    }
+}
