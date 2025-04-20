@@ -56,17 +56,18 @@
 <!-- Bootstrap Grid for Cards -->
 <div class="container mt-4">
   <div class="row">
-    @for ($i = 0; $i < 9; $i++) <!-- Pętla dla 12 kart -->
+    @foreach ($courses as $course)
       <div class="col-md-4 mb-4"> <!-- 3 kolumny w jednym wierszu -->
         <div class="card" style="width: 100%;">
           <div class="card-body">
-            <h5 class="card-title">Card Title {{ $i + 1 }}</h5>
-            <p class="card-text">This is card number {{ $i + 1 }}.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+            <h5 class="card-title">{{ $course->name }}</h5>
+            <p class="card-text">{{ $course->language }} - {{ $course->level }}</p>
+            <p class="card-text">Price: ${{ $course->price }}</p>
+            <a href="#" class="btn btn-primary">View Course</a>
           </div>
         </div>
       </div>
-    @endfor
+    @endforeach
   </div>
 </div>
 </body>
