@@ -63,7 +63,7 @@
             <h5 class="card-title">{{ $course->name }}</h5>
             <p class="card-text">{{ $course->language }} - {{ $course->level }}</p>
             <p class="card-text">Price: ${{ $course->price }}</p>
-            <a href="#" class="btn btn-primary">View Course</a>
+            <a href="{{ route('course.show', $course->id) }}" class="btn btn-primary">View Course</a>
           </div>
         </div>
       </div>
