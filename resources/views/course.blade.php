@@ -18,8 +18,10 @@
                 <p><strong>End Date:</strong> {{ $course->end_date }}</p>
                 <p><strong>Price:</strong> ${{ $course->price }}</p>
                 <p><strong>Description:</strong> {{ $course->description ?? 'No description available.' }}</p>
+                <a href="{{ route('enroll.show', $course->id) }}" class="btn btn-primary">Take Part in Course</a>
                 <a href="{{ url('/main') }}" class="btn btn-primary">Back to Courses</a>
             </div>
+
 
             <!-- Sekcja instruktora -->
             <div class="col-md-4">
