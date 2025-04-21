@@ -19,12 +19,17 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'adrian@gmail.com',
         //     'password' => bcrypt('1234'),
         // ]);  
+        // User::factory()->create([
+        //     'name' => 'Tomek',
+        //     'email' => 'tomek@gmail.com',
+        //     'password' => bcrypt('1234'),
+        // ]);  
              
-        $this->call([
-        //  InstructorSeeder::class,
-        //  CourseSeeder::class,
-        // EnrollmentSeeder::class,
-            PaymentSeeder::class,
-        ]);
+        // $this->call([
+        //     InstructorSeeder::class,
+        //     CourseSeeder::class,
+        //     EnrollmentSeeder::class,
+        //     PaymentSeeder::class,
+        // ]);
     }
 }
