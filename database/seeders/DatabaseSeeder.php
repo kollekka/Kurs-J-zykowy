@@ -25,11 +25,11 @@ class DatabaseSeeder extends Seeder
         //     'password' => bcrypt('1234'),
         // ]);  
              
-        // $this->call([
+         $this->call([
         //     InstructorSeeder::class,
         //     CourseSeeder::class,
         //     EnrollmentSeeder::class,
-        //     PaymentSeeder::class,
-        // ]);
+           PaymentSeeder::class,
+         ]);
     }
 }
