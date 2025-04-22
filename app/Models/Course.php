@@ -12,6 +12,8 @@ class Course extends Model
 
     protected $table = 'courses';
 
+    protected $fillable = ['name', 'language', 'level'];
+
     public function instructor()
     {
         return $this->belongsTo(Instructor::class, 'instructor_id');
