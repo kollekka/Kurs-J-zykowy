@@ -10,9 +10,4 @@ class Enrollment extends Model
     {
         return $this->belongsTo(Instructor::class);
     }
-
-public function enrollments()
-    {
-        return $this->hasMany(Enrollment::class);
-    }
 }

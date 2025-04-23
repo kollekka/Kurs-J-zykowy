@@ -18,10 +18,38 @@
                 <p><strong>End Date:</strong> {{ $course->end_date }}</p>
                 <p><strong>Price:</strong> ${{ $course->price }}</p>
                 <p><strong>Description:</strong> {{ $course->description ?? 'No description available.' }}</p>
-                <a href="{{ route('enroll.show', $course->id) }}" class="btn btn-primary">Take Part in Course</a>
+
+                <!-- Sekcja lekcji -->
+                <!-- Sekcja lekcji -->
+                <div class="mt-4">
+                    <h3>Lessons</h3>
+                    <ul class="list-group">
+                        @foreach ($course->lessons as $index => $lesson)
+                            <li class="list-group-item">
+                                @if ($course->enrollments->contains('user_id', Auth::id()) || $index === 0)
+                                    <!-- Jeśli użytkownik jest zapisany lub to pierwsza lekcja -->
+                                    <strong>{{ $lesson->order }}. {{ $lesson->title }}</strong>
+                                    <p><strong>Content: </strong> {{ $lesson->content }}</p>
+                                @else
+                                    <!-- Jeśli użytkownik nie jest zapisany i to nie pierwsza lekcja -->
+                                    <strong>{{ $lesson->order }}. {{ $lesson->title }}</strong>
+                                    <p>Not available. Enroll in the course to access this lesson.</p>
+                                @endif
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+
+                @if ($course->enrollments->contains('user_id', Auth::id()))
+                    <!-- Jeśli użytkownik jest zapisany -->
+                    <button class="btn btn-secondary" disabled>You are already enrolled</button>
+                @else
+                    <!-- Jeśli użytkownik nie jest zapisany -->
+                    <a href="{{ route('enroll.show', $course->id) }}" class="btn btn-primary">Take Part in Course</a>
+                @endif
+
                 <a href="{{ url('/main') }}" class="btn btn-primary">Back to Courses</a>
             </div>
-
 
             <!-- Sekcja instruktora -->
             <div class="col-md-4">

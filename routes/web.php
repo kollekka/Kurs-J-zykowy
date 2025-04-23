@@ -34,4 +34,6 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::post('/admin/add-instructor', [AdminController::class, 'addInstructor'])->name('admin.addInstructor');
     Route::post('/admin/add-course', [AdminController::class, 'addCourse'])->name('admin.addCourse');
+    Route::delete('/admin/instructors/{id}', [AdminController::class, 'deleteInstructor'])->name('admin.deleteInstructor');
+    Route::delete('/admin/courses/{id}', [AdminController::class, 'deleteCourse'])->name('admin.deleteCourse');
 });

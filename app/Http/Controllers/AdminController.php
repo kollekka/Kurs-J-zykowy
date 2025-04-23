@@ -10,7 +10,8 @@ class AdminController extends Controller
     public function index()
     {
         $instructors = Instructor::all();
-        return view('admin.dashboard', compact('instructors'));
+        $courses = Course::all();
+        return view('admin.dashboard', compact('instructors'), compact('courses'));
         
     }
 
@@ -54,4 +55,20 @@ class AdminController extends Controller
         ]);
         return redirect()->route('admin.dashboard');
     }
+
+        public function deleteInstructor($id)
+    {
+        $instructor = Instructor::findOrFail($id);
+        $instructor->delete();
+
+        return redirect()->route('admin.dashboard')->with('success', 'Instruktor został usunięty.');
+    }
+
+    public function deleteCourse($id)
+    {
+        $course = Course::findOrFail($id);
+        $course->delete();
+
+        return redirect()->route('admin.dashboard')->with('success', 'Kurs został usunięty.');
+    }   
 }

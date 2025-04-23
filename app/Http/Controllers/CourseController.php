@@ -4,17 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Course; 
+use App\Models\Course;
+use lessons\Order;
 
 class CourseController extends Controller
 {
     public function show($id)
     {
         // Pobierz kurs na podstawie ID
-        $course = Course::findOrFail($id);
+        $course = Course::with('lessons')->findOrFail($id);
 
         // Przekaż dane do widoku
         return view('course', compact('course'));
+        
     }
 
     public function index(Request $request)

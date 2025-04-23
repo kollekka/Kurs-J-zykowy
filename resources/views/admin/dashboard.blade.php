@@ -28,12 +28,13 @@
             </li>
         </div>
       </nav>    
-    <div class="container mt-5">
+      <div class="container mt-5">
         <h1 class="text-center mb-4">Witaj w panelu administratora!</h1>
         <div class="row">
-            <!-- Kolumna do dodawania instruktorów -->
+            <!-- Sekcja dodawania instruktorów i kursów -->
             <div class="col-md-6">
-                <div class="card shadow-sm">
+                <!-- Dodawanie instruktorów -->
+                <div class="card shadow-sm mb-4">
                     <div class="card-header bg-primary text-white">
                         <h4 class="mb-0">Dodaj Instruktora</h4>
                     </div>
@@ -56,10 +57,8 @@
                         </form>
                     </div>
                 </div>
-            </div>
-
-            <!-- Kolumna do dodawania kursów -->
-            <div class="col-md-6">
+    
+                <!-- Dodawanie kursów -->
                 <div class="card shadow-sm">
                     <div class="card-header bg-success text-white">
                         <h4 class="mb-0">Dodaj Kurs</h4>
@@ -107,6 +106,51 @@
                             </div>
                             <button type="submit" class="btn btn-success btn-block">Dodaj Kurs</button>
                         </form>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Sekcja list instruktorów i kursów -->
+            <div class="col-md-6">
+                <!-- Lista instruktorów -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-secondary text-white">
+                        <h4 class="mb-0">Lista Instruktorów</h4>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            @foreach ($instructors as $instructor)
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    {{ $instructor->full_name }}
+                                    <form action="{{ route('admin.deleteInstructor', $instructor->id) }}" method="POST" onsubmit="return confirm('Czy na pewno chcesz usunąć tego instruktora?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
+                                    </form>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+    
+                <!-- Lista kursów -->
+                <div class="card shadow-sm">
+                    <div class="card-header bg-secondary text-white">
+                        <h4 class="mb-0">Lista Kursów</h4>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            @foreach ($courses as $course)
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    {{ $course->name }}
+                                    <form action="{{ route('admin.deleteCourse', $course->id) }}" method="POST" onsubmit="return confirm('Czy na pewno chcesz usunąć ten kurs?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
+                                    </form>
+                                </li>
+                            @endforeach
+                        </ul>
                     </div>
                 </div>
             </div>
