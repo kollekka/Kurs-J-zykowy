@@ -12,7 +12,7 @@ class MainController extends Controller
     public function index()
     {
         // Pobierz 9 najpopularniejszych kursów
-        $courses = Course::all()->take(2);
+        $courses = Course::all();
 
         // Przekaż dane do widoku
         return view('main', compact('courses'));

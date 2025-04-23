@@ -37,16 +37,21 @@ class AdminController extends Controller
             'name' => 'required|string|max:255',
             'language' => 'required|string|max:255',
             'level' => 'required|string|max:255',
-            'instructor_id' => 'required|exists:instructors,id'
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date', 
+            'price' => 'required|numeric|min:0',
+            'instructor_id' => 'required|exists:instructors,id',
         ]);
-
+    
         Course::create([
             'name' => $request->name,
             'language' => $request->language,
             'level' => $request->level,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'price' => $request->price,
             'instructor_id' => $request->instructor_id,
         ]);
-
         return redirect()->route('admin.dashboard');
     }
 }

@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+    <style>
+        .card {
+            min-height: 600px; /* Ustaw minimalną wysokość kart */
+        }
+        #instructor_description {
+            height: 300px; /* Ustaw wysokość pola opisu */
+            resize: none; /* Wyłącz możliwość zmiany rozmiaru */
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -15,7 +24,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="{{ route('main') }}">Home <span class="sr-only">(current)</span></a>
             </li>
         </div>
       </nav>    
@@ -41,7 +50,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="instructor_description">Opis</label>
-                                <textarea id="instructor_description" name="bio" class="form-control" placeholder="Wpisz opis instruktora" rows="3" required></textarea>
+                                <textarea id="instructor_description" name="bio" class="form-control" placeholder="Wpisz opis instruktora" required></textarea>
                             </div>
                             <button type="submit" class="btn btn-primary btn-block">Dodaj Instruktora</button>
                         </form>
@@ -74,6 +83,18 @@
                                     <option value="Intermediate">Średniozaawansowany</option>
                                     <option value="Advanced">Zaawansowany</option>
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="course_start_date">Data rozpoczęcia</label>
+                                <input type="date" id="course_start_date" name="start_date" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="course_end_date">Data zakończenia</label>
+                                <input type="date" id="course_end_date" name="end_date" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="course_price">Cena</label>
+                                <input type="number" id="course_price" name="price" class="form-control" placeholder="Wpisz cenę kursu" step="0.01" required>
                             </div>
                             <div class="form-group">
                                 <label for="course_instructor">Instruktor</label>

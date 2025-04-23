@@ -16,4 +16,30 @@ class CourseController extends Controller
         // Przekaż dane do widoku
         return view('course', compact('course'));
     }
+
+    public function index(Request $request)
+    {
+        $query = Course::query();
+
+        // Filtruj według poziomu zaawansowania
+        if ($request->filled('level')) {
+            $query->where('level', $request->level);
+        }
+    
+        // Filtruj według języka
+        if ($request->filled('language')) {
+            $query->where('language', 'like', '%' . $request->language . '%');
+        }
+    
+        // Filtruj według maksymalnej ceny
+        if ($request->filled('max_price')) {
+            $query->where('price', '<=', $request->max_price);
+        }
+    
+        // Paginacja
+        $courses = $query->paginate(16);
+    
+        return view('courses', compact('courses'));
+    
+    }
 }
