@@ -36,4 +36,10 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(
     Route::post('/admin/add-course', [AdminController::class, 'addCourse'])->name('admin.addCourse');
     Route::delete('/admin/instructors/{id}', [AdminController::class, 'deleteInstructor'])->name('admin.deleteInstructor');
     Route::delete('/admin/courses/{id}', [AdminController::class, 'deleteCourse'])->name('admin.deleteCourse');
+    Route::get('/admin/instructors/{id}/edit', [AdminController::class, 'editInstructor'])->name('admin.editInstructor');
+    Route::get('/admin/courses/{id}/edit', [AdminController::class, 'editCourse'])->name('admin.editCourse');
+    Route::put('/admin/instructors/{id}', [AdminController::class, 'updateInstructor'])->name('admin.updateInstructor');
+    Route::put('/admin/courses/{id}', [AdminController::class, 'updateCourse'])->name('admin.updateCourse');
+    Route::get('/admin/lessons/{id}/edit', [AdminController::class, 'editLesson'])->name('admin.editLesson');
+    Route::put('/admin/lessons/{id}', [AdminController::class, 'updateLesson'])->name('admin.updateLesson');
 });

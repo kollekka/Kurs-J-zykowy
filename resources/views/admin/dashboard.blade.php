@@ -7,11 +7,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
     <style>
         .card {
-            min-height: 600px; /* Ustaw minimalną wysokość kart */
+            min-height: 600px; 
         }
         #instructor_description {
-            height: 300px; /* Ustaw wysokość pola opisu */
-            resize: none; /* Wyłącz możliwość zmiany rozmiaru */
+            height: 300px; 
+            resize: none; 
         }
     </style>
 </head>
@@ -26,8 +26,19 @@
             <li class="nav-item active">
               <a class="nav-link" href="{{ route('main') }}">Home <span class="sr-only">(current)</span></a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('courses.index') }}">Courses</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Info</a>
+            </li>
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          </form>
         </div>
-      </nav>    
+      </nav>     
       <div class="container mt-5">
         <h1 class="text-center mb-4">Witaj w panelu administratora!</h1>
         <div class="row">
@@ -111,48 +122,53 @@
             </div>
     
             <!-- Sekcja list instruktorów i kursów -->
-            <div class="col-md-6">
-                <!-- Lista instruktorów -->
-                <div class="card shadow-sm mb-4">
-                    <div class="card-header bg-secondary text-white">
-                        <h4 class="mb-0">Lista Instruktorów</h4>
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-group">
-                            @foreach ($instructors as $instructor)
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    {{ $instructor->full_name }}
-                                    <form action="{{ route('admin.deleteInstructor', $instructor->id) }}" method="POST" onsubmit="return confirm('Czy na pewno chcesz usunąć tego instruktora?');">
+            <!-- Lista instruktorów -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-secondary text-white">
+                    <h4 class="mb-0">Lista Instruktorów</h4>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        @foreach ($instructors as $instructor)
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{ $instructor->full_name }}
+                                <div>
+                                    <a href="{{ route('admin.editInstructor', $instructor->id) }}" class="btn btn-warning btn-sm">Edytuj</a>
+                                    <form action="{{ route('admin.deleteInstructor', $instructor->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Czy na pewno chcesz usunąć tego instruktora?');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
                                     </form>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
                 </div>
-    
-                <!-- Lista kursów -->
-                <div class="card shadow-sm">
-                    <div class="card-header bg-secondary text-white">
-                        <h4 class="mb-0">Lista Kursów</h4>
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-group">
-                            @foreach ($courses as $course)
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    {{ $course->name }}
-                                    <form action="{{ route('admin.deleteCourse', $course->id) }}" method="POST" onsubmit="return confirm('Czy na pewno chcesz usunąć ten kurs?');">
+            </div>
+
+            <!-- Lista kursów -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-secondary text-white">
+                    <h4 class="mb-0">Lista Kursów</h4>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        @foreach ($courses as $course)
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{ $course->name }}
+                                <div>
+                                    <a href="{{ route('admin.editCourse', $course->id) }}" class="btn btn-warning btn-sm">Edytuj</a>
+                                    <form action="{{ route('admin.deleteCourse', $course->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Czy na pewno chcesz usunąć ten kurs?');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
                                     </form>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
                 </div>
+            </div>
             </div>
         </div>
     </div>

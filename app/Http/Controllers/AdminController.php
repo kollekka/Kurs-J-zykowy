@@ -32,6 +32,18 @@ class AdminController extends Controller
         return redirect()->route('admin.dashboard');
     }
 
+    public function editInstructor($id)
+    {
+        $instructor = Instructor::findOrFail($id);
+        return view('admin.editInstructor', compact('instructor'));
+    }
+
+    public function editCourse($id)
+    {
+        $course = Course::with('lessons')->findOrFail($id);
+        return view('admin.editCourse', compact('course'));
+    }
+
     public function addCourse(Request $request)
     {
         $request->validate([
@@ -71,4 +83,31 @@ class AdminController extends Controller
 
         return redirect()->route('admin.dashboard')->with('success', 'Kurs został usunięty.');
     }   
+
+    public function updateInstructor(Request $request, $id)
+    {
+        $instructor = Instructor::findOrFail($id);
+        $instructor->update($request->all());
+        return redirect()->route('admin.dashboard')->with('success', 'Instruktor został zaktualizowany.');
+    }
+
+    public function updateCourse(Request $request, $id)
+    {
+        $course = Course::findOrFail($id);
+        $course->update($request->all());
+        return redirect()->route('admin.dashboard')->with('success', 'Kurs został zaktualizowany.');
+    }
+
+    public function editLesson($id)
+    {
+        $lesson = Lesson::findOrFail($id);
+        return view('admin.editLesson', compact('lesson'));
+    }
+
+    public function updateLesson(Request $request, $id)
+    {
+        $lesson = Lesson::findOrFail($id);
+        $lesson->update($request->all());
+        return redirect()->route('admin.editCourse', $lesson->course_id)->with('success', 'Lekcja została zaktualizowana.');
+    }
 }
