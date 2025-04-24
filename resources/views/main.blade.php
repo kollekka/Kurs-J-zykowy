@@ -26,6 +26,12 @@
       <li class="nav-item">
         <a class="nav-link" href="#">Info</a>
       </li>
+      @if (Auth::user() && Auth::user()->is_admin)
+        <li class="nav-item">
+          <a class="nav-link" href="{{ route('admin.dashboard') }}">Admin Panel</a>
+        </li>
+        
+      @endif
     </ul>
     <form class="form-inline my-2 my-lg-0">
       <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
