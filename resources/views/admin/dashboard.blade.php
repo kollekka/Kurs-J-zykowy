@@ -17,10 +17,14 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        @if (Auth::user())
         <a class="navbar-brand" href="{{ route('user.profile') }}">Hello, {{ Auth::user()->name ?? 'Guest' }}</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
+        @else
+        <a class="navbar-brand" href="{{ route('login') }}">Hello, Guest</a>
+        @endif
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
@@ -39,10 +43,12 @@
               
             @endif
           </ul>
-          <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-          </form>
+          @if (Auth::check())
+        <form action="{{ route('logout') }}" method="POST" class="form-inline my-2 my-lg-0">
+            @csrf
+            <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Wyloguj</button>
+        </form>
+      @endif
         </div>
       </nav>   
       <div class="container mt-5">
