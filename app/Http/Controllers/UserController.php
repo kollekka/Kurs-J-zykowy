@@ -11,7 +11,7 @@ class UserController extends Controller
     public function profile()
     {
         $user = Auth::user();
-        $courses = $user ? $user->courses : "Brak dostępnych kursów"; // Pobieranie kursów przez relację
+        $courses = $user ? $user->courses : "Brak dostępnych kursów"; 
 
         return view('user', compact('user', 'courses'));
     }
