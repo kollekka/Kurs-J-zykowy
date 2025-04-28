@@ -69,6 +69,10 @@
                               <label for="password">New Password (optional)</label>
                               <input type="password" id="password" name="password" class="form-control">
                           </div>
+                          <div class="form-group">
+                            <label for="current_password">Current Password</label>
+                            <input type="password" id="current_password" name="current_password" class="form-control" required>
+                          </div>
                           <button type="submit" class="btn btn-success">Save Changes</button>
                       </form>
                   </div>
