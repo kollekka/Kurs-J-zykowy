@@ -17,6 +17,9 @@ return new class extends Migration
             $table->string('title'); 
             $table->text('content')->nullable(); 
             $table->integer('order')->default(0); 
+            $table->time('duration');
+            $table->date('date');
+            $table->time('time');
             $table->timestamps();
 
             

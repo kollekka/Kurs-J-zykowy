@@ -15,16 +15,16 @@ class EnrollmentSeeder extends Seeder
     {
         DB::table('enrollments')->insert([
             [
-                'user_id' => 1, // Zakładamy, że użytkownik o ID 1 istnieje
-                'course_id' => 1, // Zakładamy, że kurs o ID 1 istnieje
+                'user_id' => 1, 
+                'course_id' => 1, 
                 'enrollment_date' => now(),
                 'status' => 'confirmed',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'user_id' => 2, // Zakładamy, że użytkownik o ID 2 istnieje
-                'course_id' => 2, // Zakładamy, że kurs o ID 2 istnieje
+                'user_id' => 2, 
+                'course_id' => 2, 
                 'enrollment_date' => now(),
                 'status' => 'pending',
                 'created_at' => now(),

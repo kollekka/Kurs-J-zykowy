@@ -20,13 +20,13 @@ class EnrollmentController extends Controller
 
     public function store(Request $request)
 {
-    // Walidacja danych
+    
     $request->validate([
         'course_id' => 'required|exists:courses,id',
         'payment_method' => 'required|in:card,bank_transfer,paypal',
     ]);
 
-    // Zapisz zapis w tabeli enrollments
+   
     \DB::table('enrollments')->insert([
         'user_id' => auth()->id(),
         'course_id' => $request->course_id,
@@ -36,6 +36,6 @@ class EnrollmentController extends Controller
         'updated_at' => now(),
     ]);
 
-    return redirect()->route('main')->with('success', 'You have successfully enrolled in the course!');
+    return redirect()->route('main');
     }
 }

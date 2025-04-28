@@ -14,7 +14,8 @@ return new class extends Migration
             $table->id();
             $table->string('name', 100);
             $table->string('language', 50);
-            $table->enum('level', ['Beginner', 'Intermediate', 'Advanced']);
+            $table->enum('level', ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']);
+            $table->integer('group_size');
             $table->date('start_date');
             $table->date('end_date');
             $table->decimal('price', 10, 2);

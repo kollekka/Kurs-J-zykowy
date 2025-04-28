@@ -19,7 +19,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="{{ route('main') }}">Home <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{{ route('courses.index') }}">Courses</a>
@@ -53,8 +53,8 @@
                 <p><strong>End Date:</strong> {{ $course->end_date }}</p>
                 <p><strong>Price:</strong> ${{ $course->price }}</p>
                 <p><strong>Description:</strong> {{ $course->description ?? 'No description available.' }}</p>
-
-                <!-- Sekcja lekcji -->
+                <p><strong>Group Size:</strong> {{ $course->group_size }}</p>
+                <p><strong>Available Spots:</strong> {{ $course->group_size - count($course->enrollments) }}</p>
                 <!-- Sekcja lekcji -->
                 <div class="mt-4">
                     <h3>Lessons</h3>
@@ -65,6 +65,9 @@
                                     <!-- Jeśli użytkownik jest zapisany lub to pierwsza lekcja -->
                                     <strong>{{ $lesson->order }}. {{ $lesson->title }}</strong>
                                     <p><strong>Content: </strong> {{ $lesson->content }}</p>
+                                    <p><strong>Duration: </strong> {{ \Carbon\Carbon::parse($lesson->duration)->minute }} minutes</p>
+                                    <p><strong>Start Date: </strong> {{ $lesson->date }}, {{$lesson->time}}</p>
+
                                 @else
                                     <!-- Jeśli użytkownik nie jest zapisany i to nie pierwsza lekcja -->
                                     <strong>{{ $lesson->order }}. {{ $lesson->title }}</strong>
@@ -78,8 +81,9 @@
                 @if ($course->enrollments->contains('user_id', Auth::id()))
                     <!-- Jeśli użytkownik jest zapisany -->
                     <button class="btn btn-secondary" disabled>You are already enrolled</button>
+                @elseif (count($course->enrollments) >= ($course->group_size))
+                    <button class="btn btn-secondary" disabled>No spots avaiable</button>
                 @else
-                    <!-- Jeśli użytkownik nie jest zapisany -->
                     <a href="{{ route('enroll.show', $course->id) }}" class="btn btn-primary">Take Part in Course</a>
                 @endif
 

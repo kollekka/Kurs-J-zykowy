@@ -31,10 +31,8 @@ class DatabaseSeeder extends Seeder
         //     CourseSeeder::class,
         //     EnrollmentSeeder::class,
         //     PaymentSeeder::class,
+        //     LessonSeeder::class,
         //  ]);
 
-        // $this->call([
-        //     LessonSeeder::class,
-        // ]);
     }
 }

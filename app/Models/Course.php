@@ -20,6 +20,7 @@ class Course extends Model
         'end_date',
         'instructor_id',
         'price',
+        'group_size',
     ];
 
     public function instructor()

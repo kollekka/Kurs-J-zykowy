@@ -92,6 +92,9 @@
                                     <h5 class="card-title">{{ $course->name }}</h5>
                                     <p class="card-text">{{ $course->language }} - {{ $course->level }}</p>
                                     <p class="card-text">Cena: ${{ $course->price }}</p>
+                                    <p class="card-text">Data rozpoczęcia: {{ $course->start_date }}</p>
+                                    <p class="card-text">Data zakończenia: {{ $course->end_date }}</p>
+                                    <p class="card-test">Liczba miejsc: {{ count($course->enrollments) }} / {{ $course->group_size }}<p>
                                     <a href="{{ route('course.show', $course->id) }}" class="btn btn-primary mt-auto align-self-center">Zobacz Kurs</a>
                                 </div>
                             </div>
