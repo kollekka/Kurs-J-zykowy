@@ -49,18 +49,31 @@
         <div class="row">
             <!-- Profil użytkownika po lewej -->
             <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Your Profile</h3>
-                    </div>
-                    <div class="card-body">
-                        <p><strong>Name:</strong> {{ $user->name }}</p>
-                        <p><strong>Email:</strong> {{ $user->email }}</p>
-                        <p><strong>Joined on:</strong> {{ $user->created_at->format('d M Y') }}</p>
-                        <a href="#" class="btn btn-warning">Edit Profile</a>
-                    </div>
-                </div>
-            </div>
+              <div class="card">
+                  <div class="card-header">
+                      <h3>Your Profile</h3>
+                  </div>
+                  <div class="card-body">
+                      <form action="{{ route('user.update') }}" method="POST">
+                          @csrf
+                          @method('PUT')
+                          <div class="form-group">
+                              <label for="name">Name</label>
+                              <input type="text" id="name" name="name" class="form-control" value="{{ $user->name }}" required>
+                          </div>
+                          <div class="form-group">
+                              <label for="email">Email</label>
+                              <input type="email" id="email" name="email" class="form-control" value="{{ $user->email }}" required>
+                          </div>
+                          <div class="form-group">
+                              <label for="password">New Password (optional)</label>
+                              <input type="password" id="password" name="password" class="form-control">
+                          </div>
+                          <button type="submit" class="btn btn-success">Save Changes</button>
+                      </form>
+                  </div>
+              </div>
+          </div>
 
             <!-- Lista kursów po prawej -->
             <div class="col-md-8">
@@ -73,6 +86,8 @@
                             <li class="list-group-item">
                                 <h5>{{ $course->name }}</h5>
                                 <p>{{ $course->language }} - {{ $course->level }}</p>
+                                <p>Begins on: {{ $course->start_date }}</p>
+                                <p>Ends on: {{ $course->end_date }}</p>
                                 <a href="{{ route('course.show', $course->id) }}" class="btn btn-primary btn-sm">View Course</a>
                             </li>
                         @endforeach

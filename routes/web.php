@@ -7,6 +7,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\UserController;
 use App\http\Controllers\AdminController;
+use App\Http\Controllers\RegisterController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -29,6 +30,11 @@ Route::get('/course/{id}/enroll', [EnrollmentController::class, 'create'])->name
 
 Route::post('/enrollment', [EnrollmentController::class, 'store'])->name('enrollment.store');
 Route::get('/user/profile', [UserController::class, 'profile'])->name('user.profile');
+
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [RegisterController::class, 'register']);
+
+Route::put('/user/update', [UserController::class, 'update'])->name('user.update');
 
 Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');

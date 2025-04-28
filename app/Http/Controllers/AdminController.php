@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Instructor;
 use App\Models\Course;
+Use App\Models\Lesson;
 
 class AdminController extends Controller
 {

@@ -54,22 +54,35 @@
                         <label for="level">Poziom zaawansowania</label>
                         <select name="level" id="level" class="form-control">
                             <option value="">Wybierz poziom</option>
-                            <option value="Beginner" {{ request('level') == 'Beginner' ? 'selected' : '' }}>Początkujący</option>
-                            <option value="Intermediate" {{ request('level') == 'Intermediate' ? 'selected' : '' }}>Średniozaawansowany</option>
-                            <option value="Advanced" {{ request('level') == 'Advanced' ? 'selected' : '' }}>Zaawansowany</option>
+                            <option value="A1" {{ request('level') == 'A1' ? 'selected' : '' }}>A1</option>
+                            <option value="A2" {{ request('level') == 'A2' ? 'selected' : '' }}>A2</option>
+                            <option value="B1" {{ request('level') == 'B1' ? 'selected' : '' }}>B1</option>
+                            <option value="B2" {{ request('level') == 'B2' ? 'selected' : '' }}>B2</option>
+                            <option value="C1" {{ request('level') == 'C1' ? 'selected' : '' }}>C1</option>
+                            <option value="C2" {{ request('level') == 'C2' ? 'selected' : '' }}>C2</option>
                         </select>
                     </div>
 
                     <!-- Filtr: Język -->
                     <div class="form-group">
                         <label for="language">Język</label>
-                        <input type="text" name="language" id="language" class="form-control" placeholder="Język" value="{{ request('language') }}">
+                        <select name="language" id="language" class="form-control">
+                          <option value="">Wybierz język</option>
+                          @foreach ($languages as $language)
+                              <option value="{{ $language }}" {{ request('language') == $language ? 'selected' : '' }}>
+                                  {{ $language }}
+                              </option>
+                          @endforeach
+                      </select>
                     </div>
 
                     <!-- Filtr: Cena -->
                     <div class="form-group">
-                        <label for="max_price">Maksymalna cena</label>
-                        <input type="number" name="max_price" id="max_price" class="form-control" placeholder="Maksymalna cena" value="{{ request('max_price') }}">
+                      <label for="max_price">Maksymalna cena: <span id="price_value">{{ request('max_price', 1000) }}</span> zł</label>
+                      <input type="range" name="max_price" id="max_price" class="form-control-range" 
+                             min="0" max="1000" step="10" 
+                             value="{{ request('max_price', 0) }}" 
+                             oninput="document.getElementById('price_value').innerText = this.value">
                     </div>
 
                     <!-- Przycisk filtrowania -->

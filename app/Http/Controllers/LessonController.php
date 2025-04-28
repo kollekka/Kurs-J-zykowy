@@ -48,6 +48,30 @@ class LessonController extends Controller
         // Tworzenie lekcji
         Lesson::create($request->all());
 
-        return redirect()->back()->with('success', 'Lekcja została dodana.');
+        return redirect()->back();
+    }
+
+        public function edit($id)
+        {
+            $lesson = Lesson::findOrFail($id);
+            return view('edit', compact('lesson'));
+        }
+
+    public function update(Request $request, $id)
+    {
+        $lesson = Lesson::findOrFail($id);
+
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'nullable|string',
+            'order' => 'required|integer|min:1',
+            'duration' => 'required|date_format:H:i',
+            'date' => 'required|date',
+            'time' => 'required|date_format:H:i',
+        ]);
+
+        $lesson->update($request->all());
+
+        return redirect()->route('admin.editCourse')->with('success', 'Lekcja została zaktualizowana.');
     }
 }

@@ -59,15 +59,31 @@
             <div class="form-group">
                 <label for="level">Poziom</label>
                 <select id="level" name="level" class="form-control" required>
-                    <option value="Beginner" {{ $course->level == 'Beginner' ? 'selected' : '' }}>Początkujący</option>
-                    <option value="Intermediate" {{ $course->level == 'Intermediate' ? 'selected' : '' }}>Średniozaawansowany</option>
-                    <option value="Advanced" {{ $course->level == 'Advanced' ? 'selected' : '' }}>Zaawansowany</option>
+                    <option value="A1" {{ $course->level == 'A1' ? 'selected' : '' }}>A1</option>
+                    <option value="A2" {{ $course->level == 'A2' ? 'selected' : '' }}>A2</option>
+                    <option value="B1" {{ $course->level == 'B1' ? ' selected' : '' }}>B1</option>
+                    <option value="B2" {{ $course->level == 'B2' ? 'selected' : '' }}>B2</option>
+                    <option value="C1" {{ $course->level == 'C1' ? 'selected' : '' }}>C1</option>
+                    <option value="C2" {{ $course->level == 'C2' ? 'selected' : '' }}>C2</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="price">Cena</label>
                 <input type="number" id="price" name="price" class="form-control" value="{{ $course->price }}" step="0.01" required>
             </div>
+
+            <div class="form-group">
+              <label for="group_size">Rozmiar grupy</label>
+              <input type="number" id="group_size" name="group_size" class="form-control" value="{{ $course->group_size }}" required>
+          </div>
+          <div class="form-group">
+              <label for="start_time">Czas rozpoczęcia kursu</label>
+              <input type="date" id="start_time" name="start_time" class="form-control" value="{{ \Carbon\Carbon::parse($course->start_date)->format('Y-m-d') }}" required>
+          </div>
+          <div class="form-group">
+              <label for="end_time">Czas zakończenia kursu</label>
+              <input type="date" id="end_time" name="end_time" class="form-control" value="{{ \Carbon\Carbon::parse($course->end_date)->format('Y-m-d') }}" required>
+          </div>
 
             <h3>Lekcje</h3>
             <ul class="list-group mb-3">

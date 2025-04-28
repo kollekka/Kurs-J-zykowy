@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Course;
+use App\Models\Lesson;
 
 
 class CourseController extends Controller
@@ -39,10 +40,34 @@ class CourseController extends Controller
             $query->where('price', '<=', $request->max_price);
         }
     
+        $languages = Course::select('language')->distinct()->pluck('language');
         // Paginacja
         $courses = $query->paginate(16);
     
-        return view('courses', compact('courses'));
+        return view('courses', compact('courses','languages'));
     
+    }
+
+    public function enroll(Request $request, $courseId)
+    {
+        $user = auth()->user();
+
+
+        $newCourseDates = Lesson::where('course_id', $courseId)->pluck('date')->unique();
+
+        $userCourses = $user->enrollments->pluck('course_id');
+        $userCourseDates = Lesson::whereIn('course_id', $userCourses)->pluck('date')->unique();
+
+        $conflictingDates = $newCourseDates->intersect($userCourseDates);
+
+        if ($conflictingDates->isNotEmpty()) {
+            return redirect()->back()->withErrors([
+                'error' => 'Nie możesz zapisać się na ten kurs, ponieważ lekcje kolidują z innymi kursami w dniach: ' . $conflictingDates->implode(', '),
+            ]);
+        }
+
+        $user->enrollments()->attach($courseId);
+
+        return redirect()->back()->with('success', 'Zostałeś zapisany na kurs.');
     }
 }
