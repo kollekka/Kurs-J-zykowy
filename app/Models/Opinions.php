@@ -1,0 +1,22 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class opinions extends Model
+{
+    protected $fillable = [
+        'opinion',
+        'rating',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
+}
