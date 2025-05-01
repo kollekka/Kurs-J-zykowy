@@ -17,6 +17,12 @@
             <label for="password">Hasło:</label>
             <input type="password" id="password" name="password" required>
         </div>
+        @if ($errors->has('message'))
+            <div class="text-danger">
+               <p> {{ $errors->first('message') }} </p>
+            </div>
+         @endif
+
         <button type="submit">Zaloguj</button>
     </form>
 </body>

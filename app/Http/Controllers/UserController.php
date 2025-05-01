@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Email;
 
 class UserController extends Controller
 {
@@ -32,6 +33,10 @@ class UserController extends Controller
             return redirect()->back()->withErrors(['current_password' => 'The current password is incorrect.']);
         }
 
+        if(Email::where('email', $request->email)->exists()) {
+            return redirect()->back()->withErrors(['email' => 'The email has already been taken.']);
+        }
+
         $user->name = $request->name;
         $user->email = $request->email;
 
@@ -41,6 +46,6 @@ class UserController extends Controller
 
         $user->save();
 
-        return redirect()->route('user.profile')->with('success', 'Profile updated successfully.');
+        return redirect()->route('user.profile');
     }
 }

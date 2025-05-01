@@ -73,6 +73,15 @@
                             <label for="current_password">Current Password</label>
                             <input type="password" id="current_password" name="current_password" class="form-control" required>
                           </div>
+                          @if ($errors->any())
+                              <div class="alert alert-danger">
+                                  <ul>
+                                      @foreach ($errors->all() as $error)
+                                          <p>{{ $error }}</p>
+                                      @endforeach
+                                  </ul>
+                              </div>
+                          @endif
                           <button type="submit" class="btn btn-success">Save Changes</button>
                       </form>
                   </div>
@@ -87,13 +96,25 @@
                 @else
                     <ul class="list-group">
                         @foreach ($courses as $course)
-                            <li class="list-group-item">
-                                <h5>{{ $course->name }}</h5>
-                                <p>{{ $course->language }} - {{ $course->level }}</p>
-                                <p>Begins on: {{ $course->start_date }}</p>
-                                <p>Ends on: {{ $course->end_date }}</p>
-                                <a href="{{ route('course.show', $course->id) }}" class="btn btn-primary btn-sm">View Course</a>
-                            </li>
+                        <li class="list-group-item">
+                          <div class="row">
+                              <!-- Lewa kolumna: podstawowe informacje -->
+                              <div class="col-md-6">
+                                  <h5>{{ $course->name }}</h5>
+                                  <p>{{ $course->language }} - {{ $course->level }}</p>
+                                  <p>Begins on: {{ $course->start_date }}</p>
+                                  <p>Ends on: {{ $course->end_date }}</p>
+                                  <a href="{{ route('course.show', $course->id) }}" class="btn btn-primary btn-sm">View Course</a>
+                              </div>
+              
+                              <!-- Prawa kolumna: dodatkowe informacje -->
+                              <div class="col-md-6">
+                                  <h6>Additional Information</h6>
+                                  <p>Group Size: {{ $course->group_size }}</p>
+                                  <p>Instructor: {{ $course->instructor->full_name }}</p>
+                              </div>
+                          </div>
+                      </li>
                         @endforeach
                     </ul>
                 @endif

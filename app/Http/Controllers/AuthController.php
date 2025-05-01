@@ -17,7 +17,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'email' => 'required|email',
+            'email' => 'required|email|exists:users,email',
             'password' => 'required',
         ]);
 
@@ -27,10 +27,9 @@ class AuthController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'Podane dane są nieprawidłowe.',
+            'message' => 'Nieprawidłowe dane logowania.',
         ]);
-    }
-
+    } 
     // Obsługa wylogowania
     public function logout(Request $request)
     {
