@@ -83,7 +83,7 @@
                              min="0" max="1000" step="10" 
                              value="{{ request('max_price', 0) }}" 
                              oninput="document.getElementById('price_value').innerText = this.value">
-                    </div>
+                  </div>
 
                     <!-- Przycisk filtrowania -->
                     <button type="submit" class="btn btn-primary btn-block">Filtruj</button>

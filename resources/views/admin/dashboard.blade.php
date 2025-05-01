@@ -101,7 +101,7 @@
                                 <label for="course_level">Poziom</label>
                                 <select id="course_level" name="level" class="form-control" required>
                                     <option value="" disabled selected>Wybierz poziom</option>
-                                    <option value="Beginner">Początkujący</option>
+                                    <option value="A1">A1</option>
                                     <option value="Intermediate">Średniozaawansowany</option>
                                     <option value="Advanced">Zaawansowany</option>
                                 </select>
