@@ -64,10 +64,10 @@ class LessonController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'nullable|string',
-            'order' => 'required|integer|min:1',
-            'duration' => 'required|date_format:H:i',
-            'date' => 'required|date',
-            'time' => 'required|date_format:H:i',
+            'order' => 'required|integer|min:1|unique:lessons,order,' . $lesson->id . ',id,course_id,' . $lesson->course_id,
+            'duration' => 'required|date_format:H:i|max:02:00|min:00:30',
+            'date' => 'required|date|after:' . $lesson->date , 
+            'time' => 'required|date_format:H:i|max:20:00|min:08:00',
         ]);
 
         $lesson->update($request->all());

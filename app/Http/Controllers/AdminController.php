@@ -49,13 +49,13 @@ class AdminController extends Controller
     public function addCourse(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'language' => 'required|string|max:255',
-            'level' => 'required|string|max:255',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date', 
-            'price' => 'required|numeric|min:0',
-            'group_size'=> 'required|integer|min:1',
+            'name' => 'required|string|max:40',
+            'language' => 'required|string|max:20',
+            'level' => 'required',
+            'start_date' => 'required|date|after:Today',
+            'end_date' => 'required|date|after_or_equal:'.\Carbon\Carbon::parse($request->start_date)->addDays(7), 
+            'price' => 'required|numeric|min:0|max:1000',
+            'group_size'=> 'required|integer|min:1|max:24',
             'instructor_id' => 'required|exists:instructors,id',
         ]);
     
