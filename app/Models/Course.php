@@ -8,7 +8,6 @@ use App\Models\Instructor;
 
 class Course extends Model
 {
-    use HasFactory;
 
     protected $table = 'courses';
 

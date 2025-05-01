@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Models\Instructor;
 use App\Models\Course;
 Use App\Models\Lesson;
+use Illuminate\Validation\Validator;
 
 class AdminController extends Controller
 {
@@ -54,6 +55,7 @@ class AdminController extends Controller
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date', 
             'price' => 'required|numeric|min:0',
+            'group_size'=> 'required|integer|min:1',
             'instructor_id' => 'required|exists:instructors,id',
         ]);
     
@@ -64,39 +66,40 @@ class AdminController extends Controller
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
             'price' => $request->price,
+            'group_size' => $request->group_size,
             'instructor_id' => $request->instructor_id,
         ]);
         return redirect()->route('admin.dashboard');
     }
 
-        public function deleteInstructor($id)
-    {
-        $instructor = Instructor::findOrFail($id);
-        $instructor->delete();
+    public function deleteInstructor($id)
+        {
+            $instructor = Instructor::findOrFail($id);
+            $instructor->delete();
 
-        return redirect()->route('admin.dashboard')->with('success', 'Instruktor został usunięty.');
-    }
+            return redirect()->route('admin.dashboard');
+        }
 
     public function deleteCourse($id)
-    {
-        $course = Course::findOrFail($id);
-        $course->delete();
+        {
+            $course = Course::findOrFail($id);
+            $course->delete();
 
-        return redirect()->route('admin.dashboard')->with('success', 'Kurs został usunięty.');
-    }   
+            return redirect()->route('admin.dashboard');
+        }   
 
     public function updateInstructor(Request $request, $id)
     {
         $instructor = Instructor::findOrFail($id);
         $instructor->update($request->all());
-        return redirect()->route('admin.dashboard')->with('success', 'Instruktor został zaktualizowany.');
+        return redirect()->route('admin.dashboard');
     }
 
     public function updateCourse(Request $request, $id)
     {
         $course = Course::findOrFail($id);
         $course->update($request->all());
-        return redirect()->route('admin.dashboard')->with('success', 'Kurs został zaktualizowany.');
+        return redirect()->route('admin.dashboard');
     }
 
     public function editLesson($id)
@@ -109,6 +112,6 @@ class AdminController extends Controller
     {
         $lesson = Lesson::findOrFail($id);
         $lesson->update($request->all());
-        return redirect()->route('admin.editCourse', $lesson->course_id)->with('success', 'Lekcja została zaktualizowana.');
+        return redirect()->route('admin.editCourse', $lesson->course_id);
     }
 }

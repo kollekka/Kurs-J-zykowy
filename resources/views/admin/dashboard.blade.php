@@ -102,8 +102,11 @@
                                 <select id="course_level" name="level" class="form-control" required>
                                     <option value="" disabled selected>Wybierz poziom</option>
                                     <option value="A1">A1</option>
-                                    <option value="Intermediate">Średniozaawansowany</option>
-                                    <option value="Advanced">Zaawansowany</option>
+                                    <option value="A2">A2</option>
+                                    <option value="B1">B1</option>
+                                    <option value="B2">B2</option>
+                                    <option value="C1">C1</option>
+                                    <option value="C2">C2</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -117,6 +120,10 @@
                             <div class="form-group">
                                 <label for="course_price">Cena</label>
                                 <input type="number" id="course_price" name="price" class="form-control" placeholder="Wpisz cenę kursu" step="0.01" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="course_group_size">Rozmiar Grupy</label>
+                                <input type="number" id="course_group_size" name="group_size" class="form-control" placeholder="Podaj rozamiar grupy" step="1" required>
                             </div>
                             <div class="form-group">
                                 <label for="course_instructor">Instruktor</label>
