@@ -14,13 +14,13 @@ class CourseController extends Controller
     public function show($id)
     {
 
-       
+        $currentDate = now();
         $course = Course::with('lessons')->withCount('enrollments')->findOrFail($id);
         $opinions =  Opinion::where('course_id', $id)->with('user')->get();
         $rating = $opinions->avg('rating');
 
         
-        return view('course', compact('course','opinions','rating'));
+        return view('course', compact('course','opinions','rating','currentDate'));
         
     }
 
@@ -43,9 +43,9 @@ class CourseController extends Controller
             $query->where('price', '<=', $request->max_price);
         }
     
-        $languages = Course::select('language')->distinct()->pluck('language');
         // Paginacja
-        $courses = $query->paginate(16);
+        $courses = $query->paginate(6)->appends($request->query());
+        $languages = Course::Select('language')->distinct()->pluck('language');
     
         return view('courses', compact('courses','languages'));
     

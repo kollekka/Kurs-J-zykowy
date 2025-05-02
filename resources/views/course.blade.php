@@ -68,6 +68,12 @@
                                     <p><strong>Content: </strong> {{ $lesson->content }}</p>
                                     <p><strong>Duration: </strong> {{ \Carbon\Carbon::parse($lesson->duration)->minute }} minutes</p>
                                     <p><strong>Start Date: </strong> {{ $lesson->date }}, {{$lesson->time}}</p>
+                                    @if($currentDate > $lesson->date . ' ' . $lesson->time)
+                                        <p><strong>Status: </strong> Completed ✅</p>
+                                    @else
+                                        <p><strong>Status: </strong> Upcoming ❌</p>
+                                    @endif
+    
                                 @else
                                     <!-- Jeśli użytkownik nie jest zapisany i to nie pierwsza lekcja -->
                                     <strong>{{ $lesson->order }}. {{ $lesson->title }}</strong>
@@ -104,7 +110,9 @@
                   <div class="card-body">
                       <h5 class="card-title">Comments</h5>
                           @foreach($opinions as $opinion)
-                            <p><strong>Name: </strong> {{ $opinion->user->name }} <strong>Rating: </strong> {{ $opinion->rating }}</p>
+                            <p><strong>Name: </strong> {{ $opinion->user->name }} <strong>Rating: </strong> @for ($i = 0; $i < $opinion->rating; $i++)
+                                <span class="fa fa-star checked">⭐</span>
+                            @endfor</p>
                             <p><strong>Comment: </strong> {{ $opinion->opinion }}</p>
                           @endforeach
                           @if(Auth::check() && $opinions->contains('user_id', Auth::id()))

@@ -12,7 +12,7 @@ class MainController extends Controller
     public function index()
     {
         // Pobierz 9 najpopularniejszych kursów
-        $courses = Course::all();
+        $courses = Course::all()->sortByDesc('start_date')->take(9);
 
         // Przekaż dane do widoku
         return view('main', compact('courses'));
