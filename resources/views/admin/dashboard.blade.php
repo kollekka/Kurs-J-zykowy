@@ -16,7 +16,7 @@
 
         body {
             background-color: var(--light-bg);
-            padding-top: 80px;
+            padding-top: 10px;
         }
 
         .navbar {
@@ -206,40 +206,43 @@
             font-weight: 600 !important;
             height: auto !important;
         }
-        
+        .list-group{
+            margin-bottom: 10px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            max-height: 400px;;
+            -webkit-overflow-scrolling: touch;
+        }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         @if (Auth::user())
-        <a class="navbar-brand" href="{{ route('user.profile') }}">Hello, {{ Auth::user()->name ?? 'Guest' }}</a>
+        <a class="navbar-brand" href="{{ route('user.profile') }}"><i class="fas fa-user-circle mr-2"></i>{{ Auth::user()->name }}</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
           <span class="navbar-toggler-icon"></span>
         </button>
         @else
-        <a class="navbar-brand" href="{{ route('login') }}">Hello, Guest</a>
+        <a class="navbar-brand" href="{{ route('login') }}"><i class="fas fa-hand-wave mr-2"></i>Gość</a>
         @endif
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="{{ route('main') }}">Home</a>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('main') }}"><i class="fas fa-home mr-1"></i>Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ route('courses.index') }}">Courses</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Info</a>
+              <a class="nav-link" href="{{ route('courses.index') }}"><i class="fas fa-book-open mr-1"></i>Kursy</a>
             </li>
             @if (Auth::user() && Auth::user()->is_admin)
-              <li class="nav-item">
-                <a class="nav-link" href="{{ route('admin.dashboard') }}">Admin Panel</a>
+              <li class="nav-item active">
+                <a class="nav-link" href="{{ route('admin.dashboard') }}"><i class="fas fa-tools mr-1"></i>Panel Admina</a>
               </li>
             @endif
           </ul>
           @if (Auth::check())
           <form action="{{ route('logout') }}" method="POST" class="form-inline my-2 my-lg-0">
               @csrf
-              <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Wyloguj</button>
+              <button class="btn btn-outline-danger my-2 my-sm-0" type="submit"><i class="fas fa-sign-out-alt mr-2"></i>Wyloguj</button>
           </form>
           @endif
         </div>
@@ -406,7 +409,7 @@
                                         <ul class="list-group">
                                             @foreach ($courses as $course)
                                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                {{ $course->name }}
+                                               {{ $course->id }} {{ $course->name }}
                                                 <div>
                                                     <a href="{{ route('admin.editCourse', $course->id) }}" class="btn btn-warning btn-sm">Edytuj</a>
                                                     <form action="{{ route('admin.deleteCourse', $course->id) }}" method="POST" class="d-inline">

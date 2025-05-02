@@ -5,11 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         :root {
             --main-color: #2c3e50;
             --accent-color: #e67e22;
             --hover-color: #d35400;
+        }
+
+        .navbar {
+            background: var(--main-color) !important;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
         .navbar-brand {
@@ -19,8 +25,41 @@
         }
 
         .navbar-brand:hover {
-            transform: scale(1.05);
             color: var(--hover-color) !important;
+            transform: translateX(3px);
+        }
+
+        .nav-link {
+            color: #ecf0f1 !important;
+            position: relative;
+            margin: 0 2px;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .btn-outline-danger {
+            border: 2px solid #e74c3c;
+            color: #e74c3c;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-danger:hover {
+            background: #e74c3c;
+            color: white;
+            transform: scale(1.05);
         }
 
         .carousel-item img {
@@ -41,27 +80,6 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
 
-        .btn-primary {
-            background-color: var(--accent-color);
-            border-color: var(--accent-color);
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--hover-color);
-            border-color: var(--hover-color);
-            transform: scale(1.05);
-        }
-
-        .btn-outline-danger {
-            transition: all 0.3s ease;
-            border-width: 2px;
-        }
-
-        .btn-outline-danger:hover {
-            transform: scale(1.05);
-        }
-
         footer {
             background: linear-gradient(to right, #2c3e50, #3498db);
             padding: 2rem 0;
@@ -72,21 +90,6 @@
             position: relative;
             padding: 0.5rem 1rem !important;
             transition: all 0.3s ease;
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent-color);
-            transition: width 0.3s ease;
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
         }
 
         .course-price {
@@ -127,26 +130,6 @@
             border-radius: 2px;
         }
 
-        .background-pattern {
-            position: relative;
-            overflow: hidden;
-            padding: 4rem 0;
-        }
-
-        .background-pattern::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, rgba(44, 62, 80, 0.05) 25%, transparent 25%, transparent 75%, rgba(44, 62, 80, 0.05) 75%),
-                        linear-gradient(45deg, rgba(44, 62, 80, 0.05) 25%, transparent 25%, transparent 75%, rgba(44, 62, 80, 0.05) 75%);
-            background-size: 60px 60px;
-            background-position: 0 0, 30px 30px;
-            z-index: -1;
-        }
-
         .course-card {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(5px);
@@ -156,38 +139,35 @@
 </head>
 <body>
     <!-- Original Navbar structure preserved -->
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         @if (Auth::user())
-        <a class="navbar-brand" href="{{ route('user.profile') }}">Hello, {{ Auth::user()->name ?? 'Guest' }}</a>
+        <a class="navbar-brand" href="{{ route('user.profile') }}"><i class="fas fa-user-circle mr-2"></i>{{ Auth::user()->name }}</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
-            <span class="navbar-toggler-icon"></span>
+          <span class="navbar-toggler-icon"></span>
         </button>
         @else
-        <a class="navbar-brand" href="{{ route('login') }}">Hello, Guest</a>
+        <a class="navbar-brand" href="{{ route('login') }}"><i class="fas fa-hand-wave mr-2"></i>Gość</a>
         @endif
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('courses.index') }}">Courses</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Info</a>
-                </li>
-                @if (Auth::user() && Auth::user()->is_admin)
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('admin.dashboard') }}">Admin Panel</a>
-                </li>
-                @endif
-            </ul>
-            @if (Auth::check())
-            <form action="{{ route('logout') }}" method="POST" class="form-inline my-2 my-lg-0">
-                @csrf
-                <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Wyloguj</button>
-            </form>
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('main') }}"><i class="fas fa-home mr-1"></i>Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('courses.index') }}"><i class="fas fa-book-open mr-1"></i>Kursy</a>
+            </li>
+            @if (Auth::user() && Auth::user()->is_admin)
+              <li class="nav-item active">
+                <a class="nav-link" href="{{ route('admin.dashboard') }}"><i class="fas fa-tools mr-1"></i>Panel Admina</a>
+              </li>
             @endif
+          </ul>
+          @if (Auth::check())
+          <form action="{{ route('logout') }}" method="POST" class="form-inline my-2 my-lg-0">
+              @csrf
+              <button class="btn btn-outline-danger my-2 my-sm-0" type="submit"><i class="fas fa-sign-out-alt mr-2"></i>Wyloguj</button>
+          </form>
+          @endif
         </div>
     </nav>
 
