@@ -4,9 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class opinions extends Model
+class opinion extends Model
 {
     protected $fillable = [
+        'user_id',
+        'course_id',
         'opinion',
         'rating',
     ];

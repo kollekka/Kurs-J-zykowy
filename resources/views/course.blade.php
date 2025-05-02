@@ -55,6 +55,7 @@
                 <p><strong>Description:</strong> {{ $course->description ?? 'No description available.' }}</p>
                 <p><strong>Group Size:</strong> {{ $course->group_size }}</p>
                 <p><strong>Available Spots:</strong> {{ $course->group_size - count($course->enrollments) }}</p>
+                <p><strong>Rating:</strong> {{ $rating ?? 'No rating available.' }}</p>
                 <!-- Sekcja lekcji -->
                 <div class="mt-4">
                     <h3>Lessons</h3>
@@ -67,7 +68,6 @@
                                     <p><strong>Content: </strong> {{ $lesson->content }}</p>
                                     <p><strong>Duration: </strong> {{ \Carbon\Carbon::parse($lesson->duration)->minute }} minutes</p>
                                     <p><strong>Start Date: </strong> {{ $lesson->date }}, {{$lesson->time}}</p>
-
                                 @else
                                     <!-- Jeśli użytkownik nie jest zapisany i to nie pierwsza lekcja -->
                                     <strong>{{ $lesson->order }}. {{ $lesson->title }}</strong>
@@ -100,6 +100,43 @@
                         <p><strong>Bio:</strong> {{ $course->instructor->bio ?? 'No bio available.' }}</p>
                     </div>
                 </div>
+                <div class="card">
+                  <div class="card-body">
+                      <h5 class="card-title">Comments</h5>
+                          @foreach($opinions as $opinion)
+                            <p><strong>Name: </strong> {{ $opinion->user->name }} <strong>Rating: </strong> {{ $opinion->rating }}</p>
+                            <p><strong>Comment: </strong> {{ $opinion->opinion }}</p>
+                          @endforeach
+                          @if(Auth::check() && $opinions->contains('user_id', Auth::id()))
+                              <p>You have already left a comment.</p>
+                          @elseif(Auth::check() && $course->enrollments->contains('user_id', Auth::id()))
+                          <form action="{{ route('opinions.store', $course->id) }}" method="POST">
+                              @csrf
+                              <div class="form-group">
+                                  <label for="content">Add a Comment:</label>
+                                  <textarea id="content" name="content" class="form-control" rows="3" placeholder="Write your comment here..." required></textarea>
+                              </div>
+                              <div class="form-group">
+                                  <label for="rating">Rating:</label>
+                                  <select id="rating" name="rating" class="form-control" required>
+                                      <option value="" disabled selected>Select a rating</option>
+                                      <option value="1">1 - Poor</option>
+                                      <option value="2">2 - Fair</option>
+                                      <option value="3">3 - Good</option>
+                                      <option value="4">4 - Very Good</option>
+                                      <option value="5">5 - Excellent</option>
+                                  </select>
+                              </div>
+                              <input type="hidden" name="course_id" value="{{ $course->id }}">
+                              <button type="submit" class="btn btn-primary">Submit Comment</button>
+                          </form>
+                      @elseif(Auth::check())
+                          <p>You are not enrolled in this course. Enroll to leave a comment.</p>
+                      @else
+                          <p>You must be logged in to leave a comment.</p>
+                      @endif
+                  </div>
+              </div>
             </div>
         </div>
     </div>

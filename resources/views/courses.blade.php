@@ -92,7 +92,7 @@
 
             <!-- Separator między filtrami a kursami -->
             <div class="col-md-1 d-flex justify-content-center">
-                <div style="width: 1px; height: 220%; background-color: #ccc;"></div>
+                <div style="width: 1px; height: 100%; background-color: #ccc;"></div>
             </div>
 
             <!-- Lista kursów -->

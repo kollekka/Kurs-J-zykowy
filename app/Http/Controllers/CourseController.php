@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Course;
 use App\Models\Lesson;
+use App\Models\Opinion;
 
 
 class CourseController extends Controller
@@ -13,11 +14,13 @@ class CourseController extends Controller
     public function show($id)
     {
 
-        // Pobierz kurs na podstawie ID
+       
         $course = Course::with('lessons')->withCount('enrollments')->findOrFail($id);
+        $opinions =  Opinion::where('course_id', $id)->with('user')->get();
+        $rating = $opinions->avg('rating');
 
-        // Przekaż dane do widoku
-        return view('course', compact('course'));
+        
+        return view('course', compact('course','opinions','rating'));
         
     }
 

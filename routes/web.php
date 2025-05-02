@@ -8,6 +8,7 @@ use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\UserController;
 use App\http\Controllers\AdminController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\OpinionsController;    
 
 Route::get('/', function () {
     return view('welcome');
@@ -35,6 +36,7 @@ Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->na
 Route::post('/register', [RegisterController::class, 'register']);
 
 Route::put('/user/update', [UserController::class, 'update'])->name('user.update');
+Route::post('/course/{id}', [OpinionsController::class, 'store'])->name('opinions.store');
 
 Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
