@@ -72,21 +72,22 @@
             border: none;
             border-radius: 15px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
+            height: 100%;
         }
 
         .card-header {
-            background: linear-gradient(45deg, var(--main-color), var(--accent-color));
+            background: linear-gradient(45deg, var(--main-color), var(--accent-color)) !important;
             color: white !important;
             border-radius: 15px 15px 0 0 !important;
-            padding: 1.5rem;
+            padding: 1rem 1.5rem;
         }
 
         .form-control {
-            border-radius: 25px;
+            border-radius: 12px;
             border: 1px solid rgba(0,0,0,0.1);
-            padding: 0.75rem 1.25rem;
-            transition: all 0.3s ease;
+            padding: 0.6rem 1rem;
+            transition: all 0.2s ease;
         }
 
         .form-control:focus {
@@ -94,39 +95,63 @@
             box-shadow: 0 0 0 0.2rem rgba(230,126,34,0.25);
         }
 
-        .list-group-item {
-            border: none;
-            margin-bottom: 0.5rem;
-            border-radius: 15px !important;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
-        }
-
-        .list-group-item:hover {
-            transform: translateX(5px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-
         .btn-primary {
             background-color: var(--accent-color);
             border-color: var(--accent-color);
-            border-radius: 25px;
-            padding: 10px 25px;
-            transition: all 0.3s ease;
+            border-radius: 20px;
+            padding: 8px 20px;
+            transition: all 0.2s ease;
         }
 
         .btn-primary:hover {
             background-color: var(--hover-color);
-            transform: scale(1.05);
+            transform: scale(1.03);
         }
 
-        .btn-warning {
-            background-color: #f1c40f;
-            border-color: #f1c40f;
-            color: var(--main-color);
+        .lesson-list {
+            max-height: 250px; /* Zmniejszona wysokość */
+            overflow-y: auto;
+            margin: 0.5rem -1rem;
+            padding: 0 1rem;
         }
-        .form-control {
-          height: auto !important;
+
+        .lesson-item {
+            background: white;
+            border-radius: 10px;
+            padding: 0.6rem;
+            margin-bottom: 0.3rem; /* Mniejsze marginesy */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+            min-height: 80px; /* Stała wysokość dla każdej lekcji */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .lesson-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .lesson-info {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-top: 0.3rem;
+        }
+        .form-control{
+            height:auto !important;
+        }
+
+        @media (min-width: 992px) {
+            .container {
+                max-width: 1400px;
+            }
+            
+            .dual-column {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1.5rem;
+            }
         }
     </style>
 </head>
@@ -163,85 +188,170 @@
         </div>
     </nav>
 
-    <div class="container mt-5">
-        <div class="card shadow-sm">
-            <div class="card-header">
-                <h3 class="mb-0"><i class="fas fa-edit mr-2"></i>Edytuj Kurs</h3>
+    <div class="container">
+        <div class="dual-column">
+            <!-- Lewa karta - Edycja kursu -->
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="fas fa-edit mr-2"></i>Edytuj Kurs</h4>
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('admin.updateCourse', $course->id) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Nazwa Kursu</label>
+                                    <input type="text" name="name" class="form-control" value="{{ $course->name }}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Język</label>
+                                    <input type="text" name="language" class="form-control" value="{{ $course->language }}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Poziom</label>
+                                    <select name="level" class="form-control" required>
+                                        <option value="A1" {{ $course->level == 'A1' ? 'selected' : '' }}>A1</option>
+                                        <option value="A2" {{ $course->level == 'A2' ? 'selected' : '' }}>A2</option>
+                                        <option value="B1" {{ $course->level == 'B1' ? ' selected' : '' }}>B1</option>
+                                        <option value="B2" {{ $course->level == 'B2' ? 'selected' : '' }}>B2</option>
+                                        <option value="C1" {{ $course->level == 'C1' ? 'selected' : '' }}>C1</option>
+                                        <option value="C2" {{ $course->level == 'C2' ? 'selected' : '' }}>C2</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Cena (zł)</label>
+                                    <input type="number" name="price" class="form-control" value="{{ $course->price }}" step="0.01" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Liczba miejsc</label>
+                                    <input type="number" name="group_size" class="form-control" value="{{ $course->group_size }}" required>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label>Data rozpoczęcia</label>
+                                            <input type="date" name="start_time" class="form-control" value="{{ $course->start_date }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label>Data zakończenia</label>
+                                            <input type="date" name="end_time" class="form-control" value="{{ $course->end_date }}" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Lista lekcji -->
+                        <div class="mt-4">
+                            <h5><i class="fas fa-book-open mr-2"></i>Lekcje kursu ({{ $course->lessons->count() }})</h5>
+                            <div class="lesson-list">
+                                @foreach ($course->lessons as $lesson)
+                                <div class="lesson-item">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <strong>Lekcja {{ $lesson->order }}: {{ $lesson->title }}</strong>
+                                            <div class="lesson-info">
+                                                {{ \Carbon\Carbon::parse($lesson->date)->format('d.m.Y') }} 
+                                                | {{ $lesson->time }} 
+                                                | Czas trwania: {{ \Carbon\Carbon::parse($lesson->duration)->format('H:i') }}
+                                            </div>
+                                        </div>
+                                        <a href="{{ route('admin.editLesson', $lesson->id) }}" class="btn btn-sm btn-warning">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left mr-2"></i>Powrót
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save mr-2"></i>Zapisz zmiany
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="card-body">
-                <form action="{{ route('admin.updateCourse', $course->id) }}" method="POST">
-                    @csrf
-                    @method('PUT')
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Nazwa Kursu</label>
-                                <input type="text" name="name" class="form-control" value="{{ $course->name }}" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Język</label>
-                                <input type="text" name="language" class="form-control" value="{{ $course->language }}" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Poziom</label>
-                                <select name="level" class="form-control" required>
-                                    <option value="A1" {{ $course->level == 'A1' ? 'selected' : '' }}>A1</option>
-                                    <option value="A2" {{ $course->level == 'A2' ? 'selected' : '' }}>A2</option>
-                                    <option value="B1" {{ $course->level == 'B1' ? ' selected' : '' }}>B1</option>
-                                    <option value="B2" {{ $course->level == 'B2' ? 'selected' : '' }}>B2</option>
-                                    <option value="C1" {{ $course->level == 'C1' ? 'selected' : '' }}>C1</option>
-                                    <option value="C2" {{ $course->level == 'C2' ? 'selected' : '' }}>C2</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Cena</label>
-                                <input type="number" name="price" class="form-control" value="{{ $course->price }}" step="0.01" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Rozmiar grupy</label>
-                                <input type="number" name="group_size" class="form-control" value="{{ $course->group_size }}" required>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Data rozpoczęcia</label>
-                                        <input type="date" name="start_time" class="form-control" value="{{ \Carbon\Carbon::parse($course->start_date)->format('Y-m-d') }}" required>
-                                    </div>
+
+            <!-- Prawa karta - Dodawanie lekcji -->
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="fas fa-plus-circle mr-2"></i>Dodaj Lekcję</h4>
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('admin.addLesson') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="course_id" value="{{ $course->id }}">
+                        
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label>Tytuł lekcji</label>
+                                    <input type="text" name="title" class="form-control" required>
+                                    @error('title')
+                                        <div class="text-danger small">{{ $message }}</div>
+                                    @enderror
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Data zakończenia</label>
-                                        <input type="date" name="end_time" class="form-control" value="{{ \Carbon\Carbon::parse($course->end_date)->format('Y-m-d') }}" required>
-                                    </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Czas trwania</label>
+                                    <input type="time" name="duration" class="form-control" 
+                                           min="00:30" max="02:00" step="300" 
+                                           value="01:00" required>
+                                    @error('duration')
+                                        <div class="text-danger small">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="mt-4">
-                        <h4><i class="fas fa-book mr-2"></i>Lekcje</h4>
-                        <ul class="list-group">
-                            @foreach ($course->lessons as $lesson)
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <strong>{{ $lesson->order }}. {{ $lesson->title }}</strong>
-                                        <p class="mb-0 text-muted">{{ $lesson->content }}</p>
-                                    </div>
-                                    <a href="{{ route('admin.editLesson', $lesson->id) }}" class="btn btn-sm btn-warning">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Data lekcji</label>
+                                    <input type="date" name="date" class="form-control" 
+                                           min="{{ $course->lessons->last()->date ?? now()->format('Y-m-d') }}" 
+                                           required>
+                                    @error('date')
+                                        <div class="text-danger small">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Godzina rozpoczęcia</label>
+                                    <input type="time" name="time" class="form-control" 
+                                           min="08:00" max="20:00" required>
+                                    @error('time')
+                                        <div class="text-danger small">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
 
-                    <div class="mt-4 d-flex justify-content-between">
-                        <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary"><i class="fas fa-arrow-left mr-2"></i>Powrót</a>
-                        <button type="submit" class="btn btn-primary"><i class="fas fa-save mr-2"></i>Zapisz zmiany</button>
-                    </div>
-                </form>
+                        <div class="form-group">
+                            <label>Opis lekcji</label>
+                            <textarea name="content" class="form-control" rows="3"></textarea>
+                        </div>
+
+                        <div class="text-right mt-4">
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-plus mr-2"></i>Dodaj Lekcję
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

@@ -92,10 +92,60 @@
             transition: all 0.3s ease;
         }
 
-        .course-price {
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        .badge-language {
+            background: var(--accent-color);
+            color: white !important;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .badge-level {
+            background: var(--main-color);
+            color: white !important;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .price-tag {
+            color: var(--accent-color);
             font-size: 1.5rem;
+            font-weight: 700;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .progress-bar {
+            background-color: var(--accent-color);
+            height: 5px;
+            border-radius: 2px;
+        }
+
+        .course-meta {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-title {
             color: var(--main-color);
-            font-weight: bold;
+            font-weight: 600;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
         }
 
         .courses-header {
@@ -189,12 +239,40 @@
         <div class="row">
             @foreach ($courses as $course)
             <div class="col-md-4 mb-4">
-                <div class="card" style="width: 100%;">
+                <div class="card">
                     <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="badge-language">{{ $course->language }}</span>
+                            <span class="badge-level">{{ $course->level }}</span>
+                        </div>
+                        
                         <h5 class="card-title">{{ $course->name }}</h5>
-                        <p class="card-text">{{ $course->language }} - {{ $course->level }}</p>
-                        <p class="course-price">${{ $course->price }}</p>
-                        <a href="{{ route('course.show', $course->id) }}" class="btn btn-primary">View Course</a>
+                        
+                        <div class="course-meta">
+                            <p class="mb-2">
+                                <i class="far fa-calendar-alt mr-2"></i>
+                                {{ $course->start_date }} - {{ $course->end_date }}
+                            </p>
+                            
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between">
+                                    <span>Zajęte miejsca:</span>
+                                    <span>{{ count($course->enrollments) }}/{{ $course->group_size }}</span>
+                                </div>
+                                <div class="progress" style="height: 5px;">
+                                    <div class="progress-bar" 
+                                         style="width: {{ (count($course->enrollments)/$course->group_size)*100 }}%">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <p class="price-tag">{{ $course->price }} zł</p>
+                        </div>
+                        
+                        <a href="{{ route('course.show', $course->id) }}" 
+                           class="btn btn-primary btn-block rounded-pill">
+                            <i class="fas fa-info-circle mr-2"></i>Szczegóły kursu
+                        </a>
                     </div>
                 </div>
             </div>

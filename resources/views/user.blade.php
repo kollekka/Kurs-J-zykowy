@@ -123,6 +123,9 @@
             color: white;
             transform: scale(1.05);
         }
+        .form-control{
+            background-color:rgb(230, 230, 230);
+        }
     </style>
 </head>
 <body>

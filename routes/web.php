@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LessonController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MainController;
@@ -48,6 +49,7 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(
     Route::get('/admin/courses/{id}/edit', [AdminController::class, 'editCourse'])->name('admin.editCourse');
     Route::put('/admin/instructors/{id}', [AdminController::class, 'updateInstructor'])->name('admin.updateInstructor');
     Route::put('/admin/courses/{id}', [AdminController::class, 'updateCourse'])->name('admin.updateCourse');
+    Route::post('/admin/add-lesson', [LessonController::class, 'store'])->name('admin.addLesson');
     Route::get('/admin/lessons/{id}/edit', [AdminController::class, 'editLesson'])->name('admin.editLesson');
     Route::put('/admin/lessons/{id}', [AdminController::class, 'updateLesson'])->name('admin.updateLesson');
 });

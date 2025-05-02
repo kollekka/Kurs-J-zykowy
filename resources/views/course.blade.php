@@ -123,11 +123,16 @@
             border: 1px solid rgba(0,0,0,0.1);
             padding: 0.75rem 1.25rem;
             transition: all 0.3s ease;
+            height: auto !important;
         }
 
         .form-control:focus {
             border-color: var(--accent-color);
             box-shadow: 0 0 0 0.2rem rgba(230,126,34,0.25);
+        }
+        .lessons-container {
+            max-height: 250px !important;
+            overflow-y: auto;
         }
     </style>
 </head>
@@ -193,7 +198,7 @@
                     <div class="card-header">
                         <h4 class="mb-0"><i class="fas fa-book-open mr-2"></i>Lekcje</h4>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body lessons-container">
                         <ul class="list-group">
                             @foreach ($course->lessons as $index => $lesson)
                             <li class="list-group-item">
@@ -282,7 +287,7 @@
                                 <select name="rating" class="form-control" required>
                                     <option value="" selected>Wybierz ocenę</option>
                                     @for ($i = 1; $i <= 5; $i++)
-                                        <option value="{{ $i }}">{{ $i }} gwiazd{{ $i == 1 ? 'ka' : 'ek' }}</option>
+                                        <option value="{{ $i }}">{{ $i }}★</option>
                                     @endfor
                                 </select>
                             </div>

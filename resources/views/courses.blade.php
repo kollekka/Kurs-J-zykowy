@@ -125,6 +125,7 @@
             font-size: 1.5rem;
             font-weight: 700;
             margin: 1rem 0;
+            text-align: center;
         }
 
         .separator {
