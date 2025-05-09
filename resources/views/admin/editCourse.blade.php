@@ -234,13 +234,13 @@
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label>Data rozpoczęcia</label>
-                                            <input type="date" name="start_time" class="form-control" value="{{ $course->start_date }}" required>
+                                            <input type="date" name="start_date" class="form-control" value="{{ $course->start_date }}" required>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label>Data zakończenia</label>
-                                            <input type="date" name="end_time" class="form-control" value="{{ $course->end_date }}" required>
+                                            <input type="date" name="end_date" class="form-control" value="{{ $course->end_date }}" required>
                                         </div>
                                     </div>
                                 </div>

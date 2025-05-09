@@ -227,11 +227,15 @@
                 </div>
 
                 <div class="mt-4">
-                    @if ($course->enrollments->contains('user_id', Auth::id()))
+                    @if(!Auth::user())
+                    <a href="{{ route('login') }}" class="btn btn-primary">Zaloguj się aby zapisać się na kurs</a>
+                    @elseif ($course->enrollments->contains('user_id', Auth::id()))
                         <button class="btn btn-secondary" disabled>Jesteś już zapisany</button>
                     @elseif (count($course->enrollments) >= ($course->group_size))
                         <button class="btn btn-secondary" disabled>Brak wolnych miejsc</button>
-                    @else
+                    @elseif($course->start_date < Auth::user()->courses->first()->end_date)
+                        <button class="btn btn-secondary" disabled>Występuje Kolizja Kursów</button>
+                    @elseif(Auth::user())
                         <a href="{{ route('enroll.show', $course->id) }}" class="btn btn-primary">Zapisz się na kurs</a>
                     @endif
                     <a href="{{ url('/main') }}" class="btn btn-outline-primary">Powrót do kursów</a>

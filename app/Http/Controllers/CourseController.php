@@ -54,23 +54,14 @@ class CourseController extends Controller
     public function enroll(Request $request, $courseId)
     {
         $user = auth()->user();
+        $userCourses = $user->courses()->end_date;
+        $courseDate = Course::findOrFail($courseId)->start_date;
 
-
-        $newCourseDates = Lesson::where('course_id', $courseId)->pluck('date')->unique();
-
-        $userCourses = $user->enrollments->pluck('course_id');
-        $userCourseDates = Lesson::whereIn('course_id', $userCourses)->pluck('date')->unique();
-
-        $conflictingDates = $newCourseDates->intersect($userCourseDates);
-
-        if ($conflictingDates->isNotEmpty()) {
-            return redirect()->back()->withErrors([
-                'error' => 'Nie możesz zapisać się na ten kurs, ponieważ lekcje kolidują z innymi kursami w dniach: ' . $conflictingDates->implode(', '),
-            ]);
+        foreach ($userCourses as $userCourse) {
+            if ($userCourse >= $courseDate) {
+                return redirect()->back()->with('error', 'Już jesteś zapisany na ten kurs.');
+            }
         }
-
-        $user->enrollments()->attach($courseId);
-
         return redirect()->back()->with('success', 'Zostałeś zapisany na kurs.');
     }
 }
