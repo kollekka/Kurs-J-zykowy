@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Course;
 use App\Models\Lesson;
+use App\Models\Opinion;
 
 
 class CourseController extends Controller
@@ -13,11 +14,13 @@ class CourseController extends Controller
     public function show($id)
     {
 
-        // Pobierz kurs na podstawie ID
+        $currentDate = now();
         $course = Course::with('lessons')->withCount('enrollments')->findOrFail($id);
+        $opinions =  Opinion::where('course_id', $id)->with('user')->get();
+        $rating = $opinions->avg('rating');
 
-        // Przekaż dane do widoku
-        return view('course', compact('course'));
+        
+        return view('course', compact('course','opinions','rating','currentDate'));
         
     }
 
@@ -40,9 +43,9 @@ class CourseController extends Controller
             $query->where('price', '<=', $request->max_price);
         }
     
-        $languages = Course::select('language')->distinct()->pluck('language');
         // Paginacja
-        $courses = $query->paginate(16);
+        $courses = $query->paginate(6)->appends($request->query());
+        $languages = Course::Select('language')->distinct()->pluck('language');
     
         return view('courses', compact('courses','languages'));
     
@@ -51,23 +54,14 @@ class CourseController extends Controller
     public function enroll(Request $request, $courseId)
     {
         $user = auth()->user();
+        $userCourses = $user->courses()->end_date;
+        $courseDate = Course::findOrFail($courseId)->start_date;
 
-
-        $newCourseDates = Lesson::where('course_id', $courseId)->pluck('date')->unique();
-
-        $userCourses = $user->enrollments->pluck('course_id');
-        $userCourseDates = Lesson::whereIn('course_id', $userCourses)->pluck('date')->unique();
-
-        $conflictingDates = $newCourseDates->intersect($userCourseDates);
-
-        if ($conflictingDates->isNotEmpty()) {
-            return redirect()->back()->withErrors([
-                'error' => 'Nie możesz zapisać się na ten kurs, ponieważ lekcje kolidują z innymi kursami w dniach: ' . $conflictingDates->implode(', '),
-            ]);
+        foreach ($userCourses as $userCourse) {
+            if ($userCourse >= $courseDate) {
+                return redirect()->back()->with('error', 'Już jesteś zapisany na ten kurs.');
+            }
         }
-
-        $user->enrollments()->attach($courseId);
-
         return redirect()->back()->with('success', 'Zostałeś zapisany na kurs.');
     }
 }

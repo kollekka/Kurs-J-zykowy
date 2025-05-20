@@ -34,5 +34,9 @@ class Course extends Model
     {
         return $this->hasMany(Lesson::class)->orderBy('order');
     }
+    public function Opinions()
+    {
+        return $this->hasMany(Opinion::class);
+    }
 }
 

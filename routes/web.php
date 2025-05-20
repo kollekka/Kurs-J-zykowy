@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LessonController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MainController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\UserController;
 use App\http\Controllers\AdminController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\OpinionsController;    
 
 Route::get('/', function () {
     return view('welcome');
@@ -35,6 +37,7 @@ Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->na
 Route::post('/register', [RegisterController::class, 'register']);
 
 Route::put('/user/update', [UserController::class, 'update'])->name('user.update');
+Route::post('/course/{id}', [OpinionsController::class, 'store'])->name('opinions.store');
 
 Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
@@ -46,6 +49,7 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(
     Route::get('/admin/courses/{id}/edit', [AdminController::class, 'editCourse'])->name('admin.editCourse');
     Route::put('/admin/instructors/{id}', [AdminController::class, 'updateInstructor'])->name('admin.updateInstructor');
     Route::put('/admin/courses/{id}', [AdminController::class, 'updateCourse'])->name('admin.updateCourse');
+    Route::post('/admin/add-lesson', [LessonController::class, 'store'])->name('admin.addLesson');
     Route::get('/admin/lessons/{id}/edit', [AdminController::class, 'editLesson'])->name('admin.editLesson');
     Route::put('/admin/lessons/{id}', [AdminController::class, 'updateLesson'])->name('admin.updateLesson');
 });

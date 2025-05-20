@@ -13,6 +13,7 @@ class AdminController extends Controller
     {
         $instructors = Instructor::all();
         $courses = Course::all();
+
         return view('admin.dashboard', compact('instructors'), compact('courses'));
         
     }
