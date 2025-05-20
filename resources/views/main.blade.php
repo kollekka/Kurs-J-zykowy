@@ -280,6 +280,52 @@
         </div>
     </div>
 
+    <div class="container mt-5 text-center">
+        <h4 class="mb-4">Rozkład kursów według języka</h4>
+        <div style="max-width: 550px; margin: auto;">
+            <canvas id="languageChart"></canvas>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        function generateColors(count) {
+            const colors = [];
+            for (let i = 0; i < count; i++) {
+                const hue = Math.floor((360 / count) * i);
+                colors.push(`hsl(${hue}, 70%, 60%)`);
+            }
+            return colors;
+        }
+
+        const ctx = document.getElementById('languageChart').getContext('2d');
+    
+        const data = {
+            labels: {!! json_encode($languageCounts->keys()) !!},
+            datasets: [{
+                data: {!! json_encode($languageCounts->values()) !!},
+                backgroundColor: generateColors({{ count($languageCounts) }})
+            }]
+        };
+    
+        const config = {
+            type: 'pie',
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'right'
+                        
+                    }
+                }
+            }
+        };
+    
+        new Chart(ctx, config);
+    </script>
+
     <!-- Original Footer structure preserved -->
     <footer class="bg-dark text-white text-center py-3 mt-5">
         <div class="container">
