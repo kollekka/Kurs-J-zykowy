@@ -1,0 +1,53 @@
+<?php
+
+namespace App\Http\Requests;
+
+use App\Models\Opinion;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
+
+class UpdateOpinionRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        // User must be logged in
+        if (!Auth::check()) {
+            return false;
+        }
+
+        // Get the opinion from the route
+        $opinion = $this->route('opinion');
+
+        // User can update their own opinion OR an admin can update any opinion
+        return Auth::user()->id === $opinion->user_id || Auth::user()->is_admin;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'rating' => 'required|integer|min:1|max:5',
+            'comment' => 'required|string|max:1000',
+        ];
+    }
+
+    /**
+     * Get custom messages for validator errors.
+     *
+     * @return array
+     */
+    public function messages(): array
+    {
+        return [
+            'rating.required' => 'Ocena jest wymagana.',
+            'comment.required' => 'Komentarz jest wymagany.',
+        ];
+    }
+}

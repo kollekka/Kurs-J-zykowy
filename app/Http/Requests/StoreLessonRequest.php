@@ -1,0 +1,71 @@
+<?php
+
+namespace App\Http\Requests;
+
+use App\Models\Lesson;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
+
+class StoreLessonRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        // Zakładamy, że tylko administrator może dodawać lekcje
+        return Auth::check() && Auth::user()->is_admin;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        $lastLesson = Lesson::where('course_id', $this->input('course_id'))
+                            ->orderBy('date', 'desc')
+                            ->orderBy('time', 'desc')
+                            ->first();
+
+        return [
+            'course_id' => 'required|exists:courses,id',
+            'title' => 'required|string|max:255',
+            'content' => 'nullable|string',
+            'duration' => 'required|date_format:H:i', // Np. 01:30 dla 1h 30min
+            'date' => [
+                'required',
+                'date',
+                function ($attribute, $value, $fail) use ($lastLesson) {
+                    if ($lastLesson && strtotime($value) < strtotime($lastLesson->date)) {
+                        $fail('Data lekcji musi być późniejsza lub równa dacie ostatniej lekcji (' . $lastLesson->date . ').');
+                    } elseif ($lastLesson && strtotime($value) == strtotime($lastLesson->date) && strtotime($this->input('time')) <= strtotime($lastLesson->time)) {
+                        $fail('Godzina lekcji musi być późniejsza niż godzina ostatniej lekcji w tym samym dniu.');
+                    }
+                },
+            ],
+            'time' => [
+                'required',
+                'date_format:H:i',
+                function ($attribute, $value, $fail) {
+                    $timeInSeconds = strtotime($value);
+                    $startTime = strtotime('08:00');
+                    $endTime = strtotime('20:00');
+
+                    if ($timeInSeconds < $startTime || $timeInSeconds > $endTime) {
+                        $fail('Godzina lekcji musi być między 08:00 a 20:00.');
+                    }
+                },
+            ],
+            // 'order' - można dodać, jeśli lekcje mają mieć ustaloną kolejność niezależną od daty/godziny
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'duration.date_format' => 'Czas trwania musi być w formacie GG:MM (np. 01:30).',
+        ];
+    }
+}

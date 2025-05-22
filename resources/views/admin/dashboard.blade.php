@@ -1,22 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+@extends('layouts.admin')
+
+@section('title', 'Admin Dashboard')
+
+@push('styles')
     <style>
         :root {
             --main-color: #2c3e50;
             --accent-color: #e67e22;
             --hover-color: #d35400;
             --light-bg: #f8f9fa;
-        }
-
-        body {
-            background-color: var(--light-bg);
-            padding-top: 10px;
         }
 
         .navbar {
@@ -213,226 +205,117 @@
             max-height: 400px;;
             -webkit-overflow-scrolling: touch;
         }
+        .stat-card-link {
+            text-decoration: none;
+            color: inherit; /* Dziedziczy kolor tekstu z karty */
+        }
+        .stat-card-link:hover {
+            text-decoration: none;
+            color: inherit;
+        }
     </style>
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-        @if (Auth::user())
-        <a class="navbar-brand" href="{{ route('user.profile') }}"><i class="fas fa-user-circle mr-2"></i>{{ Auth::user()->name }}</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        @else
-        <a class="navbar-brand" href="{{ route('login') }}"><i class="fas fa-hand-wave mr-2"></i>Gość</a>
-        @endif
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="{{ route('main') }}"><i class="fas fa-home mr-1"></i>Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{ route('courses.index') }}"><i class="fas fa-book-open mr-1"></i>Kursy</a>
-            </li>
-            @if (Auth::user() && Auth::user()->is_admin)
-              <li class="nav-item active">
-                <a class="nav-link" href="{{ route('admin.dashboard') }}"><i class="fas fa-tools mr-1"></i>Panel Admina</a>
-              </li>
-            @endif
-          </ul>
-          @if (Auth::check())
-          <form action="{{ route('logout') }}" method="POST" class="form-inline my-2 my-lg-0">
-              @csrf
-              <button class="btn btn-outline-danger my-2 my-sm-0" type="submit"><i class="fas fa-sign-out-alt mr-2"></i>Wyloguj</button>
-          </form>
-          @endif
-        </div>
-    </nav>
+@endpush
 
+@section('content')
     <div class="container mt-5">
         <h1 class="text-center mb-4" style="color: var(--main-color);">Admin Dashboard</h1>
-        <div class="row">
-            <!-- Lewa kolumna - formularze -->
-            <div class="col-md-6">
-                <div class="card shadow-sm mb-4">
-                    <div class="card-header">
-                        <h4 class="mb-0"><i class="fas fa-plus-circle mr-2"></i>Create New</h4>
-                    </div>
-                    <div class="card-body">
-                        <ul class="nav nav-pills mb-4" id="createTabs">
-                            <li class="nav-item">
-                                <a class="nav-link active" data-toggle="pill" href="#createInstructor">Instructor</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="pill" href="#createCourse">Course</a>
-                            </li>
-                        </ul>
-
-                        <div class="tab-content">
-                            <!-- Formularz instruktora -->
-                            <div class="tab-pane fade show active" id="createInstructor">
-                                <form action="{{ route('admin.addInstructor') }}" method="POST">
-                                    @csrf
-                                    <div class="form-group">
-                                        <label for="instructor_name">Imię i nazwisko</label>
-                                        <input type="text" id="instructor_name" name="full_name" class="form-control" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="instructor_email">Email</label>
-                                        <input type="email" id="instructor_email" name="email" class="form-control" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="instructor_description">Opis</label>
-                                        <textarea id="instructor_description" name="bio" class="form-control" required></textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary btn-block rounded-pill py-2">
-                                        <i class="fas fa-plus mr-2"></i>Create Instructor
-                                    </button>
-                                </form>
-                            </div>
-
-                            <!-- Formularz kursu -->
-                            <div class="tab-pane fade" id="createCourse">
-                                <form action="{{ route('admin.addCourse') }}" method="POST">
-                                    @csrf
-                                    <div class="form-group">
-                                        <label for="course_name">Nazwa Kursu</label>
-                                        <input type="text" id="course_name" name="name" class="form-control" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="course_language">Język</label>
-                                        <input type="text" id="course_language" name="language" class="form-control" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="course_level">Poziom</label>
-                                        <select id="course_level" name="level" class="form-control" required>
-                                            <option value="" disabled selected>Wybierz poziom</option>
-                                            <option value="A1">A1</option>
-                                            <option value="A2">A2</option>
-                                            <option value="B1">B1</option>
-                                            <option value="B2">B2</option>
-                                            <option value="C1">C1</option>
-                                            <option value="C2">C2</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="course_start_date">Data rozpoczęcia</label>
-                                        <input type="date" id="course_start_date" name="start_date" class="form-control" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="course_end_date">Data zakończenia</label>
-                                        <input type="date" id="course_end_date" name="end_date" class="form-control" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="course_price">Cena</label>
-                                        <input type="number" id="course_price" name="price" class="form-control" step="0.01" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="course_group_size">Rozmiar Grupy</label>
-                                        <input type="number" id="course_group_size" name="group_size" class="form-control" step="1" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="course_instructor">Instruktor</label>
-                                        <select id="course_instructor" name="instructor_id" class="form-control" required>
-                                            <option value="" disabled selected>Wybierz instruktora</option>
-                                            @foreach ($instructors as $instructor)
-                                                <option value="{{ $instructor->id }}">{{ $instructor->full_name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    @if($errors->any())
-                                        <div class="alert alert-danger">
-                                            @foreach ($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                            @endforeach
-                                        </div>
-                                    @endif
-                                    <button type="submit" class="btn btn-success btn-block rounded-pill py-2">
-                                        <i class="fas fa-plus mr-2"></i>Create Course
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <!-- Sekcja Statystyk -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <h2 class="text-center mb-4" style="color: var(--main-color);">Statystyki Systemu</h2>
             </div>
 
-            <!-- Prawa kolumna - zarządzanie -->
-            <div class="col-md-6">
-                <div class="card shadow-sm">
-                    <div class="card-header">
-                        <h4 class="mb-0"><i class="fas fa-tasks mr-2"></i>Management</h4>
-                    </div>
-                    <div class="card-body">
-                        <ul class="nav nav-pills mb-4" id="manageTabs">
-                            <li class="nav-item">
-                                <a class="nav-link active" data-toggle="pill" href="#manageInstructors">Instructors</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="pill" href="#manageCourses">Courses</a>
-                            </li>
-                        </ul>
-
-                        <div class="tab-content">
-                            <!-- Zarządzanie instruktorami -->
-                            <div class="tab-pane fade show active" id="manageInstructors">
-                                <div class="card shadow-sm">
-                                    <div class="card-header">
-                                        <h5 class="mb-0">Instructors List</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <ul class="list-group">
-                                            @foreach ($instructors as $instructor)
-                                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                {{ $instructor->full_name }}
-                                                <div>
-                                                    <a href="{{ route('admin.editInstructor', $instructor->id) }}" class="btn btn-warning btn-sm">Edytuj</a>
-                                                    <form action="{{ route('admin.deleteInstructor', $instructor->id) }}" method="POST" class="d-inline">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
-                                                    </form>
-                                                </div>
-                                            </li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Zarządzanie kursami -->
-                            <div class="tab-pane fade" id="manageCourses">
-                                <div class="card shadow-sm">
-                                    <div class="card-header">
-                                        <h5 class="mb-0">Courses List</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <ul class="list-group">
-                                            @foreach ($courses as $course)
-                                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                               {{ $course->id }} {{ $course->name }}
-                                                <div>
-                                                    <a href="{{ route('admin.editCourse', $course->id) }}" class="btn btn-warning btn-sm">Edytuj</a>
-                                                    <form action="{{ route('admin.deleteCourse', $course->id) }}" method="POST" class="d-inline">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
-                                                    </form>
-                                                </div>
-                                            </li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+            <!-- Użytkownicy -->
+            @if(isset($stats['users']))
+            <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
+                <a href="{{ route('admin.users.index') }}" class="stat-card-link">
+                    <div class="card text-white bg-primary shadow-sm h-100">
+                        <div class="card-body text-center">
+                            <div class="mb-2"><i class="fas fa-users fa-3x"></i></div>
+                            <h5 class="card-title" style="font-size: 1.1rem;">Użytkownicy</h5>
+                            <p class="card-text display-4 font-weight-bold" style="font-size: 2.5rem;">{{ $stats['users'] }}</p>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
+            @endif
+
+           
+            @if(isset($stats['courses']))
+            <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
+                <a href="{{ route('admin.courses.index') }}" class="stat-card-link">
+                    <div class="card text-white bg-success shadow-sm h-100">
+                        <div class="card-body text-center">
+                            <div class="mb-2"><i class="fas fa-book-open fa-3x"></i></div>
+                            <h5 class="card-title" style="font-size: 1.1rem;">Kursy</h5>
+                            <p class="card-text display-4 font-weight-bold" style="font-size: 2.5rem;">{{ $stats['courses'] }}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            @endif
+            
+            @if(isset($stats['instructors']))
+            <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
+                <a href="{{ route('admin.instructors.index') }}" class="stat-card-link">
+                    <div class="card text-white bg-info shadow-sm h-100">
+                        <div class="card-body text-center">
+                            <div class="mb-2"><i class="fas fa-chalkboard-teacher fa-3x"></i></div>
+                            <h5 class="card-title" style="font-size: 1.1rem;">Instruktorzy</h5>
+                            <p class="card-text display-4 font-weight-bold" style="font-size: 2.5rem;">{{ $stats['instructors'] }}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            @endif
+
+            <!-- Zapisy -->
+            @if(isset($stats['enrollments']))
+            <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
+                <a href="{{ route('admin.enrollments.index') }}" class="stat-card-link">
+                    <div class="card text-white bg-secondary shadow-sm h-100">
+                        <div class="card-body text-center">
+                            <div class="mb-2"><i class="fas fa-user-check fa-3x"></i></div>
+                            <h5 class="card-title" style="font-size: 1.1rem;">Zapisy</h5>
+                            <p class="card-text display-4 font-weight-bold" style="font-size: 2.5rem;">{{ $stats['enrollments'] }}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            @endif
+
+            <!-- Opinie -->
+            @if(isset($stats['opinions']))
+            <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
+                <a href="{{ route('admin.opinions.index') }}" class="stat-card-link">
+                    <div class="card text-white bg-danger shadow-sm h-100">
+                        <div class="card-body text-center">
+                            <div class="mb-2"><i class="fas fa-comments fa-3x"></i></div>
+                            <h5 class="card-title" style="font-size: 1.1rem;">Opinie</h5>
+                            <p class="card-text display-4 font-weight-bold" style="font-size: 2.5rem;">{{ $stats['opinions'] }}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            @endif
+
+            <!-- Płatności -->
+            @if(isset($stats['payments']))
+            <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
+                <a href="{{ route('admin.payments.index') }}" class="stat-card-link">
+                    <div class="card text-white bg-dark shadow-sm h-100">
+                        <div class="card-body text-center">
+                            <div class="mb-2"><i class="fas fa-credit-card fa-3x"></i></div>
+                            <h5 class="card-title" style="font-size: 1.1rem;">Płatności</h5>
+                            <p class="card-text display-4 font-weight-bold" style="font-size: 2.5rem;">{{ $stats['payments'] }}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            @endif
+
+
         </div>
+        <!-- Koniec Sekcji Statystyk -->
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
-</body>
-</html>
+@endsection
