@@ -12,7 +12,7 @@ class StoreInstructorRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // Zakładamy, że tylko administrator może dodawać instruktorów
+        
         return Auth::check() && Auth::user()->is_admin;
     }
 
@@ -28,7 +28,6 @@ class StoreInstructorRequest extends FormRequest
             'email' => 'required|string|email|max:255',
             'bio' => 'required|string|max:2000',
             'specialization' => 'nullable|string|max:255',
-            // 'profile_image_path' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Jeśli dodajesz obsługę obrazków
         ];
     }
 

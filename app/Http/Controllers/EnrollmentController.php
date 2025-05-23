@@ -6,16 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\User;
 use App\Models\Enrollment;
-use App\Http\Requests\StoreEnrollmentByAdminRequest; // Zmieniamy na nowy Form Request
+use App\Http\Requests\StoreEnrollmentByAdminRequest; 
 use App\Http\Requests\UpdateEnrollmentRequest; 
 use Illuminate\Support\Facades\Auth; 
 use Illuminate\Http\Request;
 
 class EnrollmentController extends Controller
 {
-    /**
-     * Display a listing of the resource (for admin or user's own enrollments).
-     */
+    
     public function index(Request $request)
     {
         if (Auth::user()->is_admin) {
@@ -56,7 +54,7 @@ class EnrollmentController extends Controller
             return redirect()->route('main')->with('error', 'Nie masz dostępu do tych informacji.');
         }
         $enrollment->load(['user', 'course']);
-        return view('admin.enrollments.show', compact('enrollment')); 
+        return view('admin.enrollments.index', compact('enrollment')); 
     }
 
     public function edit(Enrollment $enrollment)
@@ -107,5 +105,30 @@ class EnrollmentController extends Controller
         }
 
         return redirect()->route('user.profile')->with('error', 'Nie znaleziono zapisu na ten kurs lub wystąpił błąd.');
+    }
+
+    public function enrollUser(Course $course)
+    {
+        return view('enroll', ['course' => $course]);
+    }
+
+    public function storeUserEnrollment(Request $request)
+    {
+         $validated = $request->validate([
+            'course_id' => 'required|exists:courses,id',
+            'payment_method' => 'required|string|in:card,bank_transfer,paypal', // Dostosuj metody płatności
+        ]);
+
+        $course = Course::findOrFail($validated['course_id']);
+        $user = Auth::user();
+
+        Enrollment::create([
+            'user_id' => $user->id,
+            'course_id' => $course->id,
+            'payment_method' => $validated['payment_method'],
+            'enrollment_date' => now(), 
+            'status' => 'enrolled', 
+        ]);
+        return redirect()->route('user.profile')->with('success', 'Zapis został pomyślnie utworzony.');
     }
 }

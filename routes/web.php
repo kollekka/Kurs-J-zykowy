@@ -32,7 +32,6 @@ Route::get('/main', [MainController::class, 'index'])->name('main');
 Route::get('/', [MainController::class, 'index'])->name('main');
 
 Route::get('/course/{id}', [CourseController::class, 'show'])->name('course.show');
-Route::get('/course/{id}/enroll', [EnrollmentController::class, 'create'])->name('enroll.show');
 
 Route::post('/enrollment', [EnrollmentController::class, 'store'])->name('enrollment.store');
 
@@ -44,7 +43,10 @@ Route::middleware(['auth', \App\Http\Middleware\UserMiddleware::class])->group(f
     Route::get('/user/profile', [UserController::class, 'profile'])->name('user.profile');
     Route::put('/user/profile/update', [UserController::class, 'update'])->name('user.update'); 
     Route::post('/course/{course}/opinions', [OpinionsController::class, 'store'])->name('opinions.store'); 
-    Route::delete('/courses/{course}/unenroll', [EnrollmentController::class, 'destroyByUser'])->name('courses.unenroll')->middleware('auth');
+    Route::delete('/courses/{course}/unenroll', [EnrollmentController::class, 'destroyByUser'])->name('courses.unenroll');
+    Route::get('/course/{course}/enroll', [EnrollmentController::class, 'enrollUser'])->name('course.enrollUser');
+    Route::post('/enrollment/user-store', [EnrollmentController::class, 'storeUserEnrollment'])->name('enrollment.user.store');
+    
 });
 
 Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix('admin')->name('admin.')->group(function () {

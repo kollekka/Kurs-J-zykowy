@@ -12,7 +12,6 @@ class UpdatePaymentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // Zakładamy, że tylko administrator może modyfikować płatności
         return Auth::check() && Auth::user()->is_admin;
     }
 
@@ -23,7 +22,6 @@ class UpdatePaymentRequest extends FormRequest
      */
     public function rules(): array
     {
-        // Dla aktualizacji niektóre pola mogą być opcjonalne lub mieć inne reguły
         return [
             'user_id' => 'sometimes|required|exists:users,id',
             'enrollment_id' => 'sometimes|nullable|exists:enrollments,id',

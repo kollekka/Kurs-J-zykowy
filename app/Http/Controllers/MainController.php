@@ -12,14 +12,12 @@ class MainController extends Controller
 
     public function index()
     {
-        // Pobierz 9 najpopularniejszych kursów
         $courses = Course::all()->sortByDesc('start_date')->take(9);
 
         $languageCounts = Course::select('language', DB::raw('count(*) as total'))
                             ->groupBy('language')->orderBy('total', 'desc')
                             ->pluck('total', 'language')->take(7);
 
-        // Przekaż dane do widoku
         return view('main', compact('courses','languageCounts'));
     }
 }

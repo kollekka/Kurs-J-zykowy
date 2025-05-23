@@ -12,7 +12,6 @@ class StorePaymentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // Zakładamy, że tylko administrator może ręcznie dodawać płatności
         return Auth::check() && Auth::user()->is_admin;
     }
 
@@ -25,9 +24,9 @@ class StorePaymentRequest extends FormRequest
     {
         return [
             'user_id' => 'required|exists:users,id',
-            'enrollment_id' => 'nullable|exists:enrollments,id', // Lub order_id, w zależności od struktury
+            'enrollment_id' => 'nullable|exists:enrollments,id', 
             'amount' => 'required|numeric|min:0.01',
-            'currency' => 'required|string|max:3', // Np. PLN, USD
+            'currency' => 'required|string|max:3', 
             'payment_method' => 'required|string|max:50',
             'status' => 'required|string|in:pending,completed,failed,refunded',
             'transaction_id' => 'nullable|string|max:255',

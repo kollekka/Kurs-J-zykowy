@@ -1,4 +1,4 @@
-@extends('layouts.admin') {{-- Lub layouts.app, jeśli użytkownicy też mają dostęp do tego formularza przez inny layout --}}
+@extends('layouts.admin') 
 
 @section('title', 'Edytuj Opinię')
 
@@ -28,7 +28,6 @@
                     <div class="form-group">
                         <label for="course_name">Kurs:</label>
                         <input type="text" class="form-control form-control-admin" id="course_name" value="{{ $opinion->course->name ?? 'Nie przypisano do kursu' }}" readonly>
-                        {{-- Można by tu dodać ukryte pole z course_id, jeśli byłoby potrzebne, ale zazwyczaj nie edytujemy przypisania opinii do kursu --}}
                     </div>
 
                     <div class="form-group">

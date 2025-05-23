@@ -12,8 +12,6 @@ class UpdateEnrollmentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // Tylko administrator może modyfikować status zapisu
-        // Można rozbudować o inne uprawnienia, np. użytkownik może anulować swój zapis
         return Auth::check() && Auth::user()->is_admin;
     }
 
@@ -25,8 +23,7 @@ class UpdateEnrollmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status' => 'required|string|in:pending,active,completed,cancelled,refunded', // Przykładowe statusy
-            // Można dodać inne pola do aktualizacji, np. payment_id
+            'status' => 'required|string|in:pending,active,completed,cancelled,refunded', 
         ];
     }
 

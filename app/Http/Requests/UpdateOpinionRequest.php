@@ -13,15 +13,14 @@ class UpdateOpinionRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // User must be logged in
+       
         if (!Auth::check()) {
             return false;
         }
 
-        // Get the opinion from the route
+       
         $opinion = $this->route('opinion');
 
-        // User can update their own opinion OR an admin can update any opinion
         return Auth::user()->id === $opinion->user_id || Auth::user()->is_admin;
     }
 

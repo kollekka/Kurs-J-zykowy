@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
+
 use Illuminate\Database\Eloquent\Model;
 
-class opinion extends Model
+class Opinion extends Model
 {
     protected $fillable = [
-        'user_id',
-        'course_id',
         'opinion',
         'rating',
+        'user_id',
+        'course_id'
     ];
 
     public function user()

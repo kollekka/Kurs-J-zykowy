@@ -13,7 +13,6 @@ class UpdateCourseRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // Tylko administrator może modyfikować kursy
         return Auth::check() && Auth::user()->is_admin;
     }
 

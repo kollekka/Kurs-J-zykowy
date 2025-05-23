@@ -20,7 +20,7 @@ class LessonController extends Controller
                 ->orderBy('date')
                 ->orderBy('time')
                 ->paginate(15);
-            $course = Course::find($request->course_id); // Opcjonalnie, aby przekazać dane kursu do widoku
+            $course = Course::find($request->course_id); 
             return view('admin.lessons.index', compact('lessons', 'course'));
         }
         
@@ -54,21 +54,8 @@ class LessonController extends Controller
         return redirect()->route('admin.lessons.index', $lesson->course_id)->with('success', 'Lekcja została pomyślnie dodana.');
     }
 
-    // public function show(Lesson $lesson)
-    // {
-    //     if (!Auth::check()) {
-    //         return redirect()->route('login')->with('error', 'Musisz być zalogowany, aby zobaczyć tę lekcję.');
-    //     }
-
-    //     $user = Auth::user();
-    //     if (!$user->is_admin && !$user->enrollments()->where('course_id', $lesson->course_id)->exists()) {
-    //         return redirect()->route('courses.index')->with('error', 'Nie masz dostępu do tej lekcji.');
-    //     }
-
-    //     return view('lessons.show', compact('lesson')); 
-    // }
-
-    public function edit(Lesson $lesson) // Route Model Binding
+ 
+    public function edit(Lesson $lesson) 
     {
         $availableCourses = Course::orderBy('name')->get();
         $instructors = Instructor::orderBy('full_name')->get();
@@ -76,9 +63,9 @@ class LessonController extends Controller
         return view('admin.lessons.edit', compact('lesson', 'availableCourses', 'instructors'));
     }
 
-    public function update(UpdateLessonRequest $request, Lesson $lesson) // Używamy Route Model Binding
+    public function update(UpdateLessonRequest $request, Lesson $lesson) 
     {
-        // Walidacja jest teraz obsługiwana przez UpdateLessonRequest
+       
         $lesson->update($request->validated());
 
         return redirect()->route('admin.lessons.index', $lesson->course_id)->with('success', 'Lekcja została zaktualizowana.');

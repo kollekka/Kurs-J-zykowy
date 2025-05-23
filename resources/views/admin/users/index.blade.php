@@ -1,4 +1,4 @@
-@extends('layouts.admin') {{-- Zakładając, że layout admina to layouts.admin --}}
+@extends('layouts.admin') 
 
 @section('title', 'Zarządzanie Użytkownikami')
 

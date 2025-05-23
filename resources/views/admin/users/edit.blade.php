@@ -23,7 +23,7 @@
 
                 <form action="{{ route('admin.users.update', $user->id) }}" method="POST">
                     @csrf
-                    @method('PUT') {{-- Ważne dla aktualizacji zasobu --}}
+                    @method('PUT')
 
                     <div class="form-group">
                         <label for="name">Nazwa użytkownika</label>
@@ -54,7 +54,7 @@
                     <hr>
 
                     <div class="form-group form-check">
-                        <input type="hidden" name="is_admin" value="0"> {{-- Domyślna wartość, jeśli checkbox nie jest zaznaczony --}}
+                        <input type="hidden" name="is_admin" value="0"> 
                         <input type="checkbox" class="form-check-input" id="is_admin" name="is_admin" value="1" {{ old('is_admin', $user->is_admin) ? 'checked' : '' }}>
                         <label class="form-check-label" for="is_admin">Czy administrator?</label>
                     </div>

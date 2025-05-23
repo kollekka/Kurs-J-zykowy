@@ -207,7 +207,7 @@
         }
         .stat-card-link {
             text-decoration: none;
-            color: inherit; /* Dziedziczy kolor tekstu z karty */
+            color: inherit; 
         }
         .stat-card-link:hover {
             text-decoration: none;
@@ -316,6 +316,5 @@
 
 
         </div>
-        <!-- Koniec Sekcji Statystyk -->
     </div>
 @endsection

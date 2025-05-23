@@ -238,7 +238,7 @@
                     @elseif((Auth::user()->courses->first()?->end_date) && ($course->start_date < Auth::user()->courses->first()->end_date))
                         <button class="btn btn-secondary" disabled>Występuje Kolizja Kursów</button>
                     @elseif(Auth::user())
-                        <a href="{{ route('enroll.show', $course->id) }}" class="btn btn-primary">Zapisz się na kurs</a>
+                        <a href="{{ route('course.enrollUser', $course->id) }}" class="btn btn-primary">Zapisz się na kurs</a>
                     @endif
                     <a href="{{ url('/main') }}" class="btn btn-outline-primary">Powrót do kursów</a>
                 </div>
@@ -284,17 +284,27 @@
                         <form action="{{ route('opinions.store', $course->id) }}" method="POST">
                             @csrf
                             <div class="form-group">
-                                <label>Twoja opinia</label>
-                                <textarea name="content" class="form-control" rows="3" required></textarea>
+                                <label for="opinion_text">Twoja opinia</label>
+                                <textarea name="opinion" id="opinion_text" class="form-control @error('opinion') is-invalid @enderror" rows="3" required>{{ old('opinion') }}</textarea>
+                                @error('opinion')
+                                    <div class="invalid-feedback">
+                                       
+                                    </div>
+                                @enderror
                             </div>
                             <div class="form-group">
-                                <label>Ocena</label>
-                                <select name="rating" class="form-control" required>
-                                    <option value="" selected>Wybierz ocenę</option>
+                                <label for="rating_value">Ocena</label>
+                                <select name="rating" id="rating_value" class="form-control @error('rating') is-invalid @enderror" required>
+                                    <option value="" {{ old('rating') ? '' : 'selected' }} disabled>Wybierz ocenę</option>
                                     @for ($i = 1; $i <= 5; $i++)
-                                        <option value="{{ $i }}">{{ $i }}★</option>
+                                        <option value="{{ $i }}" {{ old('rating') == $i ? 'selected' : '' }}>{{ $i }}★</option>
                                     @endfor
                                 </select>
+                                @error('rating')
+                                    <div class="invalid-feedback">
+                                       
+                                    </div>
+                                @enderror
                             </div>
                             <button type="submit" class="btn btn-primary btn-block">Dodaj opinię</button>
                         </form>

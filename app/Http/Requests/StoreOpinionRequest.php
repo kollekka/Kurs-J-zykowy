@@ -12,7 +12,6 @@ class StoreOpinionRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // User must be logged in to leave an opinion
         return Auth::check();
     }
 
@@ -25,8 +24,7 @@ class StoreOpinionRequest extends FormRequest
     {
         return [
             'rating' => 'required|integer|min:1|max:5',
-            'comment' => 'required|string|max:1000', // Changed from nullable to required, and max length increased
-            // course_id will be taken from the route parameter
+            'opinion' => 'required|string|max:1000', 
         ];
     }
 

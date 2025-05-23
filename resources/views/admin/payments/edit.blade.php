@@ -52,7 +52,7 @@
                             <option value="bank_transfer" {{ old('payment_method', $payment->payment_method) == 'bank_transfer' ? 'selected' : '' }}>Przelew bankowy</option>
                             <option value="paypal" {{ old('payment_method', $payment->payment_method) == 'paypal' ? 'selected' : '' }}>PayPal</option>
                             <option value="cash" {{ old('payment_method', $payment->payment_method) == 'cash' ? 'selected' : '' }}>Gotówka</option>
-                            {{-- Dodaj inne metody, jeśli są potrzebne --}}
+                           
                         </select>
                     </div>
 

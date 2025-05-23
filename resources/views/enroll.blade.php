@@ -24,9 +24,6 @@
         <li class="nav-item">
           <a class="nav-link" href="{{ route('courses.index') }}">Courses</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Info</a>
-        </li>
         @if (Auth::user() && Auth::user()->is_admin)
           <li class="nav-item">
             <a class="nav-link" href="{{ route('admin.dashboard') }}">Admin Panel</a>
@@ -45,7 +42,7 @@
     <div class="container mt-4">
         <h1>Enroll in {{ $course->name }}</h1>
         <p><strong>Price:</strong> ${{ $course->price }}</p>
-        <form method="POST" action="{{ route('enrollment.store') }}">
+        <form method="POST" action="{{ route('enrollment.user.store') }}">
             @csrf
             <input type="hidden" name="course_id" value="{{ $course->id }}">
             <div class="form-group">

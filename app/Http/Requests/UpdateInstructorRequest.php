@@ -13,7 +13,6 @@ class UpdateInstructorRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // Zakładamy, że tylko administrator może modyfikować instruktorów
         return Auth::check() && Auth::user()->is_admin;
     }
 
@@ -24,7 +23,7 @@ class UpdateInstructorRequest extends FormRequest
      */
     public function rules(): array
     {
-        $instructorId = $this->route('instructor')->id; // Pobieramy ID instruktora z trasy
+        $instructorId = $this->route('instructor')->id; 
 
         return [
             'full_name' => 'sometimes|required|string|max:255',
@@ -38,7 +37,7 @@ class UpdateInstructorRequest extends FormRequest
             ],
             'bio' => 'sometimes|required|string|max:2000',
             'specialization' => 'nullable|string|max:255',
-            // 'profile_image_path' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Jeśli dodajesz obsługę obrazków
+            
         ];
     }
 

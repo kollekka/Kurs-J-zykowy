@@ -12,7 +12,7 @@ class StoreEnrollmentByAdminRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // Tylko zalogowany administrator może utworzyć zapis w ten sposób
+       
         return Auth::check() && Auth::user()->is_admin;
     }
 

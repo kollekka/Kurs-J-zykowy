@@ -34,7 +34,7 @@
             <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
 
-        {{-- Można tu dodać formularz filtrowania np. po kursie, jeśli nie jest już przekazany --}}
+        
 
         <table class="table table-hover table-admin">
             <thead>

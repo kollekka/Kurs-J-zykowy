@@ -24,15 +24,17 @@ class OpinionsController extends Controller
     
     public function store(StoreOpinionRequest $request, Course $course)
     {
-        
+        $validatedData = $request->validated(); 
+       
+
         Opinion::create([
-            'comment' => $request->comment, 
-            'rating' => $request->rating,
+            'opinion' => $validatedData['opinion'],
+            'rating' => $validatedData['rating'],   
             'course_id' => $course->id,
             'user_id' => auth()->id(),
         ]);
 
-        return redirect()->route('course.show', $course->id)->with('success', 'Twoja opinia została dodana!');
+        return redirect()->route('course.show', $course->id)->with('success', 'Opinia została dodana!');
     }
 
    
@@ -50,7 +52,7 @@ class OpinionsController extends Controller
     {
         
         $opinion->update([
-            'comment' => $request->comment,
+            'opinion' => $request->opinion, // Zmiana z comment na opinion
             'rating' => $request->rating,
         ]);
 

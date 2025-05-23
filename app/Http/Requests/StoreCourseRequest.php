@@ -13,7 +13,7 @@ class StoreCourseRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // Tylko administrator może dodawać kursy
+     
         return Auth::check() && Auth::user()->is_admin;
     }
 
@@ -42,10 +42,10 @@ class StoreCourseRequest extends FormRequest
                     }
                 },
             ],
-            'price' => 'required|numeric|min:0|max:9999.99', // Zwiększono max
-            'group_size' => 'required|integer|min:1|max:50', // Zwiększono max
+            'price' => 'required|numeric|min:0|max:9999.99',
+            'group_size' => 'required|integer|min:1|max:50', 
             'instructor_id' => 'required|exists:instructors,id',
-            // 'image_path' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Jeśli dodajesz obsługę obrazków
+           
         ];
     }
 

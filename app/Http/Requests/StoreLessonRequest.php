@@ -13,7 +13,6 @@ class StoreLessonRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // Zakładamy, że tylko administrator może dodawać lekcje
         return Auth::check() && Auth::user()->is_admin;
     }
 
@@ -33,7 +32,7 @@ class StoreLessonRequest extends FormRequest
             'course_id' => 'required|exists:courses,id',
             'title' => 'required|string|max:255',
             'content' => 'nullable|string',
-            'duration' => 'required|date_format:H:i', // Np. 01:30 dla 1h 30min
+            'duration' => 'required|date_format:H:i', 
             'date' => [
                 'required',
                 'date',
@@ -58,7 +57,6 @@ class StoreLessonRequest extends FormRequest
                     }
                 },
             ],
-            // 'order' - można dodać, jeśli lekcje mają mieć ustaloną kolejność niezależną od daty/godziny
         ];
     }
 
