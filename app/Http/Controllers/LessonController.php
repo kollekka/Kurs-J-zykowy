@@ -89,6 +89,6 @@ class LessonController extends Controller
         $courseId = $lesson->course_id; 
         $lesson->delete();
 
-        return redirect()->route('admin.editCourse', $courseId)->with('success', 'Lekcja została usunięta.');
+        return redirect()->route('admin.lessons.index', $courseId)->with('success', 'Lekcja została usunięta.');
     }
 }
