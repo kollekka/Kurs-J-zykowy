@@ -7,7 +7,8 @@ use App\Models\Enrollment;
 use App\Models\Instructor;  
 use App\Models\Course;
 use App\Models\Payment;
-use App\Models\Lesson;
+use App\Models\Lesson;  
+use App\Models\Opinion;
     
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -38,6 +39,7 @@ class DatabaseSeeder extends Seeder
             EnrollmentSeeder::class,
             PaymentSeeder::class,
             LessonSeeder::class,
+            OpinionSeeder::class,
         ]);
 
     }
