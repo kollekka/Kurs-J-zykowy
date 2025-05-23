@@ -14,24 +14,19 @@ use App\Models\User;
 
 class OpinionsController extends Controller
 {
-    /**
-     * Display a listing of the opinions (for admin).
-     */
+    
     public function index()
     {
         $opinions = Opinion::with(['user', 'course'])->latest()->paginate(15);
         return view('admin.opinions.index', compact('opinions')); 
     }
 
-    /**
-     * Store a newly created opinion in storage.
-     * The $course parameter comes from route model binding.
-     */
+    
     public function store(StoreOpinionRequest $request, Course $course)
     {
-        // The StoreOpinionRequest handles authorization and validation.
+        
         Opinion::create([
-            'comment' => $request->comment, // Assuming 'comment' is the correct field name
+            'comment' => $request->comment, 
             'rating' => $request->rating,
             'course_id' => $course->id,
             'user_id' => auth()->id(),
@@ -40,10 +35,7 @@ class OpinionsController extends Controller
         return redirect()->route('course.show', $course->id)->with('success', 'Twoja opinia została dodana!');
     }
 
-    /**
-     * Show the form for editing the specified opinion.
-     * The $opinion parameter comes from route model binding.
-     */
+   
     public function edit(Opinion $opinion)
     {
         if (Auth::id() !== $opinion->user_id && !Auth::user()->is_admin) {
@@ -69,10 +61,7 @@ class OpinionsController extends Controller
         return redirect()->route('course.show', $opinion->course_id)->with('success', 'Twoja opinia została zaktualizowana.');
     }
 
-    /**
-     * Remove the specified opinion from storage.
-     * The $opinion parameter comes from route model binding.
-     */
+    
     public function destroy(Opinion $opinion, Request $request) 
     {
        
@@ -92,7 +81,7 @@ class OpinionsController extends Controller
 
      public function createForAdmin()
     {
-        // Autoryzacja może być również w FormRequest lub middleware
+        
         if (!Auth::check() || !Auth::user()->is_admin) {
             return redirect()->route('main')->with('error', 'Nie masz uprawnień do tej akcji.');
         }
@@ -103,7 +92,6 @@ class OpinionsController extends Controller
 
     public function storeForAdmin(StoreAdminOpinionRequest $request)
     {
-        // Walidacja i autoryzacja są obsługiwane przez StoreAdminOpinionRequest
         Opinion::create([
             'opinion' => $request->validated()['opinion'],
             'rating' => $request->validated()['rating'],

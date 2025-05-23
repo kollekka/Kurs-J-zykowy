@@ -232,10 +232,20 @@
                                     <small class="text-muted">
                                         {{ $course->start_date }} to {{ $course->end_date }}
                                     </small>
-                                    <div class="mt-3">
+                                    <div class="mt-3 d-flex align-items-center">
                                         <a href="{{ route('course.show', $course->id) }}" 
                                            class="btn btn-primary btn-sm rounded-pill">
                                             View Course
+                                        </a>
+                                        @if (now()->lt(\Carbon\Carbon::parse($course->end_date)))
+                                        <form action="{{ route('courses.unenroll', $course->id) }}" method="POST" class="d-inline ml-2" onsubmit="return confirm('Are you sure you want to unenroll from this course?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm rounded-pill">
+                                                <i class="fas fa-times-circle mr-1"></i>Unenroll
+                                            </button>
+                                        </form>
+                                        @endif
                                         </a>
                                     </div>
                                 </div>

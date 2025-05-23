@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Edytuj Użytkownika: ' . $user->name)
+@section('title', 'Edytuj Użytkownika')
 
 @section('content')
 <div class="row justify-content-center">
@@ -23,7 +23,7 @@
 
                 <form action="{{ route('admin.users.update', $user->id) }}" method="POST">
                     @csrf
-                    @method('PUT')
+                    @method('PUT') {{-- Ważne dla aktualizacji zasobu --}}
 
                     <div class="form-group">
                         <label for="name">Nazwa użytkownika</label>
@@ -35,22 +35,31 @@
                         <input type="email" class="form-control form-control-admin" id="email" name="email" value="{{ old('email', $user->email) }}" required>
                     </div>
 
+                    <hr>
+
                     <div class="form-group">
-                        <label for="password">Nowe hasło (pozostaw puste, jeśli nie zmieniasz)</label>
+                        <label for="current_password">Twoje bieżące hasło (admina) <small class="text-muted">(wymagane tylko, jeśli zmieniasz hasło powyższego użytkownika)</small></label>
+                        <input type="password" class="form-control form-control-admin" id="current_password" name="current_password">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Nowe hasło dla użytkownika</label>
                         <input type="password" class="form-control form-control-admin" id="password" name="password">
                     </div>
 
                     <div class="form-group">
-                        <label for="password_confirmation">Potwierdź nowe hasło</label>
+                        <label for="password_confirmation">Potwierdź nowe hasło dla użytkownika</label>
                         <input type="password" class="form-control form-control-admin" id="password_confirmation" name="password_confirmation">
                     </div>
+                    <hr>
 
                     <div class="form-group form-check">
+                        <input type="hidden" name="is_admin" value="0"> {{-- Domyślna wartość, jeśli checkbox nie jest zaznaczony --}}
                         <input type="checkbox" class="form-check-input" id="is_admin" name="is_admin" value="1" {{ old('is_admin', $user->is_admin) ? 'checked' : '' }}>
                         <label class="form-check-label" for="is_admin">Czy administrator?</label>
                     </div>
 
-                    <button type="submit" class="btn btn-admin-warning"><i class="fas fa-save mr-1"></i> Zaktualizuj Użytkownika</button>
+                    <button type="submit" class="btn btn-admin-primary"><i class="fas fa-save mr-1"></i> Zaktualizuj Użytkownika</button>
                     <a href="{{ route('admin.users.index') }}" class="btn btn-admin-secondary"><i class="fas fa-times mr-1"></i> Anuluj</a>
                 </form>
             </div>

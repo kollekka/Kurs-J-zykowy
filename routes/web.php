@@ -35,18 +35,22 @@ Route::get('/course/{id}', [CourseController::class, 'show'])->name('course.show
 Route::get('/course/{id}/enroll', [EnrollmentController::class, 'create'])->name('enroll.show');
 
 Route::post('/enrollment', [EnrollmentController::class, 'store'])->name('enrollment.store');
-Route::get('/user/profile', [UserController::class, 'profile'])->name('user.profile');
 
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
 
-Route::put('/user/update', [UserController::class, 'update'])->name('user.update');
-Route::post('/course/{id}', [OpinionsController::class, 'store'])->name('opinions.store');
+
+Route::middleware(['auth', \App\Http\Middleware\UserMiddleware::class])->group(function () {
+    Route::get('/user/profile', [UserController::class, 'profile'])->name('user.profile');
+    Route::put('/user/profile/update', [UserController::class, 'update'])->name('user.update'); 
+    Route::post('/course/{course}/opinions', [OpinionsController::class, 'store'])->name('opinions.store'); 
+    Route::delete('/courses/{course}/unenroll', [EnrollmentController::class, 'destroyByUser'])->name('courses.unenroll')->middleware('auth');
+});
 
 Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('dashboard');
 
-    Route::resource('users', UserController::class);
+    Route::resource('users', UserController::class)->except(['update']);
     Route::resource('courses', CourseController::class);
     Route::resource('instructors', InstructorController::class);
     Route::resource('lessons', LessonController::class);
@@ -54,8 +58,9 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix
     Route::resource('opinions', OpinionsController::class)->only(['index', 'edit', 'update', 'destroy']);
     Route::resource('payments', PaymentController::class);
 
-    
+    Route::put('users/{user}', [UserController::class, 'updateAdmin'])->name('users.update');
     Route::get('opinions/create-by-admin', [OpinionsController::class, 'createForAdmin'])->name('opinions.createForAdmin');
     Route::post('opinions/store-by-admin', [OpinionsController::class, 'storeForAdmin'])->name('opinions.storeForAdmin');
     Route::get('/courses', [CourseController::class, 'adminIndex'])->name('courses.index');
+
 });

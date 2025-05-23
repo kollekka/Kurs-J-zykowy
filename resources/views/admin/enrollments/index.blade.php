@@ -34,7 +34,7 @@
                     <td>{{ $enrollment->enrollment_date ? \Carbon\Carbon::parse($enrollment->enrollment_date)->format('d.m.Y H:i') : '-' }}</td>
                     <td><span class="badge badge-{{ $enrollment->status == 'active' ? 'success' : ($enrollment->status == 'pending' ? 'warning' : ($enrollment->status == 'completed' ? 'info' : 'secondary')) }}">{{ ucfirst($enrollment->status) }}</span></td>
                     <td class="action-buttons">
-                        <a href="{{ route('admin.enrollments.edit', $enrollment->id) }}" class="btn btn-admin-warning btn-sm"><i class="fas fa-edit"></i> Zmień Status</a>
+                        <a href="{{ route('admin.enrollments.edit', $enrollment->id) }}" class="btn btn-admin-warning btn-sm"><i class="fas fa-edit"></i> Edytuj</a>
                         <form action="{{ route('admin.enrollments.destroy', $enrollment->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Czy na pewno chcesz usunąć ten zapis?');">
                             @csrf
                             @method('DELETE')

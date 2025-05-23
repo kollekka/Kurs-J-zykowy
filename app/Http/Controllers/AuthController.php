@@ -7,17 +7,14 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    // Wyświetlanie formularza logowania
     public function showLoginForm()
     {
         return view('login');
     }
-
-    // Obsługa logowania
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'email' => 'required|email|exists:users,email',
+            'name' => 'required|string|exists:users,name',
             'password' => 'required',
         ]);
 

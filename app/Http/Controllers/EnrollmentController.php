@@ -23,13 +23,11 @@ class EnrollmentController extends Controller
             return view('admin.enrollments.index', compact('enrollments'));
         } else {
             $enrollments = Auth::user()->enrollments()->with('course')->latest()->paginate(10);
-            return view('user.enrollments.index', compact('enrollments')); // np. user/enrollments/index.blade.php
+            return view('user', compact('enrollments')); 
         }
     }
 
-    /**
-     * Show the form for creating a new resource (admin).
-     */
+  
     public function create()
     {
         
@@ -38,9 +36,7 @@ class EnrollmentController extends Controller
         return view('admin.enrollments.create', compact('users', 'courses'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+  
     public function store(StoreEnrollmentByAdminRequest $request)
     {
        
@@ -69,8 +65,8 @@ class EnrollmentController extends Controller
             return redirect()->route('main')->with('error', 'Nie masz uprawnień do tej akcji.');
         }
         $enrollment->load(['user', 'course']); 
-        $users = User::orderBy('name')->all();
-        $courses = Course::orderBy('name')->all();
+        $users = User::orderBy('name')->get();
+        $courses = Course::orderBy('name')->get();
         return view('admin.enrollments.edit', compact('enrollment', 'users', 'courses'));
     }
 
@@ -92,5 +88,24 @@ class EnrollmentController extends Controller
             return redirect()->route('admin.enrollments.index')->with('success', 'Zapis został usunięty/anulowany.');
         }
         return redirect()->route('user.profile')->with('success', 'Twój zapis na kurs został anulowany.');
+    }
+
+    public function destroyByUser(Course $course)
+    {
+        $user = Auth::user();
+        $enrollment = Enrollment::where('user_id', $user->id)
+                                ->where('course_id', $course->id)
+                                ->first();
+
+        if ($enrollment) {
+            if (now() < $course->end_date) {
+                $enrollment->delete();
+                return redirect()->route('user.profile')->with('success', 'Pomyślnie zrezygnowano z kursu.');
+            } else {
+                return redirect()->route('user.profile')->with('error', 'Nie można zrezygnować z kursu, który już się zakończył.');
+            }
+        }
+
+        return redirect()->route('user.profile')->with('error', 'Nie znaleziono zapisu na ten kurs lub wystąpił błąd.');
     }
 }

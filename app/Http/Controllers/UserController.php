@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\UpdateUserProfileRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
+use App\Http\Requests\UpdateUserByAdminRequest;
 
 
 class UserController extends Controller
@@ -16,8 +17,6 @@ class UserController extends Controller
     public function profile()
     {
         $user = Auth::user();
-        // Jeśli użytkownik jest zalogowany, $user zawsze będzie obiektem.
-        // Jeśli nie ma kursów, $user->courses będzie pustą kolekcją.
         $courses = $user->courses;
 
         return view('user', compact('user', 'courses'));
@@ -42,12 +41,9 @@ class UserController extends Controller
     public function index()
     {
         $users = User::paginate(15);
-        return view('admin.users.index', compact('users')); // Zakładamy, że istnieje taki widok
+        return view('admin.users.index', compact('users')); 
     }
 
-    /**
-     * Wyświetla formularz do tworzenia nowego użytkownika (dla administratora).
-     */
     public function create()
     {
         return view('admin.users.create'); 
@@ -59,9 +55,6 @@ class UserController extends Controller
     }
 
 
-    /**
-     * Zapisuje nowego użytkownika w bazie danych (dla administratora).
-     */
     public function store(StoreUserRequest $request)
     {
         User::create([
@@ -80,5 +73,23 @@ class UserController extends Controller
         }
         $user->delete();
         return redirect()->route('admin.users.index')->with('success', 'Użytkownik został usunięty.');
+    }
+
+    public function updateAdmin(UpdateUserByAdminRequest $request, User $user)
+    {
+        
+        $dataToUpdate = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'is_admin' => $request->boolean('is_admin'),
+        ];
+
+        if ($request->filled('password')) {
+            $dataToUpdate['password'] = Hash::make($request->password);
+        }
+
+        $user->update($dataToUpdate);
+
+        return redirect()->route('admin.users.index')->with('success', 'Dane użytkownika zostały pomyślnie zaktualizowane.');
     }
 }

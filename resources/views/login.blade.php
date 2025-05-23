@@ -177,8 +177,8 @@
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
                     <div class="form-group">
-                        <label for="email"><i class="fas fa-envelope mr-2"></i>Email:</label>
-                        <input type="email" id="email" name="email" class="form-control" required autofocus>
+                        <label for="name"><i class="fas fa-user mr-2"></i>Nazwa użytkownika:</label>
+                        <input type="text" id="name" name="name" class="form-control" value="{{ old('name') }}" required autofocus>
                     </div>
 
                     <div class="form-group">

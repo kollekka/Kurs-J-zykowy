@@ -11,7 +11,6 @@ class RegisterUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // Każdy może zarejestrować się w systemie
         return true;
     }
 
@@ -23,7 +22,7 @@ class RegisterUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:users,name',
             'email' => 'required|string|email|max:255',
             'password' => 'required|string|min:4|confirmed', 
         ];

@@ -14,7 +14,6 @@ class UpdateUserProfileRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // Zakładamy, że tylko zalogowany użytkownik może aktualizować swój profil
         return Auth::check();
     }
 
@@ -25,25 +24,17 @@ class UpdateUserProfileRequest extends FormRequest
      */
     public function rules(): array
     {
-        $user = $this->user(); // Pobieramy zalogowanego użytkownika
+        $user = $this->user(); 
 
         return [
-            'name' => 'required|string|max:255',
+            'name' => ['required', 'string', 'max:255', Rule::unique('users', 'name')->ignore($user->id)],
             'email' => [
                 'required',
                 'string',
                 'email',
                 'max:255',
             ],
-            'password' => 'nullable|string|min:8|confirmed', // 'confirmed' wymaga pola 'password_confirmation' w formularzu
-            'current_password' => [
-                'required', // Wymagane do każdej aktualizacji profilu
-                function ($attribute, $value, $fail) use ($user) {
-                    if (!Hash::check($value, $user->password)) {
-                        $fail(__('Hasło obecne jest nieprawidłowe.'));
-                    }
-                },
-            ],
+            'password' => 'nullable|string|min:8|confirmed', 
         ];
     }
 }

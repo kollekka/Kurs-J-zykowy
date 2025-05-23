@@ -233,7 +233,9 @@
                         <button class="btn btn-secondary" disabled>Jesteś już zapisany</button>
                     @elseif (count($course->enrollments) >= ($course->group_size))
                         <button class="btn btn-secondary" disabled>Brak wolnych miejsc</button>
-                    @elseif($course->start_date < Auth::user()->courses->first()->end_date)
+                    @elseif($course->start_date < now())
+                        <button class="btn btn-secondary" disabled>Kurs został zakończony</button
+                    @elseif((Auth::user()->courses->first()?->end_date) && ($course->start_date < Auth::user()->courses->first()->end_date))
                         <button class="btn btn-secondary" disabled>Występuje Kolizja Kursów</button>
                     @elseif(Auth::user())
                         <a href="{{ route('enroll.show', $course->id) }}" class="btn btn-primary">Zapisz się na kurs</a>
@@ -242,7 +244,6 @@
                 </div>
             </div>
 
-            <!-- Sekcja instruktora i komentarzy -->
             <div class="col-md-4">
                 <!-- Instruktor -->
                 <div class="card mb-4">

@@ -11,9 +11,7 @@ use App\Models\User;
 
 class PaymentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+   
     public function index(Request $request)
     {
         
@@ -29,9 +27,7 @@ class PaymentController extends Controller
         return view('admin.payments.create', compact('users')); 
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    
     public function store(StorePaymentRequest $request)
     {
         Payment::create($request->validated());
@@ -39,27 +35,17 @@ class PaymentController extends Controller
         return redirect()->route('admin.payments.index')->with('success', 'Płatność została pomyślnie dodana.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Payment $payment)
     {
         $payment->load(['user', 'enrollment']);
-        return view('admin.payments.show', compact('payment')); 
+        return view('admin.payments.index', compact('payment')); 
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Payment $payment)
     {
         $users = User::orderBy('name')->get();
         return view('admin.payments.edit', compact('payment', 'users')); 
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdatePaymentRequest $request, Payment $payment)
     {
         $payment->update($request->validated());
@@ -67,9 +53,6 @@ class PaymentController extends Controller
         return redirect()->route('admin.payments.index')->with('success', 'Płatność została pomyślnie zaktualizowana.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Payment $payment)
     {
         
