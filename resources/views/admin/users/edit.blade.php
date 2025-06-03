@@ -1,6 +1,57 @@
 @extends('layouts.admin')
 
 @section('title', 'Edytuj Użytkownika')
+@push('styles')
+<style>
+    /* Profile Image Styles - można przenieść do globalnego CSS admina */
+    .profile-image-container {
+        text-align: center;
+        margin-bottom: 25px;
+        position: relative;
+    }
+    .profile-image-wrapper {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 10px; /* Mniejszy margines dla panelu admina */
+    }
+    .profile-image, .default-profile-icon {
+        width: 100px; /* Mniejszy rozmiar dla panelu admina */
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #ddd; /* Subtelniejsza ramka */
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .default-profile-icon {
+        background: #e9ecef;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #495057;
+        font-size: 40px;
+    }
+    .image-upload-overlay {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background: var(--admin-primary-color, #007bff); /* Użyj zmiennej CSS admina jeśli istnieje */
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        cursor: pointer;
+        border: 2px solid white;
+    }
+    .custom-file-input-admin { /* Unikalna klasa dla inputu admina */
+        opacity: 0;
+        position: absolute;
+        z-index: -1;
+    }
+</style>
+@endpush
 
 @section('content')
 <div class="row justify-content-center">
@@ -21,9 +72,37 @@
                     </div>
                 @endif
 
-                <form action="{{ route('admin.users.update', $user->id) }}" method="POST">
+                <form action="{{ route('admin.users.update', $user->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
+
+                    <!-- Profile Image Section -->
+                    <div class="form-group">
+                        <label>Zdjęcie profilowe</label>
+                        <div class="profile-image-container">
+                            <div class="profile-image-wrapper">
+                                @if($user->profile_image && Storage::disk('public')->exists($user->profile_image))
+                                    <img src="{{ asset('storage/' . $user->profile_image) }}" 
+                                         alt="Profile Image" 
+                                         class="profile-image" 
+                                         id="adminProfileDisplay">
+                                @else
+                                    <div class="default-profile-icon" id="adminProfileDisplay">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                @endif
+                                <div class="image-upload-overlay" onclick="document.getElementById('adminProfileImageInput').click()">
+                                    <i class="fas fa-camera"></i>
+                                </div>
+                            </div>
+                            <input type="file"
+                                   id="adminProfileImageInput"
+                                   name="profile_image"
+                                   accept="image/*"
+                                   class="custom-file-input-admin"
+                                   onchange="previewAdminImage(this)">
+                        </div>
+                    </div>
 
                     <div class="form-group">
                         <label for="name">Nazwa użytkownika</label>
@@ -64,6 +143,51 @@
                 </form>
             </div>
         </div>
+
+        @if($user->profile_image && Storage::disk('public')->exists($user->profile_image))
+        <div class="card card-admin mt-3">
+            <div class="card-body text-center">
+                <form action="{{ route('admin.users.remove-profile-image', $user->id) }}" method="POST" onsubmit="return confirm('Czy na pewno chcesz usunąć zdjęcie profilowe tego użytkownika?');">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger btn-sm">
+                        <i class="fas fa-trash-alt"></i> Usuń zdjęcie profilowe
+                    </button>
+                </form>
+            </div>
+        </div>
+        @endif
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    function previewAdminImage(input) {
+        const currentDisplayElement = document.getElementById('adminProfileDisplay');
+
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                if (currentDisplayElement.tagName === 'IMG') {
+                    // If it's already an <img>, just update its src
+                    currentDisplayElement.src = e.target.result;
+                } else {
+                    // If it's a <div> (default icon), replace it with a new <img>
+                    const newImg = document.createElement('img');
+                    newImg.src = e.target.result;
+                    newImg.alt = "Profile Preview";
+                    // Użyj klas zdefiniowanych w <style> lub globalnych stylach admina
+                    newImg.className = 'profile-image'; 
+                    newImg.id = 'adminProfileDisplay'; // Zachowaj ID dla przyszłych podglądów
+
+                    // Replace the old div with the new image
+                    currentDisplayElement.parentNode.replaceChild(newImg, currentDisplayElement);
+                }
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+@endpush

@@ -123,8 +123,121 @@
             color: white;
             transform: scale(1.05);
         }
-        .form-control{
-            background-color:rgb(230, 230, 230);
+
+        .form-control {
+            background-color: rgb(230, 230, 230);
+        }
+
+        /* Profile Image Styles */
+        .profile-image-container {
+            text-align: center;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .profile-image-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .profile-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--accent-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .profile-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .default-profile-icon {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--main-color), var(--accent-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 48px;
+            border: 4px solid var(--accent-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .default-profile-icon:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .image-upload-overlay {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: var(--accent-color);
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .image-upload-overlay:hover {
+            background: var(--hover-color);
+            transform: scale(1.1);
+        }
+
+        .custom-file-input {
+            opacity: 0;
+            position: absolute;
+            z-index: -1;
+        }
+
+        .image-preview {
+            margin-top: 10px;
+            display: none;
+        }
+
+        .image-preview img {
+            max-width: 100px;
+            max-height: 100px;
+            border-radius: 8px;
+            border: 2px solid var(--accent-color);
+        }
+
+        .remove-image-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 12px;
+        }
+
+        .remove-image-btn:hover {
+            background: #c0392b;
+            transform: scale(1.1);
         }
     </style>
 </head>
@@ -172,9 +285,37 @@
                         <h3 class="mb-0">Your Profile</h3>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('user.update') }}" method="POST">
+                        <form action="{{ route('user.update') }}" method="POST" enctype="multipart/form-data"> {{-- Moved form tag here and added enctype --}}
                             @csrf
                             @method('PUT')
+
+                            <!-- Profile Image Section -->
+                        <div class="profile-image-container">
+                            <div class="profile-image-wrapper">
+                                @if($user->profile_image && Storage::disk('public')->exists($user->profile_image))
+                                    <img src="{{ asset('storage/' . $user->profile_image) }}" 
+                                        alt="Profile Image" 
+                                        class="profile-image" 
+                                        id="profileDisplay">
+                                @else
+                                    <div class="default-profile-icon" id="profileDisplay">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                @endif
+                                <div class="image-upload-overlay" onclick="document.getElementById('profileImageInput').click()">
+                                    <i class="fas fa-camera"></i>
+                                </div>
+                            </div>
+                            <p class="text-muted mb-0">Click camera to change photo</p>
+                        </div>
+
+                            <!-- Hidden file input -->
+                            <input type="file"
+                                   id="profileImageInput"
+                                   name="profile_image"
+                                   accept="image/*"
+                                   class="custom-file-input"
+                                   onchange="previewImage(this)">
                             <div class="form-group">
                                 <label for="name">Name</label>
                                 <input type="text" id="name" name="name" 
@@ -189,11 +330,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="password">New Password (optional)</label>
-                                <input type="password" id="password" name="password" 
+                                <input type="password" id="password" name="password"
                                        class="form-control border-0 rounded-pill shadow-sm">
                             </div>
                             <div class="form-group">
-                                <label for="current_password">Current Password</label>
+                                <label for="current_password">Current Password (to save changes)</label>
                                 <input type="password" id="current_password" name="current_password" 
                                        class="form-control border-0 rounded-pill shadow-sm" required>
                             </div>
@@ -210,6 +351,17 @@
                                 Save Changes
                             </button>
                         </form>
+
+                        @if($user->profile_image && Storage::disk('public')->exists($user->profile_image))
+                            <form action="{{ route('user.remove-profile-image') }}" method="POST" class="text-center mt-3">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-link btn-sm text-danger p-0"
+                                        onclick="return confirm('Are you sure you want to remove your profile photo?')">
+                                    <i class="fas fa-trash-alt"></i> Remove photo
+                                </button>
+                            </form>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -268,7 +420,48 @@
             </div>
         </div>
     </div>
+        </div>
+    </div>
 
-    <!-- Skrypty pozostają bez zmian -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
+    <script>
+        function previewImage(input) {
+            const currentDisplayElement = document.getElementById('profileDisplay');
+
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    if (currentDisplayElement.tagName === 'IMG') {
+                      
+                        currentDisplayElement.src = e.target.result;
+                    } else {
+                        
+                        const newImg = document.createElement('img');
+                        newImg.src = e.target.result;
+                        newImg.alt = "Profile Preview";
+                        newImg.className = 'profile-image'; 
+                        newImg.id = 'profileDisplay';       
+                        currentDisplayElement.parentNode.replaceChild(newImg, currentDisplayElement);
+                    }
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = document.querySelectorAll('.form-control');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.style.transform = 'scale(1.02)';
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+        });
+    </script>
 </body>
 </html>

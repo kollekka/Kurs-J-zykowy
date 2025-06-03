@@ -183,6 +183,9 @@
                 <li class="nav-item {{ request()->routeIs('admin.opinions.*') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('admin.opinions.index') }}"><i class="fas fa-comments mr-1"></i>Opinie</a>
                 </li>
+                <li class="nav-item {{ request()->routeIs('admin.statistics.index') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('admin.statistics.index') }}"><i class="fas fa-chart-bar mr-1"></i>Statystyki</a>
+                </li>
             </ul>
             <ul class="navbar-nav ml-auto">
                 @if (Auth::check())
@@ -208,5 +211,6 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
+    @stack('scripts')
 </body>
 </html>

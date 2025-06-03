@@ -27,7 +27,7 @@ class UpdateUserByAdminRequest extends FormRequest
         $userId = $this->route('user')->id; 
 
         return [
-            'name' => ['required', 'string', 'max:255', 'unique:users,name'],
+            'name' => ['required', 'string', 'max:255', Rule::unique('users', 'name')->ignore($userId)],
             'email' => ['required', 'string', 'email', 'max:255'],
             'password' => ['nullable', 'string', 'min:8', 'confirmed'], 
             'current_password' => [ 

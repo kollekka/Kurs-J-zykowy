@@ -46,11 +46,13 @@ Route::middleware(['auth', \App\Http\Middleware\UserMiddleware::class])->group(f
     Route::delete('/courses/{course}/unenroll', [EnrollmentController::class, 'destroyByUser'])->name('courses.unenroll');
     Route::get('/course/{course}/enroll', [EnrollmentController::class, 'enrollUser'])->name('course.enrollUser');
     Route::post('/enrollment/user-store', [EnrollmentController::class, 'storeUserEnrollment'])->name('enrollment.user.store');
+    Route::delete('user/profile/remove-image', [UserController::class, 'removeProfileImage'])->name('user.remove-profile-image');
     
 });
 
 Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('dashboard');
+    Route::get('/statistics', [AdminController::class, 'statistics'])->name('statistics.index');
 
     Route::resource('users', UserController::class)->except(['update']);
     Route::resource('courses', CourseController::class);
@@ -64,5 +66,6 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix
     Route::get('opinions/create-by-admin', [OpinionsController::class, 'createForAdmin'])->name('opinions.createForAdmin');
     Route::post('opinions/store-by-admin', [OpinionsController::class, 'storeForAdmin'])->name('opinions.storeForAdmin');
     Route::get('/courses', [CourseController::class, 'adminIndex'])->name('courses.index');
+    Route::delete('users/{user}/remove-profile-image', [UserController::class, 'removeProfileImageAdmin'])->name('users.remove-profile-image');
 
 });
