@@ -20,6 +20,7 @@ class UserMiddleware
             return $next($request);
         }
 
-        return redirect()->route('login')->with('error', 'Musisz być zalogowany, aby uzyskać dostęp do tej strony.');
+        session()->flash('error_popup', 'Brak uprawnień do dostępu do panelu administratora. Kod błędu: 403');
+        return redirect('/main');
     }
 }

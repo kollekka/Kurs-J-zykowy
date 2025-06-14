@@ -1,3 +1,4 @@
+<!-- filepath: e:\projekt laravel\Kurs-J-zykowy\resources\views\errors\419.blade.php -->
 @extends('layouts.app')
 
 @push('styles')
@@ -39,14 +40,29 @@
 </style>
 @endpush
 
-@section('title', 'Strona nie znaleziona')
+@section('title', 'Strona wygasła')
 
 @section('content')
 <div class="container">
     <div class="error-container text-center">
-        <h1>404</h1>
-        <p>Strona, której szukasz, nie została znaleziona.</p>
-        <a href="{{ route('main') }}" class="btn btn-primary">Powrót do strony głównej</a>
+        <h1>419</h1>
+        <p>Strona wygasła. Twoja sesja mogła wygasnąć.<br>
+           Za 5 sekund nastąpi automatyczne wylogowanie.</p>
     </div>
 </div>
+
+<!-- Ukryty formularz wylogowania -->
+<form id="logoutForm" action="{{ route('logout') }}" method="POST" style="display: none;">
+    @csrf
+</form>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+        document.getElementById('logoutForm').submit();
+    }, 5000); 
+});
+</script>
+@endpush

@@ -26,12 +26,12 @@
 
                     <div class="form-group">
                         <label for="name">Nazwa Kursu</label>
-                        <input type="text" class="form-control form-control-admin" id="name" name="name" value="{{ old('name') }}" required>
+                        <input type="text" class="form-control form-control-admin" id="name" name="name" value="{{ old('name') }}" required maxlength="100">
                     </div>
 
                     <div class="form-group">
                         <label for="language">Język</label>
-                        <input type="text" class="form-control form-control-admin" id="language" name="language" value="{{ old('language') }}" required>
+                        <input type="text" class="form-control form-control-admin" id="language" name="language" value="{{ old('language') }}" required maxlength="50"> 
                     </div>
 
                     <div class="form-group">
@@ -49,13 +49,13 @@
 
                     <div class="form-group">
                         <label for="description">Opis</label>
-                        <textarea class="form-control form-control-admin" id="description" name="description" rows="4">{{ old('description') }}</textarea>
+                        <textarea maxlength="1000" class="form-control form-control-admin" id="description" name="description" rows="4">{{ old('description') }}</textarea>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="start_date">Data rozpoczęcia</label>
-                            <input type="date" class="form-control form-control-admin" id="start_date" name="start_date" value="{{ old('start_date') }}" required>
+                            <input type="date" class="form-control form-control-admin" id="start_date" name="start_date" value="{{ old('start_date') }}" required min="{{ now()->toDateString() }}">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="end_date">Data zakończenia</label>
@@ -66,11 +66,11 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="price">Cena (PLN)</label>
-                            <input type="number" class="form-control form-control-admin" id="price" name="price" value="{{ old('price') }}" step="0.01" min="0" required>
+                            <input type="number" class="form-control form-control-admin" id="price" name="price" value="{{ old('price') }}" step="0.01" min="0"  max="1000" required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="group_size">Maksymalny rozmiar grupy</label>
-                            <input type="number" class="form-control form-control-admin" id="group_size" name="group_size" value="{{ old('group_size') }}" min="1" required>
+                            <input type="number" class="form-control form-control-admin" id="group_size" name="group_size" value="{{ old('group_size') }}" min="5" max="20" required>
                         </div>
                     </div>
 

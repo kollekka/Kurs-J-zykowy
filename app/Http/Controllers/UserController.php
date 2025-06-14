@@ -11,44 +11,75 @@ use App\Http\Requests\UpdateUserProfileRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use App\Http\Requests\UpdateUserByAdminRequest;
+use App\Models\Course;
 
 
 class UserController extends Controller
 {
-    public function profile()
+    public function profile(Request $request)
     {
         $user = Auth::user();
-        $courses = $user->courses;
 
-        return view('user', compact('user', 'courses'));
+    
+        $filter = $request->input('filter', 'upcoming');
+        $languages = Course::distinct()->pluck('language')->toArray();
+
+        $search = $request->input('search');
+        $language = $request->input('language');
+        $sort = $request->input('sort', 'start_date'); 
+        $order = $request->input('order', 'asc'); 
+
+        
+        $query = $user->courses();
+
+        if ($filter === 'upcoming') {
+            $query->where('start_date', '>', now());
+        } elseif ($filter === 'past') {
+            $query->where('end_date', '<', now());
+        }
+
+       
+        if ($search) {
+            $query->where('name', 'like', '%' . $search . '%');
+        }
+
+       
+        if ($language) {
+            $query->where('language', $language);
+        }
+
+       
+        if ($sort === 'rating_asc') {
+        $query->withAvg('opinions', 'rating')->orderBy('opinions_avg_rating', 'asc');
+        } elseif ($sort === 'rating_desc') {
+            $query->withAvg('opinions', 'rating')->orderBy('opinions_avg_rating', 'desc');
+        } elseif ($sort === 'start_date_desc') {
+            $query->orderBy('start_date', 'desc');
+        } else {
+            $query->orderBy('start_date', 'asc'); 
+        }
+
+        $courses = $query->get();
+
+        return view('user', compact('user', 'courses', 'filter', 'search', 'language', 'sort', 'order','languages'));
     }
 
     public function update(UpdateUserProfileRequest $request)
     {
-        $user = Auth::user();
+        $user = Auth::user(); 
 
-        $user->name = $request->name;
-        $user->email = $request->email;
+        $user->update([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => $request->filled('password') ? bcrypt($request->input('password')) : $user->password,
+        ]);
 
-        // Handle profile image upload
         if ($request->hasFile('profile_image')) {
-            // Delete old profile image if it exists
-            if ($user->profile_image && Storage::disk('public')->exists($user->profile_image)) {
-                Storage::disk('public')->delete($user->profile_image);
-            }
-
-            // Store new profile image
-            $imagePath = $request->file('profile_image')->store('profile_images', 'public');
-            $user->profile_image = $imagePath;
+            $path = $request->file('profile_image')->store('profile_images', 'public');
+            $user->update(['profile_image' => $path]);
         }
 
-        if ($request->filled('password')) {
-            $user->password = Hash::make($request->password);
-        }
-
-        $user->save();
-
-        return redirect()->route('user.profile')->with('success', 'Profil został zaktualizowany.');
+        return redirect()->back()->with('success', 'Profile updated successfully.');
     }
 
     public function index()

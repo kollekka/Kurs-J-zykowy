@@ -13,6 +13,7 @@ class AdminMiddleware
             return $next($request);
         }
 
-        return redirect('/main')->with('error', 'Nie masz dostępu do tej strony.');
+        session()->flash('error_popup', 'Brak uprawnień do dostępu do panelu administratora. Kod błędu: 403');
+        return redirect('/main');
     }
 }

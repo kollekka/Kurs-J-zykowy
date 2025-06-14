@@ -239,6 +239,61 @@
             background: #c0392b;
             transform: scale(1.1);
         }
+       
+    .filter-form {
+        background-color: #f8f9fa; 
+        border: 1px solid #ddd; 
+        border-radius: 8px; 
+        padding: 15px; 
+        margin-bottom: 20px; 
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .filter-form label {
+        font-weight: bold;
+        color: #333; 
+    }
+
+    
+    .filter-form select {
+        border: 1px solid #ccc; 
+        border-radius: 5px; 
+        padding: 8px 12px; 
+        font-size: 14px; 
+        color: #555; 
+        background-color: #fff;
+        transition: border-color 0.3s ease;
+    }
+
+    .filter-form select:focus {
+        border-color: #007bff; 
+        outline: none; 
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); 
+    }
+
+    
+    .filter-form button {
+        background-color: #007bff; 
+        color: #fff; 
+        border: none; 
+        border-radius: 5px; 
+        padding: 10px 20px; 
+        font-size: 14px; 
+        cursor: pointer; 
+        transition: background-color 0.3s ease;
+    }
+
+    .filter-form button:hover {
+        background-color: #0056b3; 
+    }
+
+    .filter-form .btn-secondary {
+        background-color: #6c757d; 
+    }
+
+    .filter-form .btn-secondary:hover {
+        background-color: #5a6268; 
+    }
     </style>
 </head>
 <body>
@@ -366,58 +421,116 @@
                 </div>
             </div>
 
-            <!-- Lista kursów -->
-            <div class="col-md-8">
-                <h3 class="mb-4" style="color: var(--main-color);">Your Courses</h3>
-                @if($courses->isEmpty())
-                    <div class="alert alert-info rounded-pill">
-                        You are not enrolled in any courses yet.
+        
+            
+<div class="col-md-8">
+    <h3 class="mb-4" style="color: var(--main-color);">Your Courses</h3>
+
+    <!-- Formularz wyszukiwania i sortowania -->
+    <form action="{{ route('user.profile') }}" method="GET" class="mb-4">
+        <div class="card shadow-sm border-0 rounded-lg mb-3">
+            <div class="card-body py-3">
+                <div class="form-row align-items-end">
+                    <div class="form-group col-md-4 mb-3 mb-md-0">
+                        <label for="search" class="font-weight-bold" style="color: var(--main-color);">Search by Name:</label>
+                        <input type="text" name="search" id="search" class="form-control border-0 rounded-pill shadow-sm"
+                            value="{{ request('search') }}" placeholder="Course name">
                     </div>
-                @else
-                    <ul class="list-group">
-                        @foreach ($courses as $course)
-                        <li class="list-group-item">
-                            <div class="row align-items-center">
-                                <div class="col-md-6 course-divider">
-                                    <h5 class="text-accent">{{ $course->name }}</h5>
-                                    <p class="mb-1">{{ $course->language }} - {{ $course->level }}</p>
-                                    <small class="text-muted">
-                                        {{ $course->start_date }} to {{ $course->end_date }}
-                                    </small>
-                                    <div class="mt-3 d-flex align-items-center">
-                                        <a href="{{ route('course.show', $course->id) }}" 
-                                           class="btn btn-primary btn-sm rounded-pill">
-                                            View Course
-                                        </a>
-                                        @if (now()->lt(\Carbon\Carbon::parse($course->end_date)))
-                                        <form action="{{ route('courses.unenroll', $course->id) }}" method="POST" class="d-inline ml-2" onsubmit="return confirm('Are you sure you want to unenroll from this course?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm rounded-pill">
-                                                <i class="fas fa-times-circle mr-1"></i>Unenroll
-                                            </button>
-                                        </form>
-                                        @endif
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 pl-4">
-                                    <h6 class="text-muted">Details</h6>
-                                    <p class="mb-1">Group: {{ $course->group_size }}</p>
-                                    <p class="mb-1">Instructor: {{ $course->instructor->full_name }}</p>
-                                    <p class="mb-0">
-                                        Rating: 
-                                        <span class="rating-badge">
-                                            {{ $course->opinions->avg('rating') ? number_format($course->opinions->avg('rating'), 2)." / 5" : 'No ratings yet' }}
-                                        </span>
-                                    </p>
-                                </div>
-                            </div>
-                        </li>
-                        @endforeach
-                    </ul>
-                @endif
+                    <div class="form-group col-md-4 mb-3 mb-md-0">
+                        <label for="language" class="font-weight-bold" style="color: var(--main-color);">Filter by Language:</label>
+                        <select name="language" id="language" class="form-control border-0 rounded-pill shadow-sm">
+                            <option value="">All Languages</option>
+                            @foreach($languages as $language)
+                                <option value="{{ $language }}" {{ request('language') === $language ? 'selected' : '' }}>
+                                    {{ $language }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4 mb-3 mb-md-0">
+                        <label for="sort" class="font-weight-bold" style="color: var(--main-color);">Sort by:</label>
+                        <select name="sort" id="sort" class="form-control border-0 rounded-pill shadow-sm">
+                            <option value="start_date_asc" {{ request('sort') === 'start_date_asc' ? 'selected' : '' }}>Start Date (Ascending)</option>
+                            <option value="start_date_desc" {{ request('sort') === 'start_date_desc' ? 'selected' : '' }}>Start Date (Descending)</option>
+                            <option value="rating_asc" {{ request('sort') === 'rating_asc' ? 'selected' : '' }}>Rating (Ascending)</option>
+                            <option value="rating_desc" {{ request('sort') === 'rating_desc' ? 'selected' : '' }}>Rating (Descending)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row mt-3 align-items-end">
+                    <div class="form-group col-md-4 mb-2 mb-md-0">
+                        <button type="submit" class="btn btn-success btn-block rounded-pill shadow-sm">
+                            <i class="fas fa-filter mr-1"></i>Apply Filters
+                        </button>
+                    </div>
+                    <div class="form-group col-md-4 mb-2 mb-md-0">
+                        <a href="{{ route('user.profile') }}" class="btn btn-secondary btn-block rounded-pill shadow-sm">
+                            <i class="fas fa-undo mr-1"></i>Clear Filters
+                        </a>
+                    </div>
+                    <div class="form-group col-md-4 mb-0">
+                        <select name="filter" id="filter" class="form-control border-0 rounded-pill shadow-sm" onchange="this.form.submit()">
+                            <option value="upcoming" {{ $filter === 'upcoming' ? 'selected' : '' }}>Upcoming Courses</option>
+                            <option value="past" {{ $filter === 'past' ? 'selected' : '' }}>Past Courses</option>
+                        </select>
+                    </div>
+                </div>
             </div>
+        </div>
+    </form>
+
+    @if($courses->isEmpty())
+        <div class="alert alert-info rounded-pill">
+            No courses found in this category.
+        </div>
+    @else
+        <div style="max-height: 600px; overflow-y: auto; border: 1px solid #ddd; border-radius: 5px; padding: 10px;">
+            <ul class="list-group">
+                @foreach ($courses as $course)
+                <li class="list-group-item">
+                    <div class="row align-items-center">
+                        <div class="col-md-6 course-divider">
+                            <h5 class="text-accent">{{ $course->name }}</h5>
+                            <p class="mb-1">{{ $course->language }} - {{ $course->level }}</p>
+                            <p>Start Date: {{ $course->start_date }}</p>
+                            <small class="text-muted">
+                                {{ request('filter') === 'upcoming' ? 'Start: ' . $course->start_date : 'End: ' . $course->end_date }}
+                            </small>
+                            <div class="mt-3 d-flex align-items-center">
+                                <a href="{{ route('course.show', $course->id) }}" 
+                                class="btn btn-primary btn-sm rounded-pill">
+                                    View Course
+                                </a>
+                                @if (now()->lt(\Carbon\Carbon::parse($course->end_date)))
+                                <form action="{{ route('courses.unenroll', $course->id) }}" method="POST" class="d-inline ml-2" onsubmit="return confirm('Are you sure you want to unenroll from this course?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm rounded-pill">
+                                        <i class="fas fa-times-circle mr-1"></i>Unenroll
+                                    </button>
+                                </form>
+                                @endif
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-6 pl-4">
+                            <h6 class="text-muted">Details</h6>
+                            <p class="mb-1">Group: {{ $course->group_size }}</p>
+                            <p class="mb-1">Instructor: {{ $course->instructor->full_name }}</p>
+                            <p class="mb-0">
+                                Rating: 
+                                <span class="rating-badge">
+                                    {{ $course->opinions->avg('rating') ? number_format($course->opinions->avg('rating'), 2)." / 5" : 'No ratings yet' }}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+</div>
         </div>
     </div>
         </div>

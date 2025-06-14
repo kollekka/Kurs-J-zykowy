@@ -50,14 +50,14 @@
 
                     <div class="form-group">
                         <label for="enrollment_date">Data Zapisu</label>
-                        <input type="datetime-local" class="form-control form-control-admin" id="enrollment_date" name="enrollment_date" value="{{ old('enrollment_date', now()->format('Y-m-d\TH:i')) }}" required>
+                        <input type="datetime-local" class="form-control form-control-admin" id="enrollment_date" name="enrollment_date" value="{{ old('enrollment_date', now()->format('Y-m-d\TH:i')) }}" min="{{ now()->format('Y-m-d\TH:i') }}" required>
                     </div>
 
                     <div class="form-group">
                         <label for="status">Status Zapisu</label>
                         <select class="form-control form-control-admin" id="status" name="status" required>
                             @php
-                                $statuses = ['pending', 'active', 'completed', 'cancelled', 'refunded']; // Przykładowe statusy
+                                $statuses = ['active', 'cancelled', 'refunded']; 
                             @endphp
                             @foreach ($statuses as $statusValue)
                                 <option value="{{ $statusValue }}" {{ old('status', 'pending') == $statusValue ? 'selected' : '' }}>{{ ucfirst($statusValue) }}</option>

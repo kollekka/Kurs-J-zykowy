@@ -28,13 +28,11 @@
                     <div class="form-group">
                         <label for="enrollment_id_display">ID Zapisu:</label>
                         <input type="text" class="form-control form-control-admin" id="enrollment_id_display" value="{{ $enrollment->id }}" readonly>
-                        {{-- ID zazwyczaj nie jest edytowalne, ale możemy je wyświetlić --}}
                     </div>
 
                     <div class="form-group">
                         <label for="user_id">Użytkownik</label>
                         <select class="form-control form-control-admin" id="user_id" name="user_id" required>
-                            {{-- Zakładam, że przekażesz $users (wszystkich użytkowników) z kontrolera --}}
                             @foreach ($users as $user)
                                 <option value="{{ $user->id }}" {{ old('user_id', $enrollment->user_id) == $user->id ? 'selected' : '' }}>
                                     {{ $user->name }} ({{ $user->email }})
@@ -64,7 +62,7 @@
                         <label for="status">Status Zapisu</label>
                         <select class="form-control form-control-admin" id="status" name="status" required>
                             @php
-                                $statuses = ['pending', 'active', 'completed', 'cancelled', 'refunded']; // Przykładowe statusy
+                                $statuses = ['active', 'cancelled', 'refunded'];
                             @endphp
                             @foreach ($statuses as $statusValue)
                                 <option value="{{ $statusValue }}" {{ old('status', $enrollment->status) == $statusValue ? 'selected' : '' }}>{{ ucfirst($statusValue) }}</option>

@@ -20,27 +20,27 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Course::factory(10)->create();
         User::factory()->create([
             'name' => 'Adrian',
             'email' => 'adrian@gmail.com',
             'password' => bcrypt('1234'),
             'is_admin'=> true,
         ]);  
-        User::factory()->create([
-            'name' => 'Tomek',
-            'email' => 'tomek@gmail.com',
-            'password' => bcrypt('1234'),
-        ]);  
              
-         $this->call([
-            InstructorSeeder::class,
-            CourseSeeder::class,
-            EnrollmentSeeder::class,
-            PaymentSeeder::class,
-            LessonSeeder::class,
-            OpinionSeeder::class,
-        ]);
+        User::factory()->count(20)->create();
+
+        Instructor::factory()->count(10)->create();
+
+        Course::factory()
+            ->count(15)
+            ->create()
+            ->each(function ($course) {
+                Lesson::factory()->count(5)->create(['course_id' => $course->id]);
+
+                Opinion::factory()->count(3)->create(['course_id' => $course->id]);
+            });
+
+        Enrollment::factory()->count(50)->create();
 
     }
 }

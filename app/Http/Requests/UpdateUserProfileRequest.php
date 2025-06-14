@@ -3,8 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
 class UpdateUserProfileRequest extends FormRequest
@@ -14,7 +12,7 @@ class UpdateUserProfileRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth::check();
+        return true;
     }
 
     /**
@@ -24,18 +22,17 @@ class UpdateUserProfileRequest extends FormRequest
      */
     public function rules(): array
     {
-        $user = $this->user(); 
-
+        $user = $this->user();
         return [
-            'name' => ['required', 'string', 'max:255', Rule::unique('users', 'name')->ignore($user->id)],
+            'name' => 'required|string|max:255',
             'email' => [
                 'required',
-                'string',
                 'email',
                 'max:255',
+                Rule::unique('users', 'email')->ignore($user->email, 'email'),
             ],
-            'password' => 'nullable|string|min:8|confirmed', 
-            'profile_image' => 'nullable|image|max:2028'
+            'password' => 'nullable|min:8|confirmed',
+            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }
 }
