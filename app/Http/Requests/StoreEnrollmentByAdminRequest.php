@@ -27,15 +27,15 @@ class StoreEnrollmentByAdminRequest extends FormRequest
             'user_id' => 'required|exists:users,id',
             'course_id' => 'required|exists:courses,id',
             'enrollment_date' => 'required|date',
-            'status' => 'required|string|in:pending,active,completed,cancelled,refunded', // Dostosuj statusy
+            'status' => 'required|string|in:paid, pending, cancelled', 
         ];
     }
 
     public function messages(): array
     {
         return [
-            'user_id.required' => 'Wybór użytkownika jest wymagany.',
-            'course_id.required' => 'Wybór kursu jest wymagany.',
+            'user_id.required' => 'User selection is required.',
+            'course_id.required' => 'Course selection is required.',
         ];
     }
 }

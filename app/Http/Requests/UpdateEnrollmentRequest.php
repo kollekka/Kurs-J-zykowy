@@ -23,7 +23,7 @@ class UpdateEnrollmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status' => 'required|string|in:pending,active,completed,cancelled,refunded', 
+            'status' => 'required|string|in:active,pending,cancelled', 
         ];
     }
 

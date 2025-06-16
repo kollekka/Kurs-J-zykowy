@@ -39,13 +39,13 @@
 </style>
 @endpush
 
-@section('title', 'Page not found')
+@section('title', 'Method Not Allowed')
 
 @section('content')
 <div class="container">
     <div class="error-container text-center">
-        <h1>404</h1>
-        <p>The page you are looking for could not be found.</p>
+        <h1>405</h1>
+        <p>Sorry, the method used for this request is not allowed for this resource.</p>
         <a href="{{ route('main') }}" class="btn btn-primary">Back to homepage</a>
     </div>
 </div>

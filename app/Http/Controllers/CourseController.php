@@ -31,22 +31,20 @@ class CourseController extends Controller
     {
         $query = Course::query();
 
-        // Filtruj według poziomu zaawansowania
+    
         if ($request->filled('level')) {
             $query->where('level', $request->level);
         }
     
-        // Filtruj według języka
         if ($request->filled('language')) {
             $query->where('language', 'like', '%' . $request->language . '%');
         }
     
-        // Filtruj według maksymalnej ceny
         if ($request->filled('max_price')) {
             $query->where('price', '<=', $request->max_price);
         }
     
-        // Paginacja
+       
         $courses = $query->paginate(6)->appends($request->query());
         $languages = Course::Select('language')->distinct()->pluck('language');
     

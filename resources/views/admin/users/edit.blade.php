@@ -1,9 +1,9 @@
 @extends('layouts.admin')
 
-@section('title', 'Edytuj Użytkownika')
+@section('title', 'Edit User')
 @push('styles')
 <style>
-    /* Profile Image Styles - można przenieść do globalnego CSS admina */
+    /* Profile Image Styles - can be moved to global admin CSS */
     .profile-image-container {
         text-align: center;
         margin-bottom: 25px;
@@ -12,14 +12,14 @@
     .profile-image-wrapper {
         position: relative;
         display: inline-block;
-        margin-bottom: 10px; /* Mniejszy margines dla panelu admina */
+        margin-bottom: 10px; /* Smaller margin for admin panel */
     }
     .profile-image, .default-profile-icon {
-        width: 100px; /* Mniejszy rozmiar dla panelu admina */
+        width: 100px; /* Smaller size for admin panel */
         height: 100px;
         border-radius: 50%;
         object-fit: cover;
-        border: 3px solid #ddd; /* Subtelniejsza ramka */
+        border: 3px solid #ddd; /* Subtle border */
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     .default-profile-icon {
@@ -34,7 +34,7 @@
         position: absolute;
         bottom: 0;
         right: 0;
-        background: var(--admin-primary-color, #007bff); /* Użyj zmiennej CSS admina jeśli istnieje */
+        background: var(--admin-primary-color, #007bff); /* Use admin CSS variable if exists */
         border-radius: 50%;
         width: 30px;
         height: 30px;
@@ -45,7 +45,7 @@
         cursor: pointer;
         border: 2px solid white;
     }
-    .custom-file-input-admin { /* Unikalna klasa dla inputu admina */
+    .custom-file-input-admin { /* Unique class for admin input */
         opacity: 0;
         position: absolute;
         z-index: -1;
@@ -58,12 +58,12 @@
     <div class="col-md-8">
         <div class="card card-admin">
             <div class="card-header">
-                <h4 class="mb-0"><i class="fas fa-user-edit mr-2"></i>Edytuj Użytkownika: {{ $user->name }}</h4>
+                <h4 class="mb-0"><i class="fas fa-user-edit mr-2"></i>Edit User: {{ $user->name }}</h4>
             </div>
             <div class="card-body">
                 @if ($errors->any())
                     <div class="alert alert-danger">
-                        <strong>Wystąpiły błędy:</strong>
+                        <strong>Errors occurred:</strong>
                         <ul>
                             @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
@@ -78,7 +78,7 @@
 
                     <!-- Profile Image Section -->
                     <div class="form-group">
-                        <label>Zdjęcie profilowe</label>
+                        <label>Profile Image</label>
                         <div class="profile-image-container">
                             <div class="profile-image-wrapper">
                                 @if($user->profile_image && Storage::disk('public')->exists($user->profile_image))
@@ -105,29 +105,29 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="name">Nazwa użytkownika</label>
+                        <label for="name">Username</label>
                         <input type="text" class="form-control form-control-admin" id="name" name="name" value="{{ old('name', $user->name) }}" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="email">Adres email</label>
+                        <label for="email">Email address</label>
                         <input type="email" class="form-control form-control-admin" id="email" name="email" value="{{ old('email', $user->email) }}" required>
                     </div>
 
                     <hr>
 
                     <div class="form-group">
-                        <label for="current_password">Twoje bieżące hasło (admina) <small class="text-muted">(wymagane tylko, jeśli zmieniasz hasło powyższego użytkownika)</small></label>
+                        <label for="current_password">Your current password (admin) <small class="text-muted">(required only if you change the above user's password)</small></label>
                         <input type="password" class="form-control form-control-admin" id="current_password" name="current_password">
                     </div>
 
                     <div class="form-group">
-                        <label for="password">Nowe hasło dla użytkownika</label>
+                        <label for="password">New password for user</label>
                         <input type="password" class="form-control form-control-admin" id="password" name="password">
                     </div>
 
                     <div class="form-group">
-                        <label for="password_confirmation">Potwierdź nowe hasło dla użytkownika</label>
+                        <label for="password_confirmation">Confirm new password for user</label>
                         <input type="password" class="form-control form-control-admin" id="password_confirmation" name="password_confirmation">
                     </div>
                     <hr>
@@ -135,11 +135,11 @@
                     <div class="form-group form-check">
                         <input type="hidden" name="is_admin" value="0"> 
                         <input type="checkbox" class="form-check-input" id="is_admin" name="is_admin" value="1" {{ old('is_admin', $user->is_admin) ? 'checked' : '' }}>
-                        <label class="form-check-label" for="is_admin">Czy administrator?</label>
+                        <label class="form-check-label" for="is_admin">Is administrator?</label>
                     </div>
 
-                    <button type="submit" class="btn btn-admin-primary"><i class="fas fa-save mr-1"></i> Zaktualizuj Użytkownika</button>
-                    <a href="{{ route('admin.users.index') }}" class="btn btn-admin-secondary"><i class="fas fa-times mr-1"></i> Anuluj</a>
+                    <button type="submit" class="btn btn-admin-primary"><i class="fas fa-save mr-1"></i> Update User</button>
+                    <a href="{{ route('admin.users.index') }}" class="btn btn-admin-secondary"><i class="fas fa-times mr-1"></i> Cancel</a>
                 </form>
             </div>
         </div>
@@ -147,11 +147,11 @@
         @if($user->profile_image && Storage::disk('public')->exists($user->profile_image))
         <div class="card card-admin mt-3">
             <div class="card-body text-center">
-                <form action="{{ route('admin.users.remove-profile-image', $user->id) }}" method="POST" onsubmit="return confirm('Czy na pewno chcesz usunąć zdjęcie profilowe tego użytkownika?');">
+                <form action="{{ route('admin.users.remove-profile-image', $user->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to remove this user\'s profile image?');">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger btn-sm">
-                        <i class="fas fa-trash-alt"></i> Usuń zdjęcie profilowe
+                        <i class="fas fa-trash-alt"></i> Remove profile image
                     </button>
                 </form>
             </div>
@@ -178,9 +178,9 @@
                     const newImg = document.createElement('img');
                     newImg.src = e.target.result;
                     newImg.alt = "Profile Preview";
-                    // Użyj klas zdefiniowanych w <style> lub globalnych stylach admina
+                    // Use classes defined in <style> or global admin styles
                     newImg.className = 'profile-image'; 
-                    newImg.id = 'adminProfileDisplay'; // Zachowaj ID dla przyszłych podglądów
+                    newImg.id = 'adminProfileDisplay'; // Keep ID for future previews
 
                     // Replace the old div with the new image
                     currentDisplayElement.parentNode.replaceChild(newImg, currentDisplayElement);

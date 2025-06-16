@@ -36,7 +36,7 @@ class RegisterUserRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'password.confirmed' => 'Pola hasło i potwierdzenie hasła muszą być takie same.',
+            'password.confirmed' => 'The password and password confirmation fields must match.',
         ];
     }
 }

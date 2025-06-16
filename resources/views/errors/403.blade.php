@@ -39,13 +39,13 @@
 </style>
 @endpush
 
-@section('title', 'Page not found')
+@section('title', 'Forbidden')
 
 @section('content')
 <div class="container">
     <div class="error-container text-center">
-        <h1>404</h1>
-        <p>The page you are looking for could not be found.</p>
+        <h1>403</h1>
+        <p>Sorry, you do not have permission to access this page.</p>
         <a href="{{ route('main') }}" class="btn btn-primary">Back to homepage</a>
     </div>
 </div>

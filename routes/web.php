@@ -47,7 +47,7 @@ Route::middleware(['auth', \App\Http\Middleware\UserMiddleware::class])->group(f
     Route::get('/course/{course}/enroll', [EnrollmentController::class, 'enrollUser'])->name('course.enrollUser');
     Route::post('/enrollment/user-store', [EnrollmentController::class, 'storeUserEnrollment'])->name('enrollment.user.store');
     Route::delete('user/profile/remove-image', [UserController::class, 'removeProfileImage'])->name('user.remove-profile-image');
-    
+    Route::get('/user/calendar', [LessonController::class, 'calendar'])->name('user.calendar');
 });
 
 Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix('admin')->name('admin.')->group(function () {

@@ -40,7 +40,13 @@ class DatabaseSeeder extends Seeder
                 Opinion::factory()->count(3)->create(['course_id' => $course->id]);
             });
 
-        Enrollment::factory()->count(50)->create();
+        Enrollment::factory()->count(50)->create()->each(function ($enrollment) {
+            Payment::factory()->create([
+                'enrollment_id' => $enrollment->id,
+                'amount' => $enrollment->course->price,
+                'status' => 'paid', 
+            ]);
+        });
 
     }
 }

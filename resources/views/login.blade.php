@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Logowanie')
+@section('title', 'Login')
 
 @push('styles')
 <style>
@@ -88,18 +88,18 @@
 <div class="container">
     <div class="login-card">
         <div class="card-header text-center">
-            <h3><i class="fas fa-sign-in-alt mr-2"></i>Logowanie</h3>
+            <h3><i class="fas fa-sign-in-alt mr-2"></i>Login</h3>
         </div>
         <div class="card-body">
             <form method="POST" action="{{ route('login') }}">
                 @csrf
                 <div class="form-group">
-                    <label for="name"><i class="fas fa-user mr-2"></i>Nazwa użytkownika:</label>
+                    <label for="name"><i class="fas fa-user mr-2"></i>Username:</label>
                     <input type="text" id="name" name="name" class="form-control" value="{{ old('name') }}" required autofocus>
                 </div>
 
                 <div class="form-group">
-                    <label for="password"><i class="fas fa-lock mr-2"></i>Hasło:</label>
+                    <label for="password"><i class="fas fa-lock mr-2"></i>Password:</label>
                     <input type="password" id="password" name="password" class="form-control" required>
                 </div>
 
@@ -110,16 +110,16 @@
                 @endif
 
                 <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-sign-in-alt mr-2"></i>Zaloguj się
+                    <i class="fas fa-sign-in-alt mr-2"></i>Log in
                 </button>
             </form>
 
             <div class="nav-back">
                 <a href="{{ route('main') }}" class="btn btn-outline-primary mt-3">
-                    <i class="fas fa-arrow-left mr-2"></i>Powrót do strony głównej
+                    <i class="fas fa-arrow-left mr-2"></i>Back to main page
                 </a>
                 <a href="{{ route('register') }}" class="btn btn-outline-primary mt-3">
-                    <i class="fas fa-user-check mr-2"></i>rejestracja
+                    <i class="fas fa-user-check mr-2"></i>Register
                 </a>
             </div>
         </div>

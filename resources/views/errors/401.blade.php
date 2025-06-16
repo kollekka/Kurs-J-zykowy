@@ -39,14 +39,15 @@
 </style>
 @endpush
 
-@section('title', 'Page not found')
+@section('title', 'Unauthorized')
 
 @section('content')
 <div class="container">
     <div class="error-container text-center">
-        <h1>404</h1>
-        <p>The page you are looking for could not be found.</p>
-        <a href="{{ route('main') }}" class="btn btn-primary">Back to homepage</a>
+        <h1>401</h1>
+        <p>Sorry, you need to be logged in to access this page.</p>
+        <a href="{{ route('login') }}" class="btn btn-primary mr-2">Login</a>
+        <a href="{{ route('main') }}" class="btn btn-outline-secondary">Back to homepage</a>
     </div>
 </div>
 @endsection

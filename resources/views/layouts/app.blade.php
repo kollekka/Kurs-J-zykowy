@@ -93,7 +93,7 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         @else
-        <a class="navbar-brand" href="{{ route('login') }}"><i class="fas fa-hand-wave mr-2"></i>Gość</a>
+        <a class="navbar-brand" href="{{ route('login') }}"><i class="fas fa-hand-wave mr-2"></i>Guest</a>
         @endif
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
@@ -101,18 +101,23 @@
               <a class="nav-link" href="{{ route('main') }}"><i class="fas fa-home mr-1"></i>Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ route('courses.index') }}"><i class="fas fa-book-open mr-1"></i>Kursy</a>
+              <a class="nav-link" href="{{ route('courses.index') }}"><i class="fas fa-book-open mr-1"></i>Courses</a>
             </li>
+            @if(Auth::check())
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('user.calendar') }}"><i class="fas fa-calendar-alt mr-1"></i>Calendar</a>
+            </li>
+            @endif
             @if (Auth::user() && Auth::user()->is_admin)
               <li class="nav-item active">
-                <a class="nav-link" href="{{ route('admin.dashboard') }}"><i class="fas fa-tools mr-1"></i>Panel Admina</a>
+                <a class="nav-link" href="{{ route('admin.dashboard') }}"><i class="fas fa-tools mr-1"></i>Admin Panel</a>
               </li>
             @endif
           </ul>
           @if (Auth::check())
           <form action="{{ route('logout') }}" method="POST" class="form-inline my-2 my-lg-0">
               @csrf
-              <button class="btn btn-outline-danger my-2 my-sm-0" type="submit"><i class="fas fa-sign-out-alt mr-2"></i>Wyloguj</button>
+              <button class="btn btn-outline-danger my-2 my-sm-0" type="submit"><i class="fas fa-sign-out-alt mr-2"></i>Logout</button>
           </form>
           @endif
         </div>
@@ -125,7 +130,7 @@
 
   
     <footer>
-        <p>&copy; {{ date('Y') }} Kurs Językowy. All rights reserved.</p>
+        <p>&copy; {{ date('Y') }} Language Course. All rights reserved.</p>
         <p>
             <a href="#" class="text-white mx-2">Privacy Policy</a> |
             <a href="#" class="text-white mx-2">Terms of Service</a> |
@@ -133,32 +138,10 @@
         </p>
     </footer>
 
-    <div class="toast-container">
-        @if(session('error_popup'))
-        <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="5000">
-            <div class="toast-header bg-danger text-white">
-                <strong class="mr-auto">Błąd</strong>
-                <small>Teraz</small>
-                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Zamknij">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="toast-body">
-                {{ session('error_popup') }}
-            </div>
-        </div>
-        @endif
-    </div>
-
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @stack('scripts')
-    <script>
-        $(document).ready(function(){
-            $('#errorToast').toast('show');
-        });
-    </script>
 </body>
 </html>

@@ -11,6 +11,7 @@
     }
     body {
     overflow-x: hidden;
+    overflow-y: scroll;
     }
     .navbar {
         background: var(--main-color) !important;
@@ -224,7 +225,7 @@
                             
                             <div class="mb-3">
                                 <div class="d-flex justify-content-between">
-                                    <span>Zajęte miejsca:</span>
+                                    <span>Occupied seats:</span>
                                     <span>{{ count($course->enrollments) }}/{{ $course->group_size }}</span>
                                 </div>
                                 <div class="progress" style="height: 5px;">
@@ -234,12 +235,12 @@
                                 </div>
                             </div>
                             
-                            <p class="price-tag">{{ $course->price }} zł</p>
+                            <p class="price-tag">{{ $course->price }} PLN</p>
                         </div>
                         
                         <a href="{{ route('course.show', $course->id) }}" 
                            class="btn btn-primary btn-block rounded-pill">
-                            <i class="fas fa-info-circle mr-2"></i>Szczegóły kursu
+                            <i class="fas fa-info-circle mr-2"></i>Course details
                         </a>
                     </div>
                 </div>
@@ -249,7 +250,7 @@
     </div>
 
     <div class="container mt-5 text-center">
-        <h4 class="mb-4">Rozkład kursów według języka</h4>
+        <h4 class="mb-4">Course distribution by language</h4>
         <div style="max-width: 550px; margin: auto;">
             <canvas id="languageChart"></canvas>
         </div>
@@ -297,3 +298,4 @@
 @endpush
 
 @section('footer')
+

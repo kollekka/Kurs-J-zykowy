@@ -40,18 +40,18 @@
 </style>
 @endpush
 
-@section('title', 'Strona wygasła')
+@section('title', 'Page Expired')
 
 @section('content')
 <div class="container">
     <div class="error-container text-center">
         <h1>419</h1>
-        <p>Strona wygasła. Twoja sesja mogła wygasnąć.<br>
-           Za 5 sekund nastąpi automatyczne wylogowanie.</p>
+        <p>Page expired. Your session may have expired.<br>
+           You will be automatically logged out in 3 seconds.</p>
     </div>
 </div>
 
-<!-- Ukryty formularz wylogowania -->
+<!-- Hidden logout form -->
 <form id="logoutForm" action="{{ route('logout') }}" method="POST" style="display: none;">
     @csrf
 </form>
@@ -62,7 +62,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(function() {
         document.getElementById('logoutForm').submit();
-    }, 5000); 
+    }, 3000); 
 });
 </script>
 @endpush

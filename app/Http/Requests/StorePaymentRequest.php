@@ -26,11 +26,8 @@ class StorePaymentRequest extends FormRequest
             'user_id' => 'required|exists:users,id',
             'enrollment_id' => 'nullable|exists:enrollments,id', 
             'amount' => 'required|numeric|min:0.01',
-            'currency' => 'required|string|max:3', 
             'payment_method' => 'required|string|max:50',
-            'status' => 'required|string|in:pending,completed,failed,refunded',
-            'transaction_id' => 'nullable|string|max:255',
-            'paid_at' => 'nullable|date',
+            'status' => 'required|string|in:paid,pending,failed',
         ];
     }
 
@@ -42,8 +39,8 @@ class StorePaymentRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'amount.min' => 'Kwota płatności musi być większa niż 0.',
-            'status.in' => 'Wybrano nieprawidłowy status płatności.',
+            'amount.min' => 'The payment amount must be greater than 0.',
+            'status.in' => 'An invalid payment status was selected.',
         ];
     }
 }

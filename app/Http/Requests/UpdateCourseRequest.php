@@ -47,11 +47,4 @@ class UpdateCourseRequest extends FormRequest
             'instructor_id' => 'sometimes|required|exists:instructors,id',
         ];
     }
-
-    public function messages(): array
-    {
-        return [
-            'level.in' => 'Wybrano nieprawidłowy poziom zaawansowania.',
-        ];
-    }
 }

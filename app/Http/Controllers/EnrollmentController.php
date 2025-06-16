@@ -10,6 +10,9 @@ use App\Http\Requests\StoreEnrollmentByAdminRequest;
 use App\Http\Requests\UpdateEnrollmentRequest; 
 use Illuminate\Support\Facades\Auth; 
 use Illuminate\Http\Request;
+use App\Models\Payment;
+use Carbon\Carbon;
+
 
 class EnrollmentController extends Controller
 {
@@ -116,19 +119,34 @@ class EnrollmentController extends Controller
     {
          $validated = $request->validate([
             'course_id' => 'required|exists:courses,id',
-            'payment_method' => 'required|string|in:card,bank_transfer,paypal', // Dostosuj metody płatności
+            'payment_method' => 'required|string|in:card,bank_transfer,paypal', 
         ]);
 
         $course = Course::findOrFail($validated['course_id']);
         $user = Auth::user();
 
-        Enrollment::create([
+        $discount = 1.0;
+        if ($user->created_at->gt(Carbon::now()->subWeek())) {
+            $discount = 0.2;
+        }
+
+        $finalAmount = round(($course->price ?? 0) * $discount, 2);
+
+        $enrollment = Enrollment::create([
             'user_id' => $user->id,
             'course_id' => $course->id,
             'payment_method' => $validated['payment_method'],
             'enrollment_date' => now(), 
             'status' => 'enrolled', 
         ]);
+
+        Payment::create([
+            'enrollment_id' => $enrollment->id,
+            'amount' => $finalAmount,
+            'payment_method' => $validated['payment_method'],
+            'status' => 'paid',
+        ]);
+
         return redirect()->route('user.profile')->with('success', 'Zapis został pomyślnie utworzony.');
     }
 }

@@ -219,20 +219,20 @@
 @section('content')
     <div class="container mt-5">
         <h1 class="text-center mb-4" style="color: var(--main-color);">Admin Dashboard</h1>
-        <!-- Sekcja Statystyk -->
+        <!-- Statistics Section -->
         <div class="row mb-5">
             <div class="col-12">
-                <h2 class="text-center mb-4" style="color: var(--main-color);">Statystyki Systemu</h2>
+                <h2 class="text-center mb-4" style="color: var(--main-color);">System Statistics</h2>
             </div>
 
-            <!-- Użytkownicy -->
+            <!-- Users -->
             @if(isset($stats['users']))
             <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
                 <a href="{{ route('admin.users.index') }}" class="stat-card-link">
                     <div class="card text-white bg-primary shadow-sm h-100">
                         <div class="card-body text-center">
                             <div class="mb-2"><i class="fas fa-users fa-3x"></i></div>
-                            <h5 class="card-title" style="font-size: 1.1rem;">Użytkownicy</h5>
+                            <h5 class="card-title" style="font-size: 1.1rem;">Users</h5>
                             <p class="card-text display-4 font-weight-bold" style="font-size: 2.5rem;">{{ $stats['users'] }}</p>
                         </div>
                     </div>
@@ -247,7 +247,7 @@
                     <div class="card text-white bg-success shadow-sm h-100">
                         <div class="card-body text-center">
                             <div class="mb-2"><i class="fas fa-book-open fa-3x"></i></div>
-                            <h5 class="card-title" style="font-size: 1.1rem;">Kursy</h5>
+                            <h5 class="card-title" style="font-size: 1.1rem;">Courses</h5>
                             <p class="card-text display-4 font-weight-bold" style="font-size: 2.5rem;">{{ $stats['courses'] }}</p>
                         </div>
                     </div>
@@ -261,7 +261,7 @@
                     <div class="card text-white bg-info shadow-sm h-100">
                         <div class="card-body text-center">
                             <div class="mb-2"><i class="fas fa-chalkboard-teacher fa-3x"></i></div>
-                            <h5 class="card-title" style="font-size: 1.1rem;">Instruktorzy</h5>
+                            <h5 class="card-title" style="font-size: 1.1rem;">Instructors</h5>
                             <p class="card-text display-4 font-weight-bold" style="font-size: 2.5rem;">{{ $stats['instructors'] }}</p>
                         </div>
                     </div>
@@ -269,14 +269,14 @@
             </div>
             @endif
 
-            <!-- Zapisy -->
+            <!-- Enrollments -->
             @if(isset($stats['enrollments']))
             <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
                 <a href="{{ route('admin.enrollments.index') }}" class="stat-card-link">
                     <div class="card text-white bg-secondary shadow-sm h-100">
                         <div class="card-body text-center">
                             <div class="mb-2"><i class="fas fa-user-check fa-3x"></i></div>
-                            <h5 class="card-title" style="font-size: 1.1rem;">Zapisy</h5>
+                            <h5 class="card-title" style="font-size: 1.1rem;">Enrollments</h5>
                             <p class="card-text display-4 font-weight-bold" style="font-size: 2.5rem;">{{ $stats['enrollments'] }}</p>
                         </div>
                     </div>
@@ -284,14 +284,14 @@
             </div>
             @endif
 
-            <!-- Opinie -->
+            <!-- Opinions -->
             @if(isset($stats['opinions']))
             <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
                 <a href="{{ route('admin.opinions.index') }}" class="stat-card-link">
                     <div class="card text-white bg-danger shadow-sm h-100">
                         <div class="card-body text-center">
                             <div class="mb-2"><i class="fas fa-comments fa-3x"></i></div>
-                            <h5 class="card-title" style="font-size: 1.1rem;">Opinie</h5>
+                            <h5 class="card-title" style="font-size: 1.1rem;">Opinions</h5>
                             <p class="card-text display-4 font-weight-bold" style="font-size: 2.5rem;">{{ $stats['opinions'] }}</p>
                         </div>
                     </div>
@@ -299,14 +299,14 @@
             </div>
             @endif
 
-            <!-- Płatności -->
+            <!-- Payments -->
             @if(isset($stats['payments']))
             <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
                 <a href="{{ route('admin.payments.index') }}" class="stat-card-link">
                     <div class="card text-white bg-dark shadow-sm h-100">
                         <div class="card-body text-center">
                             <div class="mb-2"><i class="fas fa-credit-card fa-3x"></i></div>
-                            <h5 class="card-title" style="font-size: 1.1rem;">Płatności</h5>
+                            <h5 class="card-title" style="font-size: 1.1rem;">Payments</h5>
                             <p class="card-text display-4 font-weight-bold" style="font-size: 2.5rem;">{{ $stats['payments'] }}</p>
                         </div>
                     </div>

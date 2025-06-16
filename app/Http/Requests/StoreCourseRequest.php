@@ -48,11 +48,4 @@ class StoreCourseRequest extends FormRequest
            
         ];
     }
-
-    public function messages(): array
-    {
-        return [
-            'level.in' => 'Wybrano nieprawidłowy poziom zaawansowania.',
-        ];
-    }
 }

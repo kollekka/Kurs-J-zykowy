@@ -44,9 +44,9 @@ class UpdateInstructorRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'full_name.required' => 'Imię i nazwisko instruktora jest wymagane.',
-            'email.required' => 'Adres email jest wymagany.',
-            'bio.required' => 'Biografia instruktora jest wymagana.',
+            'full_name.required' => 'Instructor full name is required.',
+            'email.required' => 'Email address is required.',
+            'bio.required' => 'Instructor biography is required.',
         ];
     }
 }

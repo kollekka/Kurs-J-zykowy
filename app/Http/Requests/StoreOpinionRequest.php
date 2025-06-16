@@ -36,12 +36,12 @@ class StoreOpinionRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'rating.required' => 'Ocena jest wymagana.',
-            'rating.integer' => 'Ocena musi być liczbą całkowitą.',
-            'rating.min' => 'Minimalna ocena to 1.',
-            'rating.max' => 'Maksymalna ocena to 5.',
-            'comment.required' => 'Komentarz jest wymagany.',
-            'comment.max' => 'Komentarz nie może przekraczać 1000 znaków.',
+            'rating.required' => 'Rating is required.',
+            'rating.integer' => 'Rating must be an integer.',
+            'rating.min' => 'The minimum rating is 1.',
+            'rating.max' => 'The maximum rating is 5.',
+            'opinion.required' => 'Opinion is required.',
+            'opinion.max' => 'Opinion may not be greater than 1000 characters.',
         ];
     }
 }

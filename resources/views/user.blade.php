@@ -297,7 +297,6 @@
     </style>
 </head>
 <body>
-    <!-- Navbar (bez zmian strukturalnych) -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         @if (Auth::user())
         <a class="navbar-brand" href="{{ route('user.profile') }}"><i class="fas fa-user-circle mr-2"></i>{{ Auth::user()->name }}</a>
@@ -305,7 +304,7 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         @else
-        <a class="navbar-brand" href="{{ route('login') }}"><i class="fas fa-hand-wave mr-2"></i>Gość</a>
+        <a class="navbar-brand" href="{{ route('login') }}"><i class="fas fa-hand-wave mr-2"></i>Guest</a>
         @endif
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
@@ -313,18 +312,23 @@
               <a class="nav-link" href="{{ route('main') }}"><i class="fas fa-home mr-1"></i>Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ route('courses.index') }}"><i class="fas fa-book-open mr-1"></i>Kursy</a>
+              <a class="nav-link" href="{{ route('courses.index') }}"><i class="fas fa-book-open mr-1"></i>Courses</a>
             </li>
+            @if(Auth::check())
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('user.calendar') }}"><i class="fas fa-calendar-alt mr-1"></i>Calendar</a>
+            </li>
+            @endif
             @if (Auth::user() && Auth::user()->is_admin)
               <li class="nav-item active">
-                <a class="nav-link" href="{{ route('admin.dashboard') }}"><i class="fas fa-tools mr-1"></i>Panel Admina</a>
+                <a class="nav-link" href="{{ route('admin.dashboard') }}"><i class="fas fa-tools mr-1"></i>Admin Panel</a>
               </li>
             @endif
           </ul>
           @if (Auth::check())
           <form action="{{ route('logout') }}" method="POST" class="form-inline my-2 my-lg-0">
               @csrf
-              <button class="btn btn-outline-danger my-2 my-sm-0" type="submit"><i class="fas fa-sign-out-alt mr-2"></i>Wyloguj</button>
+              <button class="btn btn-outline-danger my-2 my-sm-0" type="submit"><i class="fas fa-sign-out-alt mr-2"></i>Logout</button>
           </form>
           @endif
         </div>
@@ -492,10 +496,7 @@
                         <div class="col-md-6 course-divider">
                             <h5 class="text-accent">{{ $course->name }}</h5>
                             <p class="mb-1">{{ $course->language }} - {{ $course->level }}</p>
-                            <p>Start Date: {{ $course->start_date }}</p>
-                            <small class="text-muted">
-                                {{ request('filter') === 'upcoming' ? 'Start: ' . $course->start_date : 'End: ' . $course->end_date }}
-                            </small>
+                            <p>{{ request('filter') === 'upcoming' ? 'Start: ' . $course->start_date : 'End: ' . $course->end_date }}</p>
                             <div class="mt-3 d-flex align-items-center">
                                 <a href="{{ route('course.show', $course->id) }}" 
                                 class="btn btn-primary btn-sm rounded-pill">

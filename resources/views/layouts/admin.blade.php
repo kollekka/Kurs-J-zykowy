@@ -158,7 +158,7 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark navbar-admin fixed-top">
-        <a class="navbar-brand" href="{{ route('admin.dashboard') }}"><i class="fas fa-tachometer-alt mr-1"></i>Panel Admina</a>
+        <a class="navbar-brand" href="{{ route('admin.dashboard') }}"><i class="fas fa-tachometer-alt mr-1"></i>Admin Panel</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#adminNavbarSupportedContent" aria-controls="adminNavbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -169,22 +169,22 @@
                     <a class="nav-link" href="{{ route('admin.dashboard') }}"><i class="fas fa-home mr-1"></i>Dashboard</a>
                 </li>
                 <li class="nav-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('admin.users.index') }}"><i class="fas fa-users mr-1"></i>Użytkownicy</a>
+                    <a class="nav-link" href="{{ route('admin.users.index') }}"><i class="fas fa-users mr-1"></i>Users</a>
                 </li>
                 <li class="nav-item {{ request()->routeIs('admin.courses.*') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('admin.courses.index') }}"><i class="fas fa-book-open mr-1"></i>Kursy</a>
+                    <a class="nav-link" href="{{ route('admin.courses.index') }}"><i class="fas fa-book-open mr-1"></i>Courses</a>
                 </li>
                 <li class="nav-item {{ request()->routeIs('admin.instructors.*') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('admin.instructors.index') }}"><i class="fas fa-chalkboard-teacher mr-1"></i>Instruktorzy</a>
+                    <a class="nav-link" href="{{ route('admin.instructors.index') }}"><i class="fas fa-chalkboard-teacher mr-1"></i>Instructors</a>
                 </li>
                 <li class="nav-item {{ request()->routeIs('admin.enrollments.*') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('admin.enrollments.index') }}"><i class="fas fa-user-check mr-1"></i>Zapisy</a>
+                    <a class="nav-link" href="{{ route('admin.enrollments.index') }}"><i class="fas fa-user-check mr-1"></i>Enrollments</a>
                 </li>
                 <li class="nav-item {{ request()->routeIs('admin.opinions.*') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('admin.opinions.index') }}"><i class="fas fa-comments mr-1"></i>Opinie</a>
+                    <a class="nav-link" href="{{ route('admin.opinions.index') }}"><i class="fas fa-comments mr-1"></i>Reviews</a>
                 </li>
                 <li class="nav-item {{ request()->routeIs('admin.statistics.index') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('admin.statistics.index') }}"><i class="fas fa-chart-bar mr-1"></i>Statystyki</a>
+                    <a class="nav-link" href="{{ route('admin.statistics.index') }}"><i class="fas fa-chart-bar mr-1"></i>Statistics</a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -195,7 +195,7 @@
                     <li class="nav-item">
                         <form action="{{ route('logout') }}" method="POST" class="d-inline">
                             @csrf
-                            <button class="btn btn-outline-danger btn-sm my-2 my-sm-0" type="submit"><i class="fas fa-sign-out-alt mr-1"></i>Wyloguj</button>
+                            <button class="btn btn-outline-danger btn-sm my-2 my-sm-0" type="submit"><i class="fas fa-sign-out-alt mr-1"></i>Logout</button>
                         </form>
                     </li>
                 @endif

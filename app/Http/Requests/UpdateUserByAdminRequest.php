@@ -52,7 +52,7 @@ class UpdateUserByAdminRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'current_password.required_with' => 'Twoje bieżące hasło (administratora) jest wymagane, aby zmienić hasło edytowanego użytkownika.',
+            'current_password.required_with' => 'Your current (administrator) password is required to change the edited user\'s password.',
         ];
     }
 }

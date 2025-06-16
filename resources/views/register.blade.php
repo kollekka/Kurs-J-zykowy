@@ -125,34 +125,34 @@
 <div class="container">
     <div class="register-card">
         <div class="card-header text-center">
-            <h3><i class="fas fa-user-plus mr-2"></i>Rejestracja</h3>
+            <h3><i class="fas fa-user-plus mr-2"></i>Registration</h3>
         </div>
         <div class="card-body">
             <form action="{{ route('register') }}" method="POST">
                 @csrf
                 
                 <div class="form-group">
-                    <label for="name"><i class="fas fa-user mr-2"></i>Imię</label>
+                    <label for="name"><i class="fas fa-user mr-2"></i>Name</label>
                     <input type="text" name="name" id="name" 
                            class="form-control @error('name') is-invalid @enderror" 
-                           required autofocus>
+                           required autofocus value="{{ old('name') }}" maxlength="50">
                     @error('name')
                         <span class="text-danger"><i class="fas fa-exclamation-circle mr-2"></i>{{ $message }}</span>
                     @enderror
                 </div>
 
                 <div class="form-group">
-                    <label for="email"><i class="fas fa-envelope mr-2"></i>Adres e-mail</label>
+                    <label for="email"><i class="fas fa-envelope mr-2"></i>Email address</label>
                     <input type="email" name="email" id="email" 
                            class="form-control @error('email') is-invalid @enderror" 
-                           required>
+                           required value="{{ old('email') }}" maxlength="70">
                     @error('email')
                         <span class="text-danger"><i class="fas fa-exclamation-circle mr-2"></i>{{ $message }}</span>
                     @enderror
                 </div>
 
                 <div class="form-group">
-                    <label for="password"><i class="fas fa-lock mr-2"></i>Hasło</label>
+                    <label for="password"><i class="fas fa-lock mr-2"></i>Password</label>
                     <input type="password" name="password" id="password" 
                            class="form-control @error('password') is-invalid @enderror" 
                            required>
@@ -162,19 +162,19 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="password_confirmation"><i class="fas fa-lock mr-2"></i>Potwierdź hasło</label>
+                    <label for="password_confirmation"><i class="fas fa-lock mr-2"></i>Confirm password</label>
                     <input type="password" name="password_confirmation" 
                            id="password_confirmation" class="form-control" required>
                 </div>
 
                 <button type="submit" class="btn btn-primary btn-block">
-                    <i class="fas fa-user-check mr-2"></i>Zarejestruj się
+                    <i class="fas fa-user-check mr-2"></i>Register
                 </button>
             </form>
 
             <div class="nav-back">
                 <a href="{{ route('login') }}" class="btn btn-outline-primary mt-3">
-                    <i class="fas fa-arrow-left mr-2"></i>Powrót do logowania
+                    <i class="fas fa-arrow-left mr-2"></i>Back to login
                 </a>
             </div>
         </div>

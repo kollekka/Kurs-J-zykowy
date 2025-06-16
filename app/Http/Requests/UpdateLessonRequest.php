@@ -54,8 +54,8 @@ class UpdateLessonRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'duration.date_format' => 'Czas trwania musi być w formacie GG:MM (np. 01:30).',
-            'time.date_format' => 'Godzina musi być w formacie GG:MM.',
+            'duration.date_format' => 'Duration must be in the format HH:MM (e.g., 01:30).',
+            'time.date_format' => 'Time must be in the format HH:MM.',
         ];
     }
 }

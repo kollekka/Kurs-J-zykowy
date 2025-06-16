@@ -45,8 +45,8 @@ class UpdateOpinionRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'rating.required' => 'Ocena jest wymagana.',
-            'comment.required' => 'Komentarz jest wymagany.',
+            'rating.required' => 'Rating is required.',
+            'comment.required' => 'Comment is required.',
         ];
     }
 }

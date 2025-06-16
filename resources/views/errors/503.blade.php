@@ -39,13 +39,13 @@
 </style>
 @endpush
 
-@section('title', 'Page not found')
+@section('title', 'Service Unavailable')
 
 @section('content')
 <div class="container">
     <div class="error-container text-center">
-        <h1>404</h1>
-        <p>The page you are looking for could not be found.</p>
+        <h1>503</h1>
+        <p>Sorry, the service is temporarily unavailable.<br>We are currently performing maintenance. Please check back soon.</p>
         <a href="{{ route('main') }}" class="btn btn-primary">Back to homepage</a>
     </div>
 </div>

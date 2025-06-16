@@ -9,7 +9,7 @@ use App\Models\Instructor;
 use App\Models\Course; 
 use App\Http\Requests\StoreLessonRequest;
 use App\Http\Requests\UpdateLessonRequest;
-use Illuminate\Support\Facades\Auth; 
+use Carbon\Carbon;
 
 class LessonController extends Controller
 {
@@ -77,5 +77,43 @@ class LessonController extends Controller
         $lesson->delete();
 
         return redirect()->route('admin.lessons.index', $courseId)->with('success', 'Lekcja została usunięta.');
+    }
+   public function calendar()
+    {
+         $user = auth()->user();
+        $enrolledCourseIds = $user->enrollments()->pluck('course_id');
+
+        
+        $activeEnrollments = $user->enrollments()
+            ->where('status', 'active')
+            ->pluck('course_id');
+
+        $lessons = Lesson::whereIn('course_id', $activeEnrollments)
+            ->with('course') 
+            ->get();
+
+        $events = $lessons->map(function($lesson) {
+             return [
+                'title' => ($lesson->course->name ?? 'Course') . ' — ' . $lesson->title,
+                'start' => $lesson->date . 'T' . $lesson->time,
+                'lessonTitle' => $lesson->title,
+                'courseName' => $lesson->course->name,
+                'instructorName' => $lesson->instructor->full_name ?? null,
+                'lessonDescription' => $lesson->description,
+                'duration' => $lesson->duration,
+            ];
+        });
+
+        $userCourses = Course::whereIn('id', $activeEnrollments)->orderBy('name')->get();
+        $now = Carbon::now();
+        $upcomingLessons = $lessons->filter(function ($lesson) use ($now) {
+            return Carbon::parse($lesson->date . ' ' . $lesson->time)->gte($now);
+        })->sortBy(function ($lesson) {
+            return Carbon::parse($lesson->date . ' ' . $lesson->time);
+        });
+        $nextLessonDate = $upcomingLessons->first() ? Carbon::parse($upcomingLessons->first()->date)->toDateString() : null;
+
+
+        return view('calendar', compact('events','nextLessonDate','userCourses'));
     }
 }

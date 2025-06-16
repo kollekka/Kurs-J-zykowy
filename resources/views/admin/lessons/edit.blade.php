@@ -4,14 +4,15 @@
     Edytuj Lekcję: {{ $lesson->title }}
 @endsection
 
+
 @section('content')
 <div class="card card-admin">
     <div class="card-header">
-        <h1 class="page-title mb-0">
+        <h1 class="page-title mb-0 text-white">
             <i class="fas fa-edit mr-2"></i>
-            Edytuj Lekcję: <span class="text-info">{{ $lesson->title }}</span>
+            Edytuj Lekcję: <span class="text-white">{{ $lesson->title }}</span>
             @if($lesson->course)
-                <small class="text-muted">- w kursie: {{ $lesson->course->name }}</small>
+            <small class="text-white">- w kursie: {{ $lesson->course->name }}</small>
             @endif
         </h1>
     </div>
@@ -22,7 +23,7 @@
 
             <div class="form-group">
                 <label for="title">Tytuł Lekcji <span class="text-danger">*</span></label>
-                <input type="text" name="title" id="title" class="form-control form-control-admin @error('title') is-invalid @enderror" value="{{ old('title', $lesson->title) }}" required>
+                <input maxlength="100" type="text" name="title" id="title" class="form-control form-control-admin @error('title') is-invalid @enderror" value="{{ old('title', $lesson->title) }}" required>
                 @error('title')
                     <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                 @enderror
@@ -31,17 +32,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="order">Kolejność</label>
-                        <input type="number" name="order" id="order" class="form-control form-control-admin @error('order') is-invalid @enderror" value="{{ old('order', $lesson->order) }}" placeholder="np. 1">
-                        @error('order')
-                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                        @enderror
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
                         <label for="duration">Czas trwania </label>
-                        {{-- Zmieniono type="time" na type="number" dla minut --}}
                         <input type="time" name="duration" id="duration" class="form-control form-control-admin @error('duration') is-invalid @enderror" value="{{ old('duration', $lesson->duration) }}" placeholder="np. 45">
                         @error('duration')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
@@ -52,7 +43,7 @@
 
             <div class="form-group">
                 <label for="content">Treść/Opis Lekcji</label>
-                <textarea name="content" id="content" rows="4" class="form-control form-control-admin @error('content') is-invalid @enderror">{{ old('content', $lesson->content) }}</textarea>
+                <textarea maxlength="1000" name="content" id="content" rows="4" class="form-control form-control-admin @error('content') is-invalid @enderror">{{ old('content', $lesson->content) }}</textarea>
                 @error('content')
                     <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                 @enderror
@@ -71,7 +62,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="time">Godzina Lekcji <span class="text-danger">*</span></label>
-                        <input type="time" name="time" id="time" class="form-control form-control-admin @error('time') is-invalid @enderror" value="{{ old('time', $lesson->time) }}" required>
+                        <input type="time" name="time" id="time" class="form-control form-control-admin @error('time') is-invalid @enderror" value="{{ old('time', $lesson->time) }}" required min="00:30" max="02:00">
                         @error('time')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                         @enderror

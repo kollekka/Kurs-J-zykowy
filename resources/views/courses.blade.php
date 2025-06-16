@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Lista Kursów')
+@section('title', 'Course List')
 
 @push('styles')
 <style>
@@ -13,7 +13,7 @@
 
     body {
         background-color: var(--light-bg);
-        overflow-x: hidden;  /* Prevent horizontal scroll */
+        overflow-x: hidden;
     }
 
     .page-wrapper {
@@ -24,7 +24,7 @@
 
     .page-layout {
         display: grid;
-        grid-template-columns: 280px 1fr; /* Wider filter sidebar */
+        grid-template-columns: 280px 1fr;
         gap: 1.5rem;
         padding: 0.5rem;
         width: 100%;
@@ -35,16 +35,15 @@
         padding: 0 0.5rem;
     }
 
- 
     .filter-sidebar {
-        width: 24rem; 
+        width: 24rem;
         height: 32rem;
         border-right: 1px;
         background: white;
         padding: 1.25rem;
         position: fixed;
         left: 20px;
-        top: 80px; 
+        top: 80px;
         bottom: 0;
         box-shadow: 4px 0 10px rgba(0, 0, 0, 0.05);
     }
@@ -130,7 +129,7 @@
 
     .course-content {
         flex: 1;
-        margin-left: 250px; 
+        margin-left: 250px;
         padding: 1.5rem;
     }
 
@@ -140,27 +139,24 @@
         gap: 1.5rem;
     }
 
-    /* For larger screens - 3 cards */
     @media (min-width: 1400px) {
         .course-grid {
             grid-template-columns: repeat(3, 1fr);
         }
     }
 
-    /* For extra large screens - 4 cards */
     @media (min-width: 1800px) {
         .course-grid {
             grid-template-columns: repeat(4, 1fr);
         }
     }
 
-    /* Adjust card size */
     .card {
         border: none;
         border-radius: 15px;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
         height: 230px;
-        min-width: 500px; 
+        min-width: 500px;
         transition: all 0.3s ease;
         background: linear-gradient(to right bottom, #ffffff, #f8f9fa);
     }
@@ -173,12 +169,11 @@
     .card-body {
         padding: 1.25rem;
         display: grid;
-        grid-template-columns: 2.5fr 1fr; /* Wider content area */
+        grid-template-columns: 2.5fr 1fr;
         gap: 1.25rem;
         height: 100%;
     }
 
-    /* Make course info section wider */
     .course-info {
         display: flex;
         flex-direction: column;
@@ -186,7 +181,6 @@
         padding-right: 1rem;
     }
 
-    /* Adjust meta section width */
     .course-meta {
         display: flex;
         flex-direction: column;
@@ -323,7 +317,7 @@
                     @foreach ($languages as $language)
                         <option value="{{ $language }}" {{ request('language') == $language ? 'selected' : '' }}>
                             {{ $language }}
-                        </option>    
+                        </option>
                     @endforeach
                 </select>
             </div>
@@ -334,13 +328,13 @@
                     <span id="price_value">${{ request('max_price', 1000) }}</span>
                 </div>
                 <div class="price-slider">
-                    <input type="range" 
-                           name="max_price" 
-                           id="max_price" 
-                           min="0" 
-                           max="1000" 
-                           step="10" 
-                           value="{{ request('max_price', 1000) }}" 
+                    <input type="range"
+                           name="max_price"
+                           id="max_price"
+                           min="0"
+                           max="1000"
+                           step="10"
+                           value="{{ request('max_price', 1000) }}"
                            oninput="document.getElementById('price_value').innerText = '$' + this.value">
                     <div class="d-flex justify-content-between mt-2">
                         <small>$0</small>
@@ -369,7 +363,7 @@
                                 <h5 class="card-title">{{ $course->name }}</h5>
                                 <p class="mb-2">
                                     <i class="far fa-calendar-alt mr-2"></i>
-                                    {{ date('M d, Y', strtotime($course->start_date)) }} - 
+                                    {{ date('M d, Y', strtotime($course->start_date)) }} -
                                     {{ date('M d, Y', strtotime($course->end_date)) }}
                                 </p>
                             </div>
@@ -379,7 +373,7 @@
                                     <span>{{ count($course->enrollments) }}/{{ $course->group_size }}</span>
                                 </small>
                                 <div class="progress" style="height: 5px;">
-                                    <div class="progress-bar" 
+                                    <div class="progress-bar"
                                          style="width: {{ (count($course->enrollments)/$course->group_size)*100 }}%">
                                     </div>
                                 </div>
@@ -395,7 +389,7 @@
                 </div>
             @endforeach
         </div>
-        
+
         <div class="d-flex justify-content-center mt-5">
             {{ $courses->links('pagination::bootstrap-4') }}
         </div>

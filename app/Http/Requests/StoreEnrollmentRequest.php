@@ -33,7 +33,7 @@ class StoreEnrollmentRequest extends FormRequest
                     
                     $existingEnrollment = Enrollment::where('user_id', Auth::id())
                         ->where('course_id', $value)
-                        ->whereIn('status', ['pending', 'active'])
+                        ->whereIn('status', ['pending', 'active']) 
                         ->exists();
                     if ($existingEnrollment) {
                         $fail('Jesteś już zapisany lub oczekujesz na potwierdzenie zapisu na ten kurs.');

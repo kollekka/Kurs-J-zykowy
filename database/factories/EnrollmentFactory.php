@@ -22,7 +22,7 @@ class EnrollmentFactory extends Factory
             'user_id' => User::inRandomOrder()->first()->id ?? User::factory()->create()->id, 
             'course_id' => Course::inRandomOrder()->first()->id ?? Course::factory()->create()->id, 
             'enrollment_date' => $this->faker->dateTimeBetween('-1 month', 'now'), 
-            'status' => $this->faker->randomElement(['active', 'cancelled', 'refunded']), 
+            'status' => 'active',
         ];
     }
 }

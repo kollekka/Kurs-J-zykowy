@@ -39,13 +39,13 @@
 </style>
 @endpush
 
-@section('title', 'Page not found')
+@section('title', 'Server Error')
 
 @section('content')
 <div class="container">
     <div class="error-container text-center">
-        <h1>404</h1>
-        <p>The page you are looking for could not be found.</p>
+        <h1>500</h1>
+        <p>Oops! Something went wrong on our servers.<br>We are working to fix it. Please try again later.</p>
         <a href="{{ route('main') }}" class="btn btn-primary">Back to homepage</a>
     </div>
 </div>

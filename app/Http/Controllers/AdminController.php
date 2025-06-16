@@ -8,13 +8,12 @@ use App\Models\Lesson;
 use App\Models\Enrollment;
 use App\Models\Opinion;
 use App\Models\Payment;
-use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
     public function index()
     {
-         $stats = [
+        $stats = [
             'users' => User::count(),
             'courses' => Course::count(),
             'instructors' => Instructor::count(),
@@ -32,60 +31,67 @@ class AdminController extends Controller
             'instructors',
             'courses'
         ));
-        
     }
 
     /**
      * Wyświetla dedykowaną stronę ze statystykami.
      *
-     * @return \Illuminate\View\View
+     * @return \Illuminate\View\View|\Illuminate\Http\JsonResponse
      */
     public function statistics()
     {
+            $startDate = request('start_date', now()->subMonths(3)->startOfDay()->toDateString());
 
-        // 2. Instruktorzy z największą liczbą kursów (do wykresu słupkowego)
+            $users = User::where('created_at', '>=', $startDate)->get();
+
+            // Grupowanie po dniu
+            $userRegistrationsDaily = $users->groupBy(function($item) {
+                return \Carbon\Carbon::parse($item->created_at)->format('Y-m-d');
+            })->map(function($group) {
+                return [
+                    'day' => $group->first()->created_at->format('Y-m-d'),
+                    'total' => $group->count()
+                ];
+            })->sortBy('day')->values();
+
+            if (request()->ajax()) {
+                return response()->json(['userRegistrationsDaily' => $userRegistrationsDaily]);
+            }
+
         $instructorCourseCounts = Instructor::withCount('courses')
             ->orderBy('courses_count', 'desc')
-            ->take(5) // Pokaż top 5
+            ->take(5) 
             ->get();
 
-        // 3. Rejestracje użytkowników w ostatnich 6 miesiącach (do wykresu liniowego)
-        $userRegistrationsMonthly = User::select(
-                DB::raw("TO_CHAR(created_at, 'YYYY-MM') as month"),
-                DB::raw('count(*) as total')
-            )
-            ->where('created_at', '>=', now()->subMonths(6))
-            ->groupBy('month')
-            ->orderBy('month', 'asc')
-            ->get();
-
-        // 4. Liczba aktywnych kursów (które się jeszcze nie zakończyły)
         $activeCoursesCount = Course::where('end_date', '>=', now()->toDateString())->count();
 
-        // 5. Średnia ocena wszystkich kursów
         $averageCourseRating = Opinion::avg('rating');
 
-        // 6. Najpopularniejsze kursy (top 5 wg liczby zapisów)
         $mostEnrolledCourses = Course::withCount('enrollments')
             ->orderBy('enrollments_count', 'desc')
             ->take(5)
             ->get();
 
-        // 7. Top 5 kursów wg średniej oceny
-        $topRatedCourses = Course::select('courses.id', 'courses.name', 'courses.language', DB::raw('AVG(opinions.rating) as average_rating'))
-            ->join('opinions', 'courses.id', '=', 'opinions.course_id')
-            ->groupBy('courses.id', 'courses.name', 'courses.language')
+        $topRatedCourses = Course::select('courses.id', 'courses.name', 'courses.language')
+            ->withAvg('opinions as average_rating', 'rating')
             ->orderByDesc('average_rating')
             ->take(5)
             ->get();
 
         $stats = [
-            'totalUsers' => User::count(), // Ogólna liczba użytkowników
-            'totalCourses' => Course::count(), // Ogólna liczba kursów
-            'totalInstructors' => Instructor::count(), // Ogólna liczba instruktorów
+            'totalUsers' => User::count(), 
+            'totalCourses' => Course::count(), 
+            'totalInstructors' => Instructor::count(), 
             'activeCoursesCount' => $activeCoursesCount,
             'averageCourseRating' => $averageCourseRating ? number_format($averageCourseRating, 2) : 'Brak ocen',
         ];
-        return view('admin.statistics.index', compact('stats', 'instructorCourseCounts', 'userRegistrationsMonthly', 'mostEnrolledCourses', 'topRatedCourses'));
+
+        return view('admin.statistics.index', compact(
+            'stats',
+            'instructorCourseCounts',
+            'userRegistrationsDaily',
+            'mostEnrolledCourses',
+            'topRatedCourses'
+        ));
     }
 }
