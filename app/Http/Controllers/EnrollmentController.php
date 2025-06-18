@@ -47,13 +47,13 @@ class EnrollmentController extends Controller
             'status' => $request->status, 
         ]);
 
-        return redirect()->route('admin.enrollments.index')->with('success', 'Zapis został pomyślnie utworzony.');
+        return redirect()->route('admin.enrollments.index')->with('success', 'Enrolment Created.');
     }
 
     public function show(Enrollment $enrollment)
     {
         if (Auth::id() !== $enrollment->user_id && !Auth::user()->is_admin) {
-            return redirect()->route('main')->with('error', 'Nie masz dostępu do tych informacji.');
+            return redirect()->route('main')->with('error', 'You don\'t have permission to view this enrollment.');
         }
         $enrollment->load(['user', 'course']);
         return view('admin.enrollments.index', compact('enrollment')); 
@@ -73,21 +73,21 @@ class EnrollmentController extends Controller
     public function update(UpdateEnrollmentRequest $request, Enrollment $enrollment)
     {
         $enrollment->update($request->validated());
-        return redirect()->route('admin.enrollments.index')->with('success', 'Status zapisu został zaktualizowany.');
+        return redirect()->route('admin.enrollments.index')->with('success', 'Enrolment Updated.');
     }
 
     public function destroy(Enrollment $enrollment)
     {
         if (Auth::id() !== $enrollment->user_id && !Auth::user()->is_admin) {
-            return redirect()->back()->with('error', 'Nie masz uprawnień do anulowania tego zapisu.');
+            return redirect()->back()->with('error', 'You do not have permission to delete this enrollment.');
         }
 
         $enrollment->delete(); 
 
         if (Auth::user()->is_admin) {
-            return redirect()->route('admin.enrollments.index')->with('success', 'Zapis został usunięty/anulowany.');
+            return redirect()->route('admin.enrollments.index')->with('success', 'Enrolment Deleted.');
         }
-        return redirect()->route('user.profile')->with('success', 'Twój zapis na kurs został anulowany.');
+        return redirect()->route('user.profile')->with('success', 'Enrolment Deleted.');
     }
 
     public function destroyByUser(Course $course)
@@ -100,13 +100,13 @@ class EnrollmentController extends Controller
         if ($enrollment) {
             if (now() < $course->end_date) {
                 $enrollment->delete();
-                return redirect()->route('user.profile')->with('success', 'Pomyślnie zrezygnowano z kursu.');
+                return redirect()->route('user.profile')->with('success', 'Course Revoked.');
             } else {
-                return redirect()->route('user.profile')->with('error', 'Nie można zrezygnować z kursu, który już się zakończył.');
+                return redirect()->route('user.profile')->with('error', 'You can\'t revoke course after it\'s end date.');
             }
         }
 
-        return redirect()->route('user.profile')->with('error', 'Nie znaleziono zapisu na ten kurs lub wystąpił błąd.');
+        return redirect()->route('user.profile')->with('error', 'Enrollment not found.');
     }
 
     public function enrollUser(Course $course)
@@ -152,6 +152,6 @@ class EnrollmentController extends Controller
             'status' => 'paid',
         ]);
 
-        return redirect()->route('user.profile')->with('success', 'Zapis został pomyślnie utworzony.');
+        return redirect()->route('user.profile')->with('success', 'Enrolment Created.');
     }
 }

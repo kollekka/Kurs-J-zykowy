@@ -34,7 +34,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="duration">Duration (minutes)</label>
-                        <input type="time" name="duration" id="duration" class="form-control form-control-admin @error('duration') is-invalid @enderror" value="{{ old('duration') }}" placeholder="e.g. 45">
+                        <input type="time" name="duration" id="duration" class="form-control form-control-admin @error('duration') is-invalid @enderror" value="{{ old('duration') }}" placeholder="e.g. 45" min="00:15" max="02:00" step="60">
                         @error('duration')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                         @enderror
@@ -63,7 +63,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="time">Lesson Time <span class="text-danger">*</span></label>
-                        <input type="time" name="time" id="time" class="form-control form-control-admin @error('time') is-invalid @enderror" value="{{ old('time') }}" required min="00:30" max="02:00">
+                        <input type="time" name="time" id="time" class="form-control form-control-admin @error('time') is-invalid @enderror" value="{{ old('time') }}" required min="08:00" max="20:00">
                         @error('time')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                         @enderror

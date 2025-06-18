@@ -30,7 +30,7 @@ class PaymentController extends Controller
     {
         Payment::create($request->validated());
 
-        return redirect()->route('admin.payments.index')->with('success', 'Płatność została pomyślnie dodana.');
+        return redirect()->route('admin.payments.index')->with('success', 'Payment has been successfully created.');
     }
 
     public function show(Payment $payment)
@@ -48,7 +48,7 @@ class PaymentController extends Controller
     {
         $payment->update($request->validated());
 
-        return redirect()->route('admin.payments.index')->with('success', 'Płatność została pomyślnie zaktualizowana.');
+        return redirect()->route('admin.payments.index')->with('success', 'Payment updated successfully.');
     }
 
     public function destroy(Payment $payment)
@@ -57,9 +57,9 @@ class PaymentController extends Controller
 
         try {
             $payment->delete();
-            return redirect()->route('admin.payments.index')->with('success', 'Płatność została usunięta.');
+            return redirect()->route('admin.payments.index')->with('success', 'Payment deleted successfully.');
         } catch (\Exception $e) {
-            return redirect()->route('admin.payments.index')->with('error', 'Wystąpił błąd podczas usuwania płatności.');
+            return redirect()->route('admin.payments.index')->with('error', 'Error deleting on payment');
         }
     }
 }

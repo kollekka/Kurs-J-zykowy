@@ -51,7 +51,7 @@ class LessonController extends Controller
     {
         $lesson = Lesson::create($request->validated());
 
-        return redirect()->route('admin.lessons.index', $lesson->course_id)->with('success', 'Lekcja została pomyślnie dodana.');
+        return redirect()->route('admin.lessons.index', $lesson->course_id)->with('success', 'Lesson created.');
     }
 
  
@@ -68,7 +68,7 @@ class LessonController extends Controller
        
         $lesson->update($request->validated());
 
-        return redirect()->route('admin.lessons.index', $lesson->course_id)->with('success', 'Lekcja została zaktualizowana.');
+        return redirect()->route('admin.lessons.index', $lesson->course_id)->with('success', 'Lesson updated.');
     }
 
     public function destroy(Lesson $lesson) 
@@ -76,7 +76,7 @@ class LessonController extends Controller
         $courseId = $lesson->course_id; 
         $lesson->delete();
 
-        return redirect()->route('admin.lessons.index', $courseId)->with('success', 'Lekcja została usunięta.');
+        return redirect()->route('admin.lessons.index', $courseId)->with('success', 'Lesson deleted.');
     }
    public function calendar()
     {

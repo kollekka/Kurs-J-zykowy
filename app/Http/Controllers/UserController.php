@@ -120,7 +120,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         if (Auth::id() === $user->id) {
-            return redirect()->back()->with('error', 'Nie możesz usunąć własnego konta.');
+            return redirect()->back()->with('error', 'you cannot delete yourself.');
         }
 
         if ($user->profile_image && Storage::disk('public')->exists($user->profile_image)) {
@@ -128,7 +128,7 @@ class UserController extends Controller
         }
 
         $user->delete();
-        return redirect()->route('admin.users.index')->with('success', 'Użytkownik został usunięty.');
+        return redirect()->route('admin.users.index')->with('success', 'User deleted successfully.');
     }
 
     public function updateAdmin(UpdateUserByAdminRequest $request, User $user)
@@ -154,7 +154,7 @@ class UserController extends Controller
 
         $user->update($dataToUpdate);
 
-        return redirect()->route('admin.users.index')->with('success', 'Dane użytkownika zostały pomyślnie zaktualizowane.');
+        return redirect()->route('admin.users.index')->with('success', 'User updated successfully.');
     }
 
     public function removeProfileImage()
@@ -167,6 +167,6 @@ class UserController extends Controller
             $user->save();
         }
 
-        return redirect()->route('user.profile')->with('success', 'Zdjęcie profilowe zostało usunięte.');
+        return redirect()->route('user.profile')->with('success', 'Profile image removed successfully.');
     }
 }
