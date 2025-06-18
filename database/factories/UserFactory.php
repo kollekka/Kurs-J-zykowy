@@ -26,14 +26,11 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => bcrypt('password'),
             'remember_token' => Str::random(10),
-            'created_at' => $this->faker->dateTimeBetween('-3 months', 'now'), // Losowa data rejestracji
+            'created_at' => $this->faker->dateTimeBetween('-3 months', 'now'), 
             'updated_at' => now(),
         ];
     }
 
-    /**
-     * Indicate that the model's email address should be unverified.
-     */
     public function unverified(): static
     {
         return $this->state(fn (array $attributes) => [

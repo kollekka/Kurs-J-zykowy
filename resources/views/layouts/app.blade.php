@@ -1,4 +1,4 @@
-<!-- filepath: e:\projekt laravel\Kurs-J-zykowy\resources\views\layouts\app.blade.php -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

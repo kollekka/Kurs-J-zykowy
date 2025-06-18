@@ -8,21 +8,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         :root {
-            --main-color: #2c3e50; /* Główny kolor (ciemny niebiesko-szary) */
-            --accent-color: #e67e22; /* Kolor akcentu (pomarańczowy) */
-            --hover-color: #d35400; /* Kolor akcentu po najechaniu */
-            --light-bg: #f8f9fa; /* Jasne tło */
-            --card-header-bg-start: #34495e; /* Początek gradientu dla nagłówka karty */
-            --card-header-bg-end: #2c3e50;   /* Koniec gradientu dla nagłówka karty */
+            --main-color: #2c3e50; 
+            --accent-color: #e67e22; 
+            --hover-color: #d35400; 
+            --light-bg: #f8f9fa; 
+            --card-header-bg-start: #34495e; 
+            --card-header-bg-end: #2c3e50;   
         }
 
         body {
             background-color: var(--light-bg);
-            padding-top: 70px; /* Dostosuj, jeśli navbar ma inną wysokość */
-            font-family: 'Arial', sans-serif; /* Przykładowa czcionka */
+            padding-top: 70px; 
+            font-family: 'Arial', sans-serif; 
         }
 
-        .navbar-admin { /* Dedykowana klasa dla navbara admina */
+        .navbar-admin { 
             background: var(--main-color) !important;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
@@ -95,7 +95,7 @@
         }
 
 
-        .card-admin { /* Dedykowana klasa dla kart w panelu admina */
+        .card-admin { 
             border: none;
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
@@ -117,11 +117,11 @@
         }
 
 
-        .table-admin { /* Dedykowana klasa dla tabel w panelu admina */
+        .table-admin { 
             margin-bottom: 0;
         }
         .table-admin th {
-            background-color: #e9ecef; /* Jasnoszary nagłówek tabeli */
+            background-color: #e9ecef; 
             color: var(--main-color);
             font-weight: 600;
         }
@@ -129,7 +129,7 @@
             vertical-align: middle;
         }
 
-        .form-control-admin { /* Dedykowana klasa dla pól formularzy w panelu admina */
+        .form-control-admin { 
             border-radius: 25px;
             border: 1px solid #ced4da;
             padding: 0.65rem 1.15rem;

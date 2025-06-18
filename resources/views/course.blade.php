@@ -223,7 +223,6 @@
 
     <div class="container mt-4">
         <div class="row">
-            <!-- Main course section -->
             <div class="col-md-12">
                 <div class="course-info shadow-lg" style="background: linear-gradient(120deg, #fff 70%, #f8f9fa 100%); border: 1px solid #ececec;">
             <div class="d-flex flex-wrap align-items-start justify-content-between">
@@ -245,20 +244,7 @@
                     <div class="mb-3" style="font-size:1.08rem; color:#444;">
                         {{ $course->description }}
                     </div>
-                    <div class="d-flex align-items-center mb-3">
-                        @if(!Auth::user())
-                            <a href="{{ route('login') }}" class="btn btn-primary btn-lg rounded-pill px-4 shadow-sm">Log in to enroll</a>
-                        @elseif (count($course->enrollments) >= ($course->group_size))
-                            <button class="btn btn-secondary btn-lg rounded-pill px-4" disabled>No spots available</button>
-                        @elseif($course->start_date < now())
-                            <button class="btn btn-secondary btn-lg rounded-pill px-4" disabled>The course has ended</button>
-                        @elseif ($course->enrollments->contains('user_id', Auth::id()))
-                            <button class="btn btn-secondary btn-lg rounded-pill px-4" disabled>You are already enrolled</button>
-                        @elseif(Auth::user())
-                            <a href="{{ route('course.enrollUser', $course->id) }}" class="btn btn-primary btn-lg rounded-pill px-4 shadow-sm">Enroll in course</a>
-                        @endif
-                        <a href="{{ url('/main') }}" class="btn btn-outline-primary rounded-pill px-4">Back to courses</a>
-                    </div>
+                    `
                 </div>
                 <div class="instructor-box ml-md-4 mt-4 mt-md-0 shadow-sm" style="background:#f7f7fa; border:1px solid #ececec; min-width:220px; max-width:300px;">
                     <h5 class="mb-2" style="font-weight:600; color:var(--main-color);"><i class="fas fa-chalkboard-teacher mr-2"></i>Instructor</h5>
@@ -278,7 +264,6 @@
 
         </div>
 
-        <!-- Lessons section full width -->
         <div class="row">
             <div class="col-12">
                 <div class="card mt-4">
@@ -306,10 +291,8 @@
             </div>
         </div>
 
-        <!-- Opinions section -->
         <div class="row mt-4">
             <div class="col-md-3">
-                <!-- Add opinion form -->
                 <div class="card h-100">
                     <div class="card-header">
                         <h5 class="mb-0"><i class="fas fa-pen mr-2"></i>Add your opinion</h5>
@@ -351,7 +334,6 @@
             </div>
 
             <div class="col-md-9">
-                <!-- Other users' opinions -->
                 <div class="card h-100">
                     <div class="card-header">
                         <h5 class="mb-0"><i class="fas fa-comments mr-2"></i>Other users' opinions</h5>

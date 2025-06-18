@@ -1,4 +1,4 @@
-@extends('layouts.app') {{-- Assuming you are using the main app layout --}}
+@extends('layouts.app') 
 
 @section('title', 'My Calendar')
 
@@ -333,7 +333,6 @@
                 `;
                 document.body.insertAdjacentHTML('beforeend', modalHtml);
 
-                // Zamknięcie modala
                 function closeModal() {
                     const modal = document.getElementById('lessonDetailModal');
                     const backdrop = document.querySelector('.modal-backdrop');

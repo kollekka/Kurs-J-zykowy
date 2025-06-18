@@ -5,25 +5,51 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Course;
-use App\Models\Lesson;
 use App\Models\Instructor; 
 use App\Models\Opinion;
 use App\Http\Requests\StoreCourseRequest; 
 use App\Http\Requests\UpdateCourseRequest; 
-
+use Illuminate\Support\Facades\Auth; 
+use Carbon\Carbon;
 
 class CourseController extends Controller
 {
     public function show($id)
     {
+        $hasScheduleConflict = false;
+        $user = Auth::user();
+        $course = Course::with(['lessons', 'instructor']) 
+                        ->withCount('enrollments')
+                        ->findOrFail($id);
+        if ($user) {
+            
+            $userEnrollments = $user->enrollments()->with('course')->get();
+            if ($userEnrollments->count() > 0) {
+                $currentCourseStartDate = Carbon::parse($course->start_date);
+                $currentCourseEndDate = Carbon::parse($course->end_date);
 
-        $currentDate = now();
+                foreach ($userEnrollments as $enrollment) {
+                    
+                    if ($enrollment->course && $enrollment->course_id != $course->id) {
+                        $userEnrolledCourseStartDate = Carbon::parse($enrollment->course->start_date);
+
+                        if ($userEnrolledCourseStartDate->gte($currentCourseStartDate) &&
+                            $userEnrolledCourseStartDate->lte($currentCourseEndDate)) {
+                            $hasScheduleConflict = true;
+                            break; 
+                        }
+                    }
+                }
+            }
+        }
+
+       
         $course = Course::with('lessons')->withCount('enrollments')->findOrFail($id);
         $opinions =  Opinion::where('course_id', $id)->with('user')->get();
         $rating = $opinions->avg('rating');
-
+        $currentDate = now();
         
-        return view('course', compact('course','opinions','rating','currentDate'));
+        return view('course', compact('course','opinions','rating','currentDate','hasScheduleConflict'));
         
     }
 

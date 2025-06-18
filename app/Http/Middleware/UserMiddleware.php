@@ -20,7 +20,6 @@ class UserMiddleware
             return $next($request);
         }
 
-        session()->flash('error_popup', 'Brak uprawnień do dostępu. Kod błędu: 403');
         return redirect('/main');
     }
 }

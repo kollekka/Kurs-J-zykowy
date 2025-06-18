@@ -40,7 +40,6 @@ class EnrollmentController extends Controller
   
     public function store(StoreEnrollmentByAdminRequest $request)
     {
-       
         Enrollment::create([
             'user_id' => $request->user_id, 
             'course_id' => $request->course_id, 
@@ -112,7 +111,14 @@ class EnrollmentController extends Controller
 
     public function enrollUser(Course $course)
     {
-        return view('enroll', ['course' => $course]);
+        $user = Auth::user();
+            $discountPercentage = 0; 
+            if ($user && $user->created_at->gt(Carbon::now()->subWeek())) {
+                $discountPercentage = 80; 
+            }
+            $finalAmount = round(($course->price ?? 0) * (1 - ($discountPercentage / 100)), 2);
+
+        return view('enroll', compact('course','finalAmount','discountPercentage'));
     }
 
     public function storeUserEnrollment(Request $request)
@@ -124,13 +130,12 @@ class EnrollmentController extends Controller
 
         $course = Course::findOrFail($validated['course_id']);
         $user = Auth::user();
-
-        $discount = 1.0;
-        if ($user->created_at->gt(Carbon::now()->subWeek())) {
-            $discount = 0.2;
-        }
-
-        $finalAmount = round(($course->price ?? 0) * $discount, 2);
+        
+            $discountPercentage = 0; 
+            if ($user && $user->created_at->gt(Carbon::now()->subWeek())) {
+                $discountPercentage = 80; 
+            }
+            $finalAmount = round(($course->price ?? 0) * (1 - ($discountPercentage / 100)), 2);
 
         $enrollment = Enrollment::create([
             'user_id' => $user->id,

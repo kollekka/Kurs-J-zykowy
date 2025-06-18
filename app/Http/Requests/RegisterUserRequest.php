@@ -24,7 +24,7 @@ class RegisterUserRequest extends FormRequest
         return [
             'name' => 'required|string|max:255|unique:users,name',
             'email' => 'required|string|email|max:255',
-            'password' => 'required|string|min:4|confirmed', 
+            'password' => 'required|string|regex:/^(?=.*[A-Z])(?=.*\d).{8,}$/|confirmed', 
         ];
     }
 
@@ -37,6 +37,8 @@ class RegisterUserRequest extends FormRequest
     {
         return [
             'password.confirmed' => 'The password and password confirmation fields must match.',
+            'name.unique' => 'Wrong name or email.',
+            
         ];
     }
 }

@@ -3,7 +3,6 @@
 @section('title', 'Edit User')
 @push('styles')
 <style>
-    /* Profile Image Styles - can be moved to global admin CSS */
     .profile-image-container {
         text-align: center;
         margin-bottom: 25px;
@@ -12,14 +11,14 @@
     .profile-image-wrapper {
         position: relative;
         display: inline-block;
-        margin-bottom: 10px; /* Smaller margin for admin panel */
+        margin-bottom: 10px; 
     }
     .profile-image, .default-profile-icon {
-        width: 100px; /* Smaller size for admin panel */
+        width: 100px;
         height: 100px;
         border-radius: 50%;
         object-fit: cover;
-        border: 3px solid #ddd; /* Subtle border */
+        border: 3px solid #ddd; 
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     .default-profile-icon {
@@ -34,7 +33,7 @@
         position: absolute;
         bottom: 0;
         right: 0;
-        background: var(--admin-primary-color, #007bff); /* Use admin CSS variable if exists */
+        background: var(--admin-primary-color, #007bff); 
         border-radius: 50%;
         width: 30px;
         height: 30px;
@@ -45,7 +44,7 @@
         cursor: pointer;
         border: 2px solid white;
     }
-    .custom-file-input-admin { /* Unique class for admin input */
+    .custom-file-input-admin { 
         opacity: 0;
         position: absolute;
         z-index: -1;
@@ -76,7 +75,6 @@
                     @csrf
                     @method('PUT')
 
-                    <!-- Profile Image Section -->
                     <div class="form-group">
                         <label>Profile Image</label>
                         <div class="profile-image-container">
@@ -171,18 +169,14 @@
 
             reader.onload = function(e) {
                 if (currentDisplayElement.tagName === 'IMG') {
-                    // If it's already an <img>, just update its src
                     currentDisplayElement.src = e.target.result;
                 } else {
-                    // If it's a <div> (default icon), replace it with a new <img>
                     const newImg = document.createElement('img');
                     newImg.src = e.target.result;
                     newImg.alt = "Profile Preview";
-                    // Use classes defined in <style> or global admin styles
                     newImg.className = 'profile-image'; 
-                    newImg.id = 'adminProfileDisplay'; // Keep ID for future previews
+                    newImg.id = 'adminProfileDisplay'; 
 
-                    // Replace the old div with the new image
                     currentDisplayElement.parentNode.replaceChild(newImg, currentDisplayElement);
                 }
             };

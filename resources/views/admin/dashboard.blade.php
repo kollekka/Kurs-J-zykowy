@@ -219,13 +219,10 @@
 @section('content')
     <div class="container mt-5">
         <h1 class="text-center mb-4" style="color: var(--main-color);">Admin Dashboard</h1>
-        <!-- Statistics Section -->
         <div class="row mb-5">
             <div class="col-12">
                 <h2 class="text-center mb-4" style="color: var(--main-color);">System Statistics</h2>
             </div>
-
-            <!-- Users -->
             @if(isset($stats['users']))
             <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
                 <a href="{{ route('admin.users.index') }}" class="stat-card-link">
@@ -269,7 +266,6 @@
             </div>
             @endif
 
-            <!-- Enrollments -->
             @if(isset($stats['enrollments']))
             <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
                 <a href="{{ route('admin.enrollments.index') }}" class="stat-card-link">
@@ -284,7 +280,7 @@
             </div>
             @endif
 
-            <!-- Opinions -->
+
             @if(isset($stats['opinions']))
             <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
                 <a href="{{ route('admin.opinions.index') }}" class="stat-card-link">
@@ -299,7 +295,6 @@
             </div>
             @endif
 
-            <!-- Payments -->
             @if(isset($stats['payments']))
             <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
                 <a href="{{ route('admin.payments.index') }}" class="stat-card-link">

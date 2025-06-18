@@ -1,4 +1,4 @@
-<!-- filepath: e:\projekt laravel\Kurs-J-zykowy\resources\views\errors\419.blade.php -->
+
 @extends('layouts.app')
 
 @push('styles')
@@ -51,7 +51,6 @@
     </div>
 </div>
 
-<!-- Hidden logout form -->
 <form id="logoutForm" action="{{ route('logout') }}" method="POST" style="display: none;">
     @csrf
 </form>

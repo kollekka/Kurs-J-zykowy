@@ -166,7 +166,6 @@
         const userRegCanvas = document.getElementById('userRegistrationsChart');
         const startDateInput = document.getElementById('start_date');
 
-        // On page load, set date from localStorage if exists
         const savedDate = localStorage.getItem('userRegStartDate');
         if (savedDate && startDateInput) {
             startDateInput.value = savedDate;
@@ -185,12 +184,10 @@
                 .then(response => response.json())
                 .then(data => {
                     const chartData = data.userRegistrationsDaily || [];
-                    // Sort data by day ascending
                     chartData.sort((a, b) => a.day.localeCompare(b.day));
                     const labels = chartData.map(item => item.day);
                     const values = chartData.map(item => item.total);
 
-                    // Set date field to selected value and save to localStorage
                     startDateInput.value = startDate;
                     localStorage.setItem('userRegStartDate', startDate);
 
@@ -284,7 +281,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    // Instructors
     const instructorCoursesData = @json($instructorCourseCounts);
     const instructorCanvas = document.getElementById('instructorCoursesChart');
     if (instructorCoursesData && instructorCoursesData.length > 0 && instructorCanvas) {
@@ -305,7 +301,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     } 
 
-    // User registrations by day
     const userRegistrationsData = @json($userRegistrationsDaily);
     const userRegCanvas = document.getElementById('userRegistrationsChart');
     if (userRegistrationsData && userRegistrationsData.length > 0 && userRegCanvas) {

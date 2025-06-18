@@ -36,11 +36,11 @@ class StoreEnrollmentRequest extends FormRequest
                         ->whereIn('status', ['pending', 'active']) 
                         ->exists();
                     if ($existingEnrollment) {
-                        $fail('Jesteś już zapisany lub oczekujesz na potwierdzenie zapisu na ten kurs.');
+                        $fail('You are already enrolled.');
                     }
                     $course = Course::find($value);
                     if ($course && $course->start_date < now()->toDateString() && $course->end_date < now()->toDateString()) {
-                        $fail('Nie można zapisać się na kurs, który już się zakończył.');
+                        $fail('Course has already ended.');
                     }
                 }
             ],

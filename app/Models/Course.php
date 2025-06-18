@@ -43,13 +43,10 @@ class Course extends Model
         return $this->hasMany(Opinion::class);
     }
 
-    // Nadchodzące kursy
     public static function upcoming()
     {
         return self::where('start_date', '>', Carbon::now())->orderBy('start_date', 'asc')->get();
     }
-
-    // Minione kursy
     public static function past()
     {
         return self::where('end_date', '<', Carbon::now())->orderBy('end_date', 'desc')->get();

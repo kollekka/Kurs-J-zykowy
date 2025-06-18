@@ -1,49 +1,23 @@
-@echo off
 
-cd /d "%~dp0"
+composer install
 
-if not exist ".env" (
-    copy ".env.example" ".env"
-)
+php artisan storage:link
 
-composer install --no-interaction --prefer-dist --optimize-autoloader
-if %errorlevel% neq 0 (
-    echo [BLAD] Instalacja Composer nie powiodla sie. Sprawdz bledy i czy Composer jest poprawnie zainstalowany.
-    pause
-    goto :eof
-)
-
+copy .env.example .env
 php artisan key:generate
-if %errorlevel% neq 0 (
-    echo [BLAD] Generowanie klucza aplikacji nie powiodlo sie. Sprawdz plik .env i konfiguracje PHP.
-    pause
-    goto :eof
-)
 
-php artisan config:clear
-php artisan cache:clear
-php artisan route:clear
-php artisan view:clear
+powershell -Command "(Get-Content .env) -replace 'DB_CONNECTION=sqlite', 'DB_CONNECTION=pgsql' | Set-Content .env"
+powershell -Command "(Get-Content .env) -replace '# DB_HOST=127.0.0.1', 'DB_HOST=127.0.0.1' | Set-Content .env"
+powershell -Command "(Get-Content .env) -replace '# DB_PORT=3306', 'DB_PORT=5432' | Set-Content .env"
+powershell -Command "(Get-Content .env) -replace '# DB_DATABASE=laravel', 'DB_DATABASE=Kursy' | Set-Content .env"
+powershell -Command "(Get-Content .env) -replace '# DB_USERNAME=root', 'DB_USERNAME=postgres' | Set-Content .env"
+powershell -Command "(Get-Content .env) -replace '# DB_PASSWORD=', 'DB_PASSWORD=student' | Set-Content .env"
 
+php artisan migrate
 
-php artisan migrate --force
-if %errorlevel% neq 0 (
-    echo [BLAD] Migracje bazy danych nie powiodly sie.
-    pause
-    goto :eof
-)
+php artisan db:seed
 
+php artisan serve
 
-php artisan db:seed --force
-if %errorlevel% neq 0 (
-    echo [OSTRZEZENIE] Zasilanie bazy danych (seeding) nie powiodlo sie. Moze to byc w porzadku, jesli nie masz seederow lub sa opcjonalne.
-    pause
-)
-
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
-
-echo  Konfiguracja Projektu Laravel Zakonczona Pomyslnie!
-pause
+endlocal
 :eof

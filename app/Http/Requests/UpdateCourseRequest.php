@@ -35,10 +35,10 @@ class UpdateCourseRequest extends FormRequest
                 'date',
                 'after_or_equal:start_date',
                 function ($attribute, $value, $fail) {
-                    $startDate = Carbon::parse($this->input('start_date', $this->route('course')->start_date)); // Użyj istniejącej daty, jeśli nie ma nowej
+                    $startDate = Carbon::parse($this->input('start_date', $this->route('course')->start_date)); 
                     $endDate = Carbon::parse($value);
                     if ($endDate->lt($startDate->copy()->addDays(7))) {
-                        $fail('Data zakończenia musi być co najmniej 7 dni po dacie rozpoczęcia.');
+                        $fail('End date must be at least 7 days after start date.');
                     }
                 },
             ],

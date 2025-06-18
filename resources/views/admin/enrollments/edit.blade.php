@@ -56,7 +56,6 @@
                     <div class="form-group">
                         <label for="course_id">Course</label>
                         <select class="form-control form-control-admin" id="course_id" name="course_id" required>
-                            {{-- Assuming you pass $courses (all courses) from the controller --}}
                             @foreach ($courses as $course)
                                 <option value="{{ $course->id }}" {{ old('course_id', $enrollment->course_id) == $course->id ? 'selected' : '' }}>
                                     {{ $course->name }}

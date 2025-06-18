@@ -46,8 +46,6 @@
                             <option value="card" {{ old('payment_method') == 'card' ? 'selected' : '' }}>Card</option>
                             <option value="bank_transfer" {{ old('payment_method') == 'bank_transfer' ? 'selected' : '' }}>Bank Transfer</option>
                             <option value="paypal" {{ old('payment_method') == 'paypal' ? 'selected' : '' }}>PayPal</option>
-                            <option value="cash" {{ old('payment_method') == 'cash' ? 'selected' : '' }}>Cash</option>
-                            {{-- Add other methods if needed --}}
                         </select>
                     </div>
 

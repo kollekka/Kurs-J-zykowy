@@ -18,9 +18,7 @@ class PaymentController extends Controller
         $payments = Payment::with(['user', 'enrollment'])->latest()->paginate(15); 
         return view('admin.payments.index', compact('payments')); 
     }
-    /**
-     * Show the form for creating a new resource.
-     */
+   
     public function create()
     {
         $users = User::orderBy('name')->get();

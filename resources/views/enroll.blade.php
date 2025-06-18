@@ -15,7 +15,6 @@
 
     body {
         background-color: var(--light-bg);
-        /* padding-top: 80px; already in app.blade.php */
         min-height: 100vh;
     }
 
@@ -75,7 +74,7 @@
         border: 1px solid rgba(0,0,0,0.1);
         padding: 0.75rem 1.25rem;
         transition: all 0.3s ease;
-        height: auto; /* Ensure select height is consistent */
+        height: auto; 
     }
 
     .form-control-enroll:focus {
@@ -118,15 +117,6 @@
 @endpush
 
 @section('content')
-@php
-    use Carbon\Carbon;
-    $user = Auth::user();
-    $discountPercentage = 0; // No discount by default
-    if ($user && $user->created_at->gt(Carbon::now()->subWeek())) {
-        $discountPercentage = 80; // 80% discount
-    }
-    $finalAmount = round(($course->price ?? 0) * (1 - ($discountPercentage / 100)), 2);
-@endphp
 
 <div class="container mt-4">
     <div class="enroll-card">
@@ -135,16 +125,12 @@
             <div class="course-name-enroll">{{ $course->name }}</div>
         </div>
         <div class="card-body p-4">
-            <div class="price-info">
-                @if($discountPercentage > 0)
-                    <span class="original-price">{{ number_format($course->price, 2) }} zł</span>
-                    <span class="final-price">{{ number_format($finalAmount, 2) }} zł</span>
-                    <span class="discount-notice"><i class="fas fa-tags mr-1"></i>{{ $discountPercentage }}% zniżki dla nowych użytkowników!</span>
-                @else
-                    <span class="final-price">{{ number_format($finalAmount, 2) }} zł</span>
+            <div class="price-info mb-4">
+                <span class="original-price">Original Price: ${{ number_format($course->price, 2) }}</span>
+                <span class="final-price">Final Price: ${{ number_format($finalAmount, 2) }}</span>
+                @if ($course->discount > 0)
+                    <span class="discount-notice">You save ${{ number_format($course->price - $finalAmount, 2) }}!</span>
                 @endif
-            </div>
-
             <form method="POST" action="{{ route('enrollment.user.store') }}">
                 @csrf
                 <input type="hidden" name="course_id" value="{{ $course->id }}">
@@ -172,5 +158,6 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 @endsection

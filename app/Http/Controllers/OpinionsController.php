@@ -44,7 +44,7 @@ class OpinionsController extends Controller
             return redirect()->back()->with('error', 'Nie masz uprawnień do edycji tej opinii.');
         }
 
-        return view('admin.opinions.edit', compact('opinion')); // Ensure this view exists e.g., resources/views/opinions/edit.blade.php
+        return view('admin.opinions.edit', compact('opinion')); 
     }
 
     
@@ -52,7 +52,7 @@ class OpinionsController extends Controller
     {
         
         $opinion->update([
-            'opinion' => $request->opinion, // Zmiana z comment na opinion
+            'opinion' => $request->opinion, 
             'rating' => $request->rating,
         ]);
 

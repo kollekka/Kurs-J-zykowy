@@ -34,7 +34,6 @@ class AdminController extends Controller
     }
 
     /**
-     * Wyświetla dedykowaną stronę ze statystykami.
      *
      * @return \Illuminate\View\View|\Illuminate\Http\JsonResponse
      */
@@ -44,7 +43,6 @@ class AdminController extends Controller
 
             $users = User::where('created_at', '>=', $startDate)->get();
 
-            // Grupowanie po dniu
             $userRegistrationsDaily = $users->groupBy(function($item) {
                 return \Carbon\Carbon::parse($item->created_at)->format('Y-m-d');
             })->map(function($group) {

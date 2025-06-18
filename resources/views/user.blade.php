@@ -334,21 +334,20 @@
         </div>
     </nav>
 
-    <!-- Główna zawartość -->
+
     <div class="container mt-5">
         <div class="row">
-            <!-- Profil użytkownika -->
             <div class="col-md-4 mb-4">
                 <div class="card">
                     <div class="card-header">
                         <h3 class="mb-0">Your Profile</h3>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('user.update') }}" method="POST" enctype="multipart/form-data"> {{-- Moved form tag here and added enctype --}}
+                        <form action="{{ route('user.update') }}" method="POST" enctype="multipart/form-data"> 
                             @csrf
                             @method('PUT')
 
-                            <!-- Profile Image Section -->
+
                         <div class="profile-image-container">
                             <div class="profile-image-wrapper">
                                 @if($user->profile_image && Storage::disk('public')->exists($user->profile_image))
@@ -367,8 +366,6 @@
                             </div>
                             <p class="text-muted mb-0">Click camera to change photo</p>
                         </div>
-
-                            <!-- Hidden file input -->
                             <input type="file"
                                    id="profileImageInput"
                                    name="profile_image"
@@ -430,7 +427,6 @@
 <div class="col-md-8">
     <h3 class="mb-4" style="color: var(--main-color);">Your Courses</h3>
 
-    <!-- Formularz wyszukiwania i sortowania -->
     <form action="{{ route('user.profile') }}" method="GET" class="mb-4">
         <div class="card shadow-sm border-0 rounded-lg mb-3">
             <div class="card-body py-3">
