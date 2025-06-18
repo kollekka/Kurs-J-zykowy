@@ -29,7 +29,7 @@ class UpdateLessonRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'content' => 'nullable|string',
-            'duration' => 'required|date_format:H:i', 
+            'duration' => 'required', 
             'date' => [
                 'required',
                 'date',
@@ -37,7 +37,6 @@ class UpdateLessonRequest extends FormRequest
             ],
             'time' => [
                 'required',
-                'date_format:H:i',
                 function ($attribute, $value, $fail) {
                     $timeInSeconds = strtotime($value);
                     $startTime = strtotime('08:00');

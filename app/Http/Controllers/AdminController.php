@@ -8,6 +8,8 @@ use App\Models\Lesson;
 use App\Models\Enrollment;
 use App\Models\Opinion;
 use App\Models\Payment;
+use Illuminate\Http\Request; 
+use Carbon\Carbon; 
 
 class AdminController extends Controller
 {
@@ -37,51 +39,85 @@ class AdminController extends Controller
      *
      * @return \Illuminate\View\View|\Illuminate\Http\JsonResponse
      */
-    public function statistics()
+    public function statistics(Request $request)
     {
-            $startDate = request('start_date', now()->subMonths(3)->startOfDay()->toDateString());
+       
+        $defaultStartDate = Carbon::now()->subMonths(3)->startOfDay();
+        $defaultEndDate = Carbon::now()->endOfDay();
 
-            $users = User::where('created_at', '>=', $startDate)->get();
+        $startDate = $request->input('start_date')
+            ? Carbon::parse($request->input('start_date'))->startOfDay()
+            : $defaultStartDate;
+        $endDate = $request->input('end_date')
+            ? Carbon::parse($request->input('end_date'))->endOfDay()
+            : $defaultEndDate;
 
-            $userRegistrationsDaily = $users->groupBy(function($item) {
-                return \Carbon\Carbon::parse($item->created_at)->format('Y-m-d');
-            })->map(function($group) {
-                return [
-                    'day' => $group->first()->created_at->format('Y-m-d'),
-                    'total' => $group->count()
-                ];
-            })->sortBy('day')->values();
+     
+        if ($startDate->gt($endDate)) {
+            $startDate = $defaultStartDate;
+            $endDate = $defaultEndDate;
+        }
 
-            if (request()->ajax()) {
-                return response()->json(['userRegistrationsDaily' => $userRegistrationsDaily]);
-            }
-
-        $instructorCourseCounts = Instructor::withCount('courses')
-            ->orderBy('courses_count', 'desc')
-            ->take(5) 
+     
+        $usersInPeriod = User::whereBetween('created_at', [$startDate, $endDate])
+            ->orderBy('created_at', 'asc') 
             ->get();
 
-        $activeCoursesCount = Course::where('end_date', '>=', now()->toDateString())->count();
+    
+        $userRegistrationsDaily = $usersInPeriod
+            ->groupBy(function ($user) {
+                return $user->created_at->format('Y-m-d'); 
+            })
+            ->map(function ($dailyUsersCollection, $dateKey) {
+                return [
+                    'day' => $dateKey, 
+                    'total' => $dailyUsersCollection->count(), 
+                ];
+            })->sortBy('day')->values(); 
 
-        $averageCourseRating = Opinion::avg('rating');
 
-        $mostEnrolledCourses = Course::withCount('enrollments')
-            ->orderBy('enrollments_count', 'desc')
+        $instructorCourseCounts = Instructor::select('instructors.id', 'instructors.full_name')
+            ->withCount('courses as courses_count') 
+            ->orderByDesc('courses_count')
             ->take(5)
             ->get();
 
         $topRatedCourses = Course::select('courses.id', 'courses.name', 'courses.language')
-            ->withAvg('opinions as average_rating', 'rating')
-            ->orderByDesc('average_rating')
+            ->withAvg('opinions', 'rating') 
+            ->orderByDesc('opinions_avg_rating')
             ->take(5)
             ->get();
 
+
+        $mostEnrolledCourses = Course::withCount(['enrollments as enrollments_count' => function ($query) use ($startDate, $endDate) {
+                $query->whereBetween('enrollments.enrollment_date', [$startDate, $endDate]);
+            }])
+            ->whereHas('enrollments', function ($query) use ($startDate, $endDate) {
+                $query->whereBetween('enrollments.enrollment_date', [$startDate, $endDate]);
+            })
+            ->orderBy('enrollments_count', 'desc')
+            ->take(5)
+            ->get();
+
+        if ($request->ajax()) {
+            return response()->json([
+                'userRegistrationsDaily' => $userRegistrationsDaily,
+                'instructorCourseCounts' => $instructorCourseCounts,
+                'topRatedCourses' => $topRatedCourses,
+                'mostEnrolledCourses' => $mostEnrolledCourses,
+                'startDate' => $startDate->toDateString(), 
+                'endDate' => $endDate->toDateString(),
+            ]);
+        }
+
+        $activeCoursesCount = Course::where('end_date', '>=', now()->toDateString())->count();
+        $overallAverageCourseRating = Opinion::avg('rating');
         $stats = [
             'totalUsers' => User::count(), 
             'totalCourses' => Course::count(), 
             'totalInstructors' => Instructor::count(), 
             'activeCoursesCount' => $activeCoursesCount,
-            'averageCourseRating' => $averageCourseRating ? number_format($averageCourseRating, 2) : 'Brak ocen',
+            'averageCourseRating' => $overallAverageCourseRating ? number_format($overallAverageCourseRating, 2) : 'Brak ocen',
         ];
 
         return view('admin.statistics.index', compact(
@@ -89,7 +125,8 @@ class AdminController extends Controller
             'instructorCourseCounts',
             'userRegistrationsDaily',
             'mostEnrolledCourses',
-            'topRatedCourses'
+            'topRatedCourses',
+            'startDate', 
         ));
     }
 }

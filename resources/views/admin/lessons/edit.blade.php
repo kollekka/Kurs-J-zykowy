@@ -62,7 +62,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="time">Godzina Lekcji <span class="text-danger">*</span></label>
-                        <input type="time" name="time" id="time" class="form-control form-control-admin @error('time') is-invalid @enderror" value="{{ old('time', $lesson->time) }}" required min="00:30" max="02:00">
+                        <input type="time" name="time" id="time" class="form-control form-control-admin @error('time') is-invalid @enderror" value="{{ old('time', $lesson->time) }}" required min="08:00" max="20:00">
                         @error('time')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                         @enderror

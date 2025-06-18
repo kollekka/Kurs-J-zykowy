@@ -18,10 +18,9 @@
             background-color: var(--light-bg);
             padding-top: 80px;
         }
-
         .navbar {
             background: var(--main-color) !important;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
         }
 
         .navbar-brand {
@@ -206,6 +205,11 @@
             <li class="nav-item">
               <a class="nav-link" href="{{ route('courses.index') }}"><i class="fas fa-book-open mr-1"></i>Courses</a>
             </li>
+            @if(Auth::check())
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('user.calendar') }}"><i class="fas fa-calendar-alt mr-1"></i>Calendar</a>
+            </li>
+            @endif
             @if (Auth::user() && Auth::user()->is_admin)
               <li class="nav-item active">
                 <a class="nav-link" href="{{ route('admin.dashboard') }}"><i class="fas fa-tools mr-1"></i>Admin Panel</a>
@@ -244,7 +248,23 @@
                     <div class="mb-3" style="font-size:1.08rem; color:#444;">
                         {{ $course->description }}
                     </div>
-                    `
+                    `<div class="d-flex align-items-center mb-3">
+                        @if(!Auth::user())
+                            <a href="{{ route('login') }}" class="btn btn-primary btn-lg rounded-pill px-4 shadow-sm">Log in to enroll</a>
+                        @elseif (count($course->enrollments) >= ($course->group_size))
+                            <button class="btn btn-secondary btn-lg rounded-pill px-4" disabled>No spots available</button>
+                        @elseif($course->start_date < now())
+                            <button class="btn btn-secondary btn-lg rounded-pill px-4" disabled>Enrolls has ended</button>
+                        @elseif ($course->enrollments->contains('user_id', Auth::id()))
+                            <button class="btn btn-secondary btn-lg rounded-pill px-4" disabled>You are already enrolled</button>
+                        @elseif (!$hasScheduleConflict)
+                            <button class="btn btn-secondary btn-lg rounded-pill px-4" disabled>Schedule conflict</button>
+                        @elseif(Auth::user())
+                            <a href="{{ route('course.enrollUser', $course->id) }}" class="btn btn-primary btn-lg rounded-pill px-4 shadow-sm">Enroll in course</a>
+                        @endif
+                        <a href="{{ url('/main') }}" class="btn btn-outline-primary rounded-pill px-4">Back to courses</a>
+                    </div>
+
                 </div>
                 <div class="instructor-box ml-md-4 mt-4 mt-md-0 shadow-sm" style="background:#f7f7fa; border:1px solid #ececec; min-width:220px; max-width:300px;">
                     <h5 class="mb-2" style="font-weight:600; color:var(--main-color);"><i class="fas fa-chalkboard-teacher mr-2"></i>Instructor</h5>

@@ -126,9 +126,9 @@
         </div>
         <div class="card-body p-4">
             <div class="price-info mb-4">
-                <span class="original-price">Original Price: ${{ number_format($course->price, 2) }}</span>
                 <span class="final-price">Final Price: ${{ number_format($finalAmount, 2) }}</span>
                 @if ($course->discount > 0)
+                    <span class="original-price">Original Price: ${{ number_format($course->price, 2) }}</span>
                     <span class="discount-notice">You save ${{ number_format($course->price - $finalAmount, 2) }}!</span>
                 @endif
             <form method="POST" action="{{ route('enrollment.user.store') }}">
