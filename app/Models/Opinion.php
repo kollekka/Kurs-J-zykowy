@@ -2,15 +2,17 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class opinion extends Model
+class Opinion extends Model
 {
+    use HasFactory;
     protected $fillable = [
-        'user_id',
-        'course_id',
         'opinion',
         'rating',
+        'user_id',
+        'course_id'
     ];
 
     public function user()

@@ -13,6 +13,6 @@ class AdminMiddleware
             return $next($request);
         }
 
-        return redirect('/main')->with('error', 'Nie masz dostępu do tej strony.');
+        return redirect('/main');
     }
 }

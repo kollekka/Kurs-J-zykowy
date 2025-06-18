@@ -7,17 +7,14 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    // Wyświetlanie formularza logowania
     public function showLoginForm()
     {
         return view('login');
     }
-
-    // Obsługa logowania
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'email' => 'required|email|exists:users,email',
+            'name' => 'required|string',
             'password' => 'required',
         ]);
 
@@ -27,10 +24,9 @@ class AuthController extends Controller
         }
 
         return back()->withErrors([
-            'message' => 'Nieprawidłowe dane logowania.',
-        ]);
+            'message' => 'Invalid login credentials.',
+        ])->withInput();
     } 
-    // Obsługa wylogowania
     public function logout(Request $request)
     {
         Auth::logout();

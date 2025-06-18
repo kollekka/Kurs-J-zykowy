@@ -18,10 +18,9 @@
             background-color: var(--light-bg);
             padding-top: 80px;
         }
-
         .navbar {
             background: var(--main-color) !important;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
         }
 
         .navbar-brand {
@@ -33,39 +32,6 @@
         .navbar-brand:hover {
             color: var(--hover-color) !important;
             transform: translateX(3px);
-        }
-
-        .nav-link {
-            color: #ecf0f1 !important;
-            position: relative;
-            margin: 0 10px;
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent-color);
-            transition: width 0.3s ease;
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
-        .btn-outline-danger {
-            border: 2px solid #e74c3c;
-            color: #e74c3c;
-            transition: all 0.3s ease;
-        }
-
-        .btn-outline-danger:hover {
-            background: #e74c3c;
-            color: white;
-            transform: scale(1.05);
         }
 
         .card {
@@ -94,7 +60,59 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
 
-        .btn-primary {
+        .lessons-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .lesson-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .lesson-item h5 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .lesson-item small {
+            color: #7f8c8d;
+        }
+
+        .lesson-badge {
+            font-size: 0.9rem;
+            padding: 5px 10px;
+            border-radius: 15px;
+        }
+
+        .lesson-badge.upcoming {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        .lesson-badge.completed {
+            background-color: #27ae60;
+            color: white;
+        }
+
+        .course-info {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .course-info h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--main-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .course-info .btn-primary {
             background-color: var(--accent-color);
             border-color: var(--accent-color);
             border-radius: 25px;
@@ -102,38 +120,71 @@
             transition: all 0.3s ease;
         }
 
-        .btn-primary:hover {
+        .course-info .btn-primary:hover {
             background-color: var(--hover-color);
             transform: scale(1.05);
         }
 
-        .checked {
-            color: #ffd700;
-        }
-
-        .course-info {
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-
-        .form-control {
+        .course-info .btn-outline-primary {
             border-radius: 25px;
-            border: 1px solid rgba(0,0,0,0.1);
-            padding: 0.75rem 1.25rem;
+            padding: 10px 25px;
             transition: all 0.3s ease;
-            height: auto !important;
         }
 
-        .form-control:focus {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 0.2rem rgba(230,126,34,0.25);
+        .course-info .btn-outline-primary:hover {
+            background-color: var(--main-color);
+            color: white;
         }
-        .lessons-container {
-            max-height: 250px !important;
-            overflow-y: auto;
+
+    .desc-instructor-row {
+        display: flex;
+        width: 100%;
+        margin-bottom: 1.5rem;
+        align-items: flex-start;
+    }
+    .course-description {
+        background: #fff;
+        border-radius: 15px 0 0 15px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+        padding: 16px 20px;
+        flex: 1 1 0;
+        display: flex;
+        align-items: center;
+        font-size: 1.05rem;
+        line-height: 1.5;
+        border-right: 1px solid #eee;
+        min-width: 0;
+    }
+    .instructor-box {
+        background: #f9f9f9;
+        border-radius: 0 15px 15px 0;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+        padding: 16px 24px;
+        flex: 0 0 240px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-width: 180px;
+        max-width: 300px;
+        font-size: 1rem;
+    }
+    .instructor-box h5 {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+    @media (max-width: 991px) {
+        .desc-instructor-row {
+            flex-direction: column;
         }
+        .course-description, .instructor-box {
+            border-radius: 15px;
+            border-right: none;
+            max-width: 100%;
+        }
+        .instructor-box {
+            margin-top: 1rem;
+        }
+    }
     </style>
 </head>
 <body>
@@ -144,7 +195,7 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         @else
-        <a class="navbar-brand" href="{{ route('login') }}"><i class="fas fa-hand-wave mr-2"></i>Gość</a>
+        <a class="navbar-brand" href="{{ route('login') }}"><i class="fas fa-hand-wave mr-2"></i>Guest</a>
         @endif
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
@@ -152,18 +203,23 @@
               <a class="nav-link" href="{{ route('main') }}"><i class="fas fa-home mr-1"></i>Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ route('courses.index') }}"><i class="fas fa-book-open mr-1"></i>Kursy</a>
+              <a class="nav-link" href="{{ route('courses.index') }}"><i class="fas fa-book-open mr-1"></i>Courses</a>
             </li>
+            @if(Auth::check())
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('user.calendar') }}"><i class="fas fa-calendar-alt mr-1"></i>Calendar</a>
+            </li>
+            @endif
             @if (Auth::user() && Auth::user()->is_admin)
               <li class="nav-item active">
-                <a class="nav-link" href="{{ route('admin.dashboard') }}"><i class="fas fa-tools mr-1"></i>Panel Admina</a>
+                <a class="nav-link" href="{{ route('admin.dashboard') }}"><i class="fas fa-tools mr-1"></i>Admin Panel</a>
               </li>
             @endif
           </ul>
           @if (Auth::check())
           <form action="{{ route('logout') }}" method="POST" class="form-inline my-2 my-lg-0">
               @csrf
-              <button class="btn btn-outline-danger my-2 my-sm-0" type="submit"><i class="fas fa-sign-out-alt mr-2"></i>Wyloguj</button>
+              <button class="btn btn-outline-danger my-2 my-sm-0" type="submit"><i class="fas fa-sign-out-alt mr-2"></i>Logout</button>
           </form>
           @endif
         </div>
@@ -171,137 +227,152 @@
 
     <div class="container mt-4">
         <div class="row">
-            <!-- Główna sekcja kursu -->
-            <div class="col-md-8">
-                <div class="course-info">
-                    <h1 class="mb-4 ">{{ $course->name }}</h1>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <p><strong>Język:</strong> {{ $course->language }}</p>
-                            <p><strong>Poziom:</strong> {{ $course->level }}</p>
-                            <p><strong>Data rozpoczęcia:</strong> {{ $course->start_date }}</p>
+            <div class="col-md-12">
+                <div class="course-info shadow-lg" style="background: linear-gradient(120deg, #fff 70%, #f8f9fa 100%); border: 1px solid #ececec;">
+            <div class="d-flex flex-wrap align-items-start justify-content-between">
+                <div style="flex:1 1 340px; min-width:260px;">
+                    <h1 class="mb-3" style="font-weight:700; color:var(--main-color); letter-spacing:0.5px;">{{ $course->name }}</h1>
+                    <div class="row mb-3">
+                        <div class="col-md-6 mb-2">
+                            <div class="mb-2"><i class="fas fa-language mr-2 text-secondary"></i><strong>Language:</strong> {{ $course->language }}</div>
+                            <div class="mb-2"><i class="fas fa-signal mr-2 text-secondary"></i><strong>Level:</strong> {{ $course->level }}</div>
+                            <div class="mb-2"><i class="fas fa-calendar-plus mr-2 text-secondary"></i><strong>Start:</strong> {{ $course->start_date }} <strong>End:</strong> {{ $course->end_date }}</div>
                         </div>
-                        <div class="col-md-6">
-                            <p><strong>Data zakończenia:</strong> {{ $course->end_date }}</p>
-                            <p><strong>Cena:</strong> ${{ $course->price }}</p>
-                            <p><strong>Wolne miejsca:</strong> {{ $course->group_size - count($course->enrollments) }}/{{ $course->group_size }}</p>
+                        <div class="col-md-6 mb-2">
+                            <div class="mb-2"><i class="fas fa-users mr-2 text-secondary"></i><strong>Spots:</strong> {{ $course->group_size - count($course->enrollments) }}/{{ $course->group_size }}</div>
+                            <div class="price-tag shadow-sm" style="font-size:2.1rem; color:var(--accent-color); font-weight:700; background:#fffbe9; border-radius:18px; padding:0.5rem 1.5rem; margin-right:1.5rem;">
+                            ${{ $course->price }}
+                        </div>
                         </div>
                     </div>
-                    <div class="mt-4">
-                        <h4>Opis kursu</h4>
-                        <p>{{ $course->description ?? 'Brak opisu kursu' }}</p>
+                    <div class="mb-3" style="font-size:1.08rem; color:#444;">
+                        {{ $course->description }}
                     </div>
-                </div>
+                    `<div class="d-flex align-items-center mb-3">
+                        @if(!Auth::user())
+                            <a href="{{ route('login') }}" class="btn btn-primary btn-lg rounded-pill px-4 shadow-sm">Log in to enroll</a>
+                        @elseif (count($course->enrollments) >= ($course->group_size))
+                            <button class="btn btn-secondary btn-lg rounded-pill px-4" disabled>No spots available</button>
+                        @elseif($course->start_date < now())
+                            <button class="btn btn-secondary btn-lg rounded-pill px-4" disabled>Enrolls has ended</button>
+                        @elseif ($course->enrollments->contains('user_id', Auth::id()))
+                            <button class="btn btn-secondary btn-lg rounded-pill px-4" disabled>You are already enrolled</button>
+                        @elseif (!$hasScheduleConflict)
+                            <button class="btn btn-secondary btn-lg rounded-pill px-4" disabled>Schedule conflict</button>
+                        @elseif(Auth::user())
+                            <a href="{{ route('course.enrollUser', $course->id) }}" class="btn btn-primary btn-lg rounded-pill px-4 shadow-sm">Enroll in course</a>
+                        @endif
+                        <a href="{{ url('/main') }}" class="btn btn-outline-primary rounded-pill px-4">Back to courses</a>
+                    </div>
 
-                <!-- Sekcja lekcji -->
+                </div>
+                <div class="instructor-box ml-md-4 mt-4 mt-md-0 shadow-sm" style="background:#f7f7fa; border:1px solid #ececec; min-width:220px; max-width:300px;">
+                    <h5 class="mb-2" style="font-weight:600; color:var(--main-color);"><i class="fas fa-chalkboard-teacher mr-2"></i>Instructor</h5>
+                    <div class="mb-1" style="font-size:1.1rem;">
+                        <i class="fas fa-user mr-2"></i>
+                        {{ $course->instructor->full_name }}
+                    </div>
+                    @if(!empty($course->instructor->bio))
+                        <div class="mt-2 text-muted" style="font-size:0.97em;">
+                            {{ $course->instructor->bio }}
+                        </div>
+                    @endif
+                </div>
+            </div>
+            </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-12">
                 <div class="card mt-4">
                     <div class="card-header">
-                        <h4 class="mb-0"><i class="fas fa-book-open mr-2"></i>Lekcje</h4>
+                        <h4 class="mb-0"><i class="fas fa-book-open mr-2"></i>Lessons</h4>
                     </div>
                     <div class="card-body lessons-container">
                         <ul class="list-group">
-                            @foreach ($course->lessons as $index => $lesson)
-                            <li class="list-group-item">
-                                @if ($course->enrollments->contains('user_id', Auth::id()) || $index === 0)
-                                    <div class="d-flex justify-content-between align-items-center">
+                            @foreach ($course->lessons->sortBy(function($lesson) { return $lesson->date . ' ' . $lesson->time; }) as $index => $lesson)
+                                <li class="list-group-item">
+                                    <div class="lesson-item">
                                         <div>
                                             <h5>{{ $lesson->order }}. {{ $lesson->title }}</h5>
-                                            <p class="mb-0">{{ $lesson->content }}</p>
-                                            <small class="text-muted">
-                                                {{ \Carbon\Carbon::parse($lesson->duration)->minute }} minut, 
-                                                {{ $lesson->date }}, {{$lesson->time}}
-                                            </small>
+                                            <small>{{ $lesson->date }} at {{ $lesson->time }}</small>
                                         </div>
-                                        <span class="badge {{ $currentDate > $lesson->date . ' ' . $lesson->time ? 'badge-success' : 'badge-warning' }}">
-                                            {{ $currentDate > $lesson->date . ' ' . $lesson->time ? 'Zakończona' : 'Nadchodząca' }}
+                                        <span class="lesson-badge {{ $currentDate > $lesson->date . ' ' . $lesson->time ? 'completed' : 'upcoming' }}">
+                                            {{ $currentDate > $lesson->date . ' ' . $lesson->time ? 'Completed' : 'Upcoming' }}
                                         </span>
                                     </div>
-                                @else
-                                    <h5>{{ $lesson->order }}. {{ $lesson->title }}</h5>
-                                    <p class="text-muted">Zapisz się na kurs aby zobaczyć treść</p>
-                                @endif
-                            </li>
+                                </li>
                             @endforeach
                         </ul>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <div class="mt-4">
-                    @if(!Auth::user())
-                    <a href="{{ route('login') }}" class="btn btn-primary">Zaloguj się aby zapisać się na kurs</a>
-                    @elseif ($course->enrollments->contains('user_id', Auth::id()))
-                        <button class="btn btn-secondary" disabled>Jesteś już zapisany</button>
-                    @elseif (count($course->enrollments) >= ($course->group_size))
-                        <button class="btn btn-secondary" disabled>Brak wolnych miejsc</button>
-                    @elseif($course->start_date < Auth::user()->courses->first()->end_date)
-                        <button class="btn btn-secondary" disabled>Występuje Kolizja Kursów</button>
-                    @elseif(Auth::user())
-                        <a href="{{ route('enroll.show', $course->id) }}" class="btn btn-primary">Zapisz się na kurs</a>
-                    @endif
-                    <a href="{{ url('/main') }}" class="btn btn-outline-primary">Powrót do kursów</a>
+        <div class="row mt-4">
+            <div class="col-md-3">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-pen mr-2"></i>Add your opinion</h5>
+                    </div>
+                    <div class="card-body">
+                        @if(Auth::check() && $opinions->contains('user_id', Auth::id()))
+                            <div class="alert alert-info">You have already added an opinion</div>
+                        @elseif(Auth::check() && $course->enrollments->contains('user_id', Auth::id()))
+                            <form action="{{ route('opinions.store', $course->id) }}" method="POST">
+                                @csrf
+                                <div class="form-group">
+                                    <label for="opinion_text">Your opinion</label>
+                                    <textarea name="opinion" id="opinion_text" class="form-control @error('opinion') is-invalid @enderror" rows="3" required>{{ old('opinion') }}</textarea>
+                                    @error('opinion')
+                                        <div class="invalid-feedback"></div>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="rating_value">Rating</label>
+                                    <select name="rating" id="rating_value" class="form-control @error('rating') is-invalid @enderror" required>
+                                        <option value="" {{ old('rating') ? '' : 'selected' }} disabled>Select rating</option>
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <option value="{{ $i }}" {{ old('rating') == $i ? 'selected' : '' }}>{{ $i }}★</option>
+                                        @endfor
+                                    </select>
+                                    @error('rating')
+                                        <div class="invalid-feedback"></div>
+                                    @enderror
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block">Add opinion</button>
+                            </form>
+                        @elseif(Auth::check())
+                            <div class="alert alert-warning">You must be enrolled in the course to add an opinion</div>
+                        @else
+                            <div class="alert alert-info">Log in to add an opinion</div>
+                        @endif
+                    </div>
                 </div>
             </div>
 
-            <!-- Sekcja instruktora i komentarzy -->
-            <div class="col-md-4">
-                <!-- Instruktor -->
-                <div class="card mb-4">
+            <div class="col-md-9">
+                <div class="card h-100">
                     <div class="card-header">
-                        <h4 class="mb-0"><i class="fas fa-chalkboard-teacher mr-2"></i>Instruktor</h4>
+                        <h5 class="mb-0"><i class="fas fa-comments mr-2"></i>Other users' opinions</h5>
                     </div>
-                    <div class="card-body">
-                        <h5>{{ $course->instructor->full_name }}</h5>
-                        <p class="text-muted">{{ $course->instructor->email }}</p>
-                        <p>{{ $course->instructor->bio ?? 'Brak informacji o instruktorze' }}</p>
-                    </div>
-                </div>
-
-                <!-- Komentarze -->
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="mb-0"><i class="fas fa-comments mr-2"></i>Opinie</h4>
-                    </div>
-                    <div class="card-body">
+                    <div class="card-body" style="max-height: 400px; overflow-y: auto;">
                         @foreach($opinions as $opinion)
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h6>{{ $opinion->user->name }}</h6>
-                                <div>
-                                    @for ($i = 0; $i < $opinion->rating; $i++)
-                                        <span class="text-warning">★</span>
-                                    @endfor
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h6>{{ $opinion->user->name }}</h6>
+                                    <div>
+                                        @for ($i = 0; $i < $opinion->rating; $i++)
+                                            <span class="text-warning">★</span>
+                                        @endfor
+                                    </div>
                                 </div>
+                                <p class="mb-0">{{ $opinion->opinion }}</p>
                             </div>
-                            <p class="mb-0">{{ $opinion->opinion }}</p>
-                        </div>
-                        <hr>
+                            <hr>
                         @endforeach
-
-                        @if(Auth::check() && $opinions->contains('user_id', Auth::id()))
-                            <div class="alert alert-info">Już dodałeś opinię</div>
-                        @elseif(Auth::check() && $course->enrollments->contains('user_id', Auth::id()))
-                        <form action="{{ route('opinions.store', $course->id) }}" method="POST">
-                            @csrf
-                            <div class="form-group">
-                                <label>Twoja opinia</label>
-                                <textarea name="content" class="form-control" rows="3" required></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Ocena</label>
-                                <select name="rating" class="form-control" required>
-                                    <option value="" selected>Wybierz ocenę</option>
-                                    @for ($i = 1; $i <= 5; $i++)
-                                        <option value="{{ $i }}">{{ $i }}★</option>
-                                    @endfor
-                                </select>
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-block">Dodaj opinię</button>
-                        </form>
-                        @elseif(Auth::check())
-                            <div class="alert alert-warning">Musisz być zapisany na kurs aby dodać opinię</div>
-                        @else
-                            <div class="alert alert-info">Zaloguj się aby dodać opinię</div>
-                        @endif
                     </div>
                 </div>
             </div>

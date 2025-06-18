@@ -7,7 +7,8 @@ use App\Models\Enrollment;
 use App\Models\Instructor;  
 use App\Models\Course;
 use App\Models\Payment;
-use App\Models\Lesson;
+use App\Models\Lesson;  
+use App\Models\Opinion;
     
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -19,26 +20,33 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Course::factory(10)->create();
-        // User::factory()->create([
-        //     'name' => 'Adrian',
-        //     'email' => 'adrian@gmail.com',
-        //     'password' => bcrypt('1234'),
-        //     'is_admin'=> true,
-        // ]);  
-        // User::factory()->create([
-        //     'name' => 'Tomek',
-        //     'email' => 'tomek@gmail.com',
-        //     'password' => bcrypt('1234'),
-        // ]);  
+        User::factory()->create([
+            'name' => 'Adrian',
+            'email' => 'adrian@gmail.com',
+            'password' => bcrypt('1234'),
+            'is_admin'=> true,
+        ]);  
              
-        //  $this->call([
-        //     InstructorSeeder::class,
-        //     CourseSeeder::class,
-        //     EnrollmentSeeder::class,
-        //     PaymentSeeder::class,
-        //     LessonSeeder::class,
-        // ]);
+        User::factory()->count(20)->create();
+
+        Instructor::factory()->count(10)->create();
+
+        Course::factory()
+            ->count(15)
+            ->create()
+            ->each(function ($course) {
+                Lesson::factory()->count(5)->create(['course_id' => $course->id]);
+
+                Opinion::factory()->count(3)->create(['course_id' => $course->id]);
+            });
+
+        Enrollment::factory()->count(50)->create()->each(function ($enrollment) {
+            Payment::factory()->create([
+                'enrollment_id' => $enrollment->id,
+                'amount' => $enrollment->course->price,
+                'status' => 'paid', 
+            ]);
+        });
 
     }
 }
