@@ -46,7 +46,7 @@ class InstructorController extends Controller
     {
         $instructor->update($request->validated());
 
-        return redirect()->route('admin.instructors.index')->with('success', 'Dane instruktora zostały zaktualizowane.');
+        return redirect()->route('admin.instructors.index')->with('success', 'Instructor updated successfully.');
     }
 
  
@@ -55,6 +55,6 @@ class InstructorController extends Controller
 
         $instructor->delete();
 
-        return redirect()->route('admin.instructors.index')->with('success', 'Instruktor został usunięty.');
+        return redirect()->route('admin.instructors.index')->with('success', 'Instructor deleted.');
     }
 }
